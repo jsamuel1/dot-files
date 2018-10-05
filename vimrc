@@ -23,6 +23,8 @@ endif
 " want to use
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'tpope/vim-sensible'
+
 " Vim HardTime
 Plug 'takac/vim-hardtime'
 
