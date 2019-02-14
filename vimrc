@@ -29,7 +29,14 @@ Plug 'tpope/vim-sensible'
 Plug 'takac/vim-hardtime'
 
 " Autocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
 
 " Python autocomplete
 Plug 'davidhalter/jedi-vim'
@@ -172,8 +179,8 @@ set undofile
 
 " turn on backup
 set backup
-set backupdir=/home/lucast/.vim/tmp/
-set dir=/home/lucast/.vim/tmp/
+set backupdir=$HOME/.vim/tmp/
+set dir=$HOME/.vim/tmp/
 
 " fuzzy completion
 set rtp+=/.fzf
@@ -277,13 +284,13 @@ nmap ; :
 " Tmux
 
 " tmux and vim combination
-if &term =~ '^screen'
-    " tmux will send xterm-style keys when its xterm-keys option is on
-    execute "set <xUp>=\e[1;*A"
-    execute "set <xDown>=\e[1;*B"
-    execute "set <xRight>=\e[1;*C"
-    execute "set <xLeft>=\e[1;*D"
-endif
+" if &term =~ '^screen'
+"    " tmux will send xterm-style keys when its xterm-keys option is on
+"    execute "set <xUp>=\e[1;*A"
+"    execute "set <xDown>=\e[1;*B"
+"    execute "set <xRight>=\e[1;*C"
+"    execute "set <xLeft>=\e[1;*D"
+" endif
 
 " autocomplete
 if exists('$TMUX')
@@ -344,7 +351,7 @@ let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
 
 " Line number -------------------------
 set number
-set relativenumber
+" -- set relativenumber
 set cursorline
 
 " Indent line symbols -----------------
@@ -355,7 +362,7 @@ let g:indentLine_char = "▏"
 " Autocomplete
 
 " Python -------------------------------
-let g:python3_host_prog = '/home/lucast/.pyenv/versions/3.6.4/bin/python3'
+let g:python3_host_prog = '$HOME/.pyenv/versions/3.6.4/bin/python3'
 
 " Deoplete -----------------------------
 

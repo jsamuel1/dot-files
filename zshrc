@@ -4,6 +4,15 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/jsamuel/.oh-my-zsh
 
+#OktaAWSCLI
+if [[ -f "$HOME/.okta/bash_functions" ]]; then
+    . "$HOME/.okta/bash_functions"
+fi
+if [[ -d "$HOME/.okta/bin" && ":$PATH:" != *":$HOME/.okta/bin:"* ]]; then
+    PATH="$HOME/.okta/bin:$PATH"
+fi
+
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -101,6 +110,10 @@ fi
 # add Pulumi to the PATH
 export PATH=$PATH:$HOME/.pulumi/bin
 export PATH=$PATH:$HOME/src/depot_tools
+export OKTA_USERNAME=jsamuel
 
 alias pip='python -m pip'
 
+xautolock -time 10 -locker lock.sh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
