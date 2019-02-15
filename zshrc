@@ -1,8 +1,8 @@
 # If you come from bash you might have to change your $PATH.
-#export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/jsamuel/.oh-my-zsh
+export ZSH=/$HOME/.oh-my-zsh
 
 #OktaAWSCLI
 if [[ -f "$HOME/.okta/bash_functions" ]]; then
@@ -83,7 +83,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
+export EDITOR='vim'
 # else
 #   export EDITOR='mvim'
 # fi
@@ -107,11 +107,7 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
 
-# add Pulumi to the PATH
-export PATH=$PATH:$HOME/.pulumi/bin
-export PATH=$PATH:$HOME/src/depot_tools
 export OKTA_USERNAME=jsamuel
-
 alias pip='python -m pip'
 
 xautolock -time 10 -locker lock.sh

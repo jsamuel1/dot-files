@@ -120,7 +120,6 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
 
-# add Pulumi to the PATH
-export PATH=$PATH:$HOME/.pulumi/bin
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export GOPATH=~/go
