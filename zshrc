@@ -109,7 +109,28 @@ fi
 
 export OKTA_USERNAME=jsamuel
 alias pip='python -m pip'
+alias ls='ls --color=auto --group-directories-first'
+alias grep='grep --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
 
-xautolock -time 10 -locker lock.sh
+function sudo() {
+	if [[ ${1} == "vim" ]]; then
+		shift; command sudo -E vim "${@}"
+	else
+		command sudo "${@}"
+	fi
+}
+
+
+
+export GREP_COLORS="mt=01;31"
+export AWS_REGIONS="ap-southeast-2 us-west-2"
+export PYENV_ROOT="${HOME}/.pyenv"
+export GOROOT="${HOME}/go"
+export GOPATH="${HOME}/goprojects"
+export PATH="${PATH}:${GOPATH}:{PYENV_ROOT}/bin"
+
+if command -v xautolock; then
+   xautolock -time 10 -locker lock.sh
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
