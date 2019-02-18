@@ -129,8 +129,4 @@ export GOROOT="${HOME}/go"
 export GOPATH="${HOME}/goprojects"
 export PATH="${PATH}:${GOPATH}:{PYENV_ROOT}/bin"
 
-if command -v xautolock; then
-   xautolock -time 10 -locker lock.sh
-fi
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
