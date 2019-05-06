@@ -9,10 +9,10 @@ module.exports = {
     updateChannel: 'canary',
 
     // default font size in pixels for all tabs
-    fontSize: 12,
+    fontSize: 14,
 
     // font family with optional fallbacks
-    fontFamily: '"Menlo for Powerline", "Ubuntu Mono derivative Powerline", "DejaVu Sans Mono for Powerline", Consolas, Lucida Console, monospace',
+    fontFamily: '"SauceCodePro Nerd Font","DejaVuSansMono Nerd Font", SauceCodePro, Consolas, Lucida Console, monospace',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -103,7 +103,7 @@ module.exports = {
     //
     // PowerShell on Windows
     // - Example: `C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`
-    shell: '',
+    shell: '/usr/bin/zsh',
 
     // for setting shell arguments (i.e. for using interactive shellArgs: `['-i']`)
     // by default `['--login']` will be used
@@ -137,7 +137,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: [ 'hyper-dracula', 'hyper-search', 'hypercwd', 'hyper-highlight-active-pane' ] ,
+  plugins: [ 'hyper-dracula', 'hyper-search', 'hypercwd', 'hyper-highlight-active-pane', 'gitrocket' ] ,
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
