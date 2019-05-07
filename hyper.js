@@ -12,7 +12,7 @@ module.exports = {
     fontSize: 14,
 
     // font family with optional fallbacks
-    fontFamily: '"SauceCodePro Nerd Font","DejaVuSansMono Nerd Font", SauceCodePro, Consolas, Lucida Console, monospace',
+    fontFamily: '"SauceCodePro Nerd Font","DejaVuSansMono Nerd Font", "Terminess Powerline", "Anonymice Powerline", "Roboto Mono for Powerline", "Meslo LG S for Powerline", SauceCodePro, Consolas, Lucida Console, monospace',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -116,7 +116,7 @@ module.exports = {
     bell: 'SOUND',
 
     // if `true` (without backticks and without quotes), selected text will automatically be copied to the clipboard
-    copyOnSelect: false,
+    copyOnSelect: true,
 
     // if `true` (without backticks and without quotes), hyper will be set as the default protocol client for SSH
     defaultSSHApp: true,

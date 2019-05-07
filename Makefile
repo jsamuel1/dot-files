@@ -5,7 +5,7 @@ install:
 	@for i in $(DOT_FILES); do \
 	  ln -srf $$i ~/.$$i; \
 	done
-	ln -srf hyper.js ~/.config/Hyper/.hyper.js
+	ln -srf hyper.js ~/.config/hyper/.hyper.js
 
 .PHONY: uninstall
 uninstall:
