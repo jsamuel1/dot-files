@@ -6,6 +6,7 @@ install:
 	  ln -srf $$i ~/.$$i; \
 	done
 	ln -srf hyper.js ~/.config/hyper/.hyper.js
+	ln -srf neovim/init.vim ~/.config/nvim/init.vim
 
 .PHONY: uninstall
 uninstall:

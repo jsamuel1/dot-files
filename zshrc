@@ -16,8 +16,7 @@ fi
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel9k/powerlevel9k"
-#ZSH_THEME="agnoster"
+ZSH_THEME="agnoster"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -70,7 +69,7 @@ ZSH_TMUX_AUTOSTART=true
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git git-extras gitfast git-prompt aws chucknorris command-not-found docker dircycle virtualenv magic-enter vault pyenv zsh-autosuggestions zsh-syntax-highlighting
+  git git-extras gitfast git-prompt github aws chucknorris command-not-found docker dircycle virtualenv magic-enter vault pyenv zsh-autosuggestions zsh-syntax-highlighting sudo
 )
 
 source $ZSH/oh-my-zsh.sh

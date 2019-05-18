@@ -25,15 +25,20 @@ sudo update-alternatives --config vim
 ### pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
+####Setup neovim virtualenv
+See https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+- pyenv virtualenv neovim3
+ensure neovim init.vim installed
+
 ### zsh
 ### oh-my-zsh
 * install oh-my-zsh
-* install nerd-fonts 
+* install nerd-fonts
 - git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1
 - cd nerd-fonts
 - install.sh
 
-#### zsh-autocompletion 
+#### zsh-autocompletion
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 #### zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting

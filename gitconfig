@@ -19,3 +19,5 @@
 	ui = true
 [protocol]
 	version = 2
+[github]
+	user = jsamuel1
