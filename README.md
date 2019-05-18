@@ -1,5 +1,6 @@
 # dot-files
 sudo apt install make npm build-essentials libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev fonts-powerline gdebi fortune
+default-jdk neovim
 
 make install
 

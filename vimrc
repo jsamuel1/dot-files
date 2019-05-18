@@ -6,16 +6,16 @@ let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
 let vim_plug_just_installed = 0
 let vim_plug_path = expand('~/.config/nvim/autoload/plug.vim')
 if !filereadable(vim_plug_path)
-    echo "Installing Vim-plug..."
-    echo ""
-    silent !mkdir -p ~/.config/nvim/autoload
-    silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    let vim_plug_just_installed = 1
+        echo "Installing Vim-plug..."
+        echo ""
+        silent !mkdir -p ~/.config/nvim/autoload
+        silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        let vim_plug_just_installed = 1
 endif
 
 " manually load vim-plug the first time
 if vim_plug_just_installed
-    :execute 'source '.fnameescape(vim_plug_path)
+        :execute 'source '.fnameescape(vim_plug_path)
 endif
 
 " ============================================================================
@@ -28,15 +28,15 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'tpope/vim-sensible'
 
 " Vim HardTime
-Plug 'takac/vim-hardtime'
+"Plug 'takac/vim-hardtime'
 
 " Autocomplete
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+        Plug 'Shougo/deoplete.nvim'
+        Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpc'
 endif
 let g:deoplete#enable_at_startup = 1
 
@@ -117,7 +117,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make' }
 
 " Tmux completer
-Plug 'wellle/tmux-complete.vim'
+"Plug 'wellle/tmux-complete.vim'
 
 " Async completer
 Plug 'prabirshrestha/async.vim'
@@ -126,6 +126,8 @@ Plug 'prabirshrestha/asyncomplete.vim'
 " Linters
 Plug 'neomake/neomake'
 
+Plug 'Chiel92/vim-autoformat'
+
 " Tell vim-plug we finished declaring plugins, so it can load them
 call plug#end()
 
@@ -133,8 +135,8 @@ call plug#end()
 " Install plugins the first time vim runs
 
 if vim_plug_just_installed
-    echo "Installing Bundles, please ignore key map error messages"
-    :PlugInstall
+        echo "Installing Bundles, please ignore key map error messages"
+        :PlugInstall
 endif
 
 " ============================================================================
@@ -209,7 +211,7 @@ let g:hardtime_default_on = 1
 " Shorctuts & key bindings
 
 if !has('nvim')
-	set ttymouse=xterm2
+        set ttymouse=xterm2
 endif
 
 " Remap leader key
@@ -287,24 +289,24 @@ nmap ; :
 
 " tmux and vim combination
 if &term =~ '^screen'
-   " tmux will send xterm-style keys when its xterm-keys option is on
-   execute "set <xUp>=\e[1;*A"
-   execute "set <xDown>=\e[1;*B"
-   execute "set <xRight>=\e[1;*C"
-   execute "set <xLeft>=\e[1;*D"
+        " tmux will send xterm-style keys when its xterm-keys option is on
+        execute "set <xUp>=\e[1;*A"
+        execute "set <xDown>=\e[1;*B"
+        execute "set <xRight>=\e[1;*C"
+        execute "set <xLeft>=\e[1;*D"
 endif
 
 " autocomplete
 if exists('$TMUX')
-    " Tmux completion (with tmux-complete plugin)
-    let g:tmuxcomplete#trigger = ''
+        " Tmux completion (with tmux-complete plugin)
+        let g:tmuxcomplete#trigger = ''
 endif
 
 " ============================================================================
 " Colours and themes
 
 if (has("termguicolors"))
-    set termguicolors
+        set termguicolors
 endif
 
 " Enable 256 colours
@@ -336,13 +338,13 @@ set noshowmode
 
 " Detect file encoding
 if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-    endif
-  set encoding=utf-8
-  setglobal fileencoding=utf-8
-  setglobal bomb
-  set fileencodings=ucs-bom,utf-8,latin1
+        if &termencoding == ""
+                let &termencoding = &encoding
+        endif
+        set encoding=utf-8
+        setglobal fileencoding=utf-8
+        setglobal bomb
+        set fileencodings=ucs-bom,utf-8,latin1
 endif
 
 " Airline -----------------------------
@@ -386,9 +388,9 @@ let g:jedi#completions_enabled = 0
 let deoplete#sources#jedi#show_docstring = 1
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+                        \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+                        \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
 " Go -------------------------------------
 let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
