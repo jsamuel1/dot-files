@@ -1,2 +1,6 @@
 click
-
+dbus-python
+gobject
+iwlib
+powerline-status-i3
+pygit2

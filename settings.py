@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import click
+import argparse
 import subprocess
 import glob
 import os
@@ -7,46 +7,51 @@ import tempfile
 from pathlib import Path
 
 
-@click.command()
-@click.option('--dryrun/--no-dryrun', default=True,
-              help='Show what would happen, but don\'t change anything')
-@click.option('--sync/--no-sync', default=False, help='fetch from git')
-def install(dryrun, sync):
-    click.echo('dryrun: %s   sync: %s' % (dryrun, sync))
-    if sync:
+def install():
+    parser = argparse.ArgumentParser(
+        description='setup dotfiles in home directory based on git repo')
+    parser.add_argument('--dryrun', action='store_true', default=False)
+    parser.add_argument('--no-dryrun', action='store_false', dest='dryrun')
+    parser.add_argument('--sync', action='store_true')
+    args = parser.parse_args()
+
+    print('dryrun: %s   sync: %s' % (args.dryrun, args.sync))
+
+    if args.sync:
         gitsync()
     files = [f for f in glob.glob('*')
-             if f not in ['README.md', 'Makefile', 'install.py', 'requirements.txt']
+             if f not in ['README.md', 'Makefile', 'install.py',
+                          'requirements.txt', 'neovim-requirements.txt']
              and os.path.isfile(f)]
     configfiles = [f for f in glob.glob('config/**', recursive=True) if os.path.isfile(f)]
     binfiles = [f for f in glob.glob('bin/*') if os.path.isfile(f)]
-    linkfiles(files, dryrun)
-    linkfiles(configfiles, dryrun)
-    linkfiles(binfiles, dryrun)
+    linkfiles(files, args.dryrun)
+    linkfiles(configfiles, args.dryrun)
+    linkfiles(binfiles, args.dryrun)
 
 
 def linkfiles(files, dryrun):
-    homedir=str(Path.home())
-    thisdir=str(Path.cwd())
+    homedir = str(Path.home())
+    thisdir = str(Path.cwd())
     for f in files:
         dotf = os.path.join(homedir, '.'+f)
         status = getsymlinkstatus(f, dotf)
         targ = os.path.join(thisdir, f)
-        print (targ + '->'+ dotf + ' :' + status)
-        if dryrun == False:
+        print(targ + '->'+ dotf + ' :' + status)
+        if not dryrun:
             symlink(targ, dotf)
 
 
 def getsymlinkstatus(target, link_name):
     if not os.path.exists(link_name):
         return 'new'
-    elif os.path.samefile(target, link_name):
+    if os.path.samefile(target, link_name):
         return 'same'
-    elif os.path.islink(link_name):
+    if os.path.islink(link_name):
         return 'replace link'
-    elif os.path.isfile(link_name):
+    if os.path.isfile(link_name):
         return 'replace file'
-    elif os.path.isdir(link_name):
+    if os.path.isdir(link_name):
         return 'ERROR: directory'
     return 'unknown'
 
@@ -59,7 +64,7 @@ def symlink(target, link_name, overwrite=True):
     '''
 
     if not overwrite:
-        os.symlink(target, linkname)
+        os.symlink(target, link_name)
         return
 
     # os.replace() may fail if files are on different filesystems
@@ -96,7 +101,7 @@ def symlink(target, link_name, overwrite=True):
 
 
 def gitsync():
-    subprocess.run(['git','pull'])
+    subprocess.run(['git', 'pull'])
 
 
 if __name__ == '__main__':

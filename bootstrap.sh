@@ -6,6 +6,7 @@ echo installing base apt packages
 echo ============================
 xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
 
+
 echo =====================================
 echo ensure nvim is our default vim editor
 echo =====================================
@@ -17,9 +18,44 @@ echo downloading pyenv
 echo =================
 if [ ! -d ~/.pyenv ]; then
   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+# temporary - zshrc will have these already for persistence
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
 else
   echo already downloaded
 fi
+
+if [ ! -d ~/.pyenv/plugins/xxenv-latest ]; then
+  git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
+fi
+
+if [ ! -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
+  git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+fi
+
+eval "$(pyenv init - zsh)"
+eval "$(pyenv virtualenv-init - zsh)"
+
+echo =================================
+echo installing latest python for user
+echo =================================
+pyenv latest install 2 -s
+pyenv latest install 3 -s
+pyenv latest global
+pyenv virtualenv neovim3
+
+echo ================================
+echo installing base python3 packages
+echo ================================
+python3 -m pip install -r requirements.txt
+pyenv activate neovim3
+python3 -m pip install -r neovim-requirements.txt
+pyenv deactivate
+
+echo =================
+echo ensure latest npm
+echo =================
+sudo npm install -g npm@latest
 
 echo ====================
 echo installing oh-my-zsh
@@ -87,7 +123,7 @@ if [ "" == "$PKG_OK" ]; then
   sudo apt -y install code
 fi
 
-./settings.py
+./settings.py --no-dryrun
 
 echo ========================
 echo DONE

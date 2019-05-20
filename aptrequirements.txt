@@ -1,3 +1,7 @@
+appmenu-gtk-module-common
+appmenu-gtk2-module
+appmenu-gtk3-module
+appmenu-qt
 apt-transport-https
 build-essential
 caca-utils
@@ -10,7 +14,11 @@ git
 git-hub
 gpg
 libbz2-dev
+libdbusmenu-glib4
+libdbusmenu-gtk3-4
+libdbusmenu-gtk4
 libffi-dev
+libghc-iwlib-dev
 liblzma-dev
 libncurses5-dev
 libreadline-dev
@@ -23,9 +31,12 @@ make
 neovim
 npm
 python3
+python3-psutil
+python3-pyalsa
 software-properties-common
 tk-dev
 wget
+xinput
 xz-utils
 zlib1g-dev
 zsh
