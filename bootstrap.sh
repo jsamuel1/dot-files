@@ -26,15 +26,15 @@ else
 fi
 
 if [ ! -d ~/.pyenv/plugins/xxenv-latest ]; then
-  git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
+  git clone https://github.com/momo-lab/xxenv-latest.git $(pyenv root)/plugins/xxenv-latest
 fi
 
 if [ ! -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
   git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 fi
 
-eval "$(pyenv init - zsh)"
-eval "$(pyenv virtualenv-init - zsh)"
+eval "$(pyenv init - bash)"
+eval "$(pyenv virtualenv-init - bash)"
 
 echo =================================
 echo installing latest python for user
@@ -47,8 +47,10 @@ pyenv virtualenv neovim3
 echo ================================
 echo installing base python3 packages
 echo ================================
+python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 pyenv activate neovim3
+python3 -m pip install --upgrade pip
 python3 -m pip install -r neovim-requirements.txt
 pyenv deactivate
 

@@ -24,19 +24,19 @@ def install():
                           'requirements.txt', 'neovim-requirements.txt']
              and os.path.isfile(f)]
     configfiles = [f for f in glob.glob('config/**', recursive=True) if os.path.isfile(f)]
-    binfiles = [f for f in glob.glob('bin/*') if os.path.isfile(f)]
+    localfiles = [f for f in glob.glob('local/**', recursive=True) if os.path.isfile(f)]
     linkfiles(files, args.dryrun)
     linkfiles(configfiles, args.dryrun)
-    linkfiles(binfiles, args.dryrun)
+    linkfiles(localfiles, args.dryrun)
 
 
 def linkfiles(files, dryrun):
     homedir = str(Path.home())
     thisdir = str(Path.cwd())
-    for f in files:
-        dotf = os.path.join(homedir, '.'+f)
-        status = getsymlinkstatus(f, dotf)
-        targ = os.path.join(thisdir, f)
+    for file_name in files:
+        dotf = os.path.join(homedir, '.'+file_name)
+        status = getsymlinkstatus(file_name, dotf)
+        targ = os.path.join(thisdir, file_name)
         print(targ + '->'+ dotf + ' :' + status)
         if not dryrun:
             symlink(targ, dotf)
