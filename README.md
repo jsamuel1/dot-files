@@ -22,4 +22,12 @@ ensure neovim init.vim installed
 ### gists from github to .local/bin:
 https://gist.github.com/jsamuel1/b6bb952552ae23d81d6a3895a6aba456
 
+Windows Subsystem for Linux
+===========================
+ensure upgraded to Disco or newer
+install scoop
+scoop bucket add anurse https://github.com/anurse/scoop-bucket
+scoop install win32yank     # clipboard support for neovim
+
+
 

@@ -4,6 +4,7 @@ appmenu-gtk3-module
 appmenu-qt
 apt-transport-https
 build-essential
+bundler
 caca-utils
 curl
 default-jdk
@@ -13,12 +14,16 @@ gdebi
 git
 git-hub
 gpg
+i3
+i3pystatus
 libbz2-dev
+libdbus-1-dev
 libdbusmenu-glib4
 libdbusmenu-gtk3-4
 libdbusmenu-gtk4
 libffi-dev
 libghc-iwlib-dev
+libglib2.0-dev
 liblzma-dev
 libncurses5-dev
 libreadline-dev
@@ -33,6 +38,8 @@ npm
 python3
 python3-psutil
 python3-pyalsa
+ruby
+ruby-dev
 software-properties-common
 tk-dev
 wget

@@ -58,6 +58,7 @@ echo =================
 echo ensure latest npm
 echo =================
 sudo npm install -g npm@latest
+sudo npm install -g neovim
 
 echo ====================
 echo installing oh-my-zsh
