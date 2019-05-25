@@ -16,6 +16,7 @@ git-hub
 gpg
 i3
 i3pystatus
+imagemagick
 libbz2-dev
 libdbus-1-dev
 libdbusmenu-glib4
@@ -40,6 +41,7 @@ python3-psutil
 python3-pyalsa
 ruby
 ruby-dev
+scrot
 software-properties-common
 tk-dev
 wget
