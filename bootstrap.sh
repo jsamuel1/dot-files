@@ -72,14 +72,14 @@ echo installing base python3 packages
 echo ================================
 echo ${normal}
 python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt
+python3 -m pip install --upgrade -r requirements.txt
 pyenv activate neovim3
 python3 -m pip install --upgrade pip
-python3 -m pip install -r neovim-requirements.txt
+python3 -m pip install --upgrade -r neovim-requirements.txt
 pyenv deactivate
 pyenv activate neovim2
 python -m pip install --upgrade pip
-python -m pip install -r neovim-requirements.txt
+python -m pip install --upgrade -r neovim-requirements.txt
 pyenv deactivate
 
 echo ${bold}
