@@ -13,6 +13,7 @@ fortune
 gdebi
 git
 git-hub
+golang
 gpg
 i3
 i3pystatus

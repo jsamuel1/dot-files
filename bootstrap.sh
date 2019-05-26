@@ -1,28 +1,47 @@
 #!/bin/bash
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+#for Chromebook Only
+if [ -v SOMMELIER_VERSION ]; then
+  echo ${bold}
+  echo ============================
+  echo chromebook preconfig
+  echo ============================
+  echo ${normal}
+  ./fix-cros-ui-config-pkg.sh
+fi
+
 # Install base apt packages
+echo ${bold}
 echo ============================
 echo installing base apt packages
 echo ============================
+echo ${normal}
 xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
 
 
+echo ${bold}
 echo =====================================
 echo ensure nvim is our default vim editor
 echo =====================================
+echo ${normal}
 sudo update-alternatives --set vim /usr/bin/nvim
 
 # Install pyenv.  zshrc already setup to run it.
+echo ${bold}
 echo =================
 echo downloading pyenv
 echo =================
+echo ${normal}
 if [ ! -d ~/.pyenv ]; then
   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-# temporary - zshrc will have these already for persistence
+  # temporary - zshrc will have these already for persistence
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
 else
-  echo already downloaded
+  echo ${bold}already downloaded${normal}
 fi
 
 if [ ! -d ~/.pyenv/plugins/xxenv-latest ]; then
@@ -36,52 +55,71 @@ fi
 eval "$(pyenv init - bash)"
 eval "$(pyenv virtualenv-init - bash)"
 
+echo ${bold}
 echo =================================
 echo installing latest python for user
 echo =================================
+echo ${normal}
 pyenv latest install 2 -s
 pyenv latest install 3 -s
 pyenv latest global
-pyenv virtualenv neovim3
+pyenv virtualenv `pyenv latest --print 3` neovim3
+pyenv virtualenv `pyenv latest --print 2` neovim2
 
+echo ${bold}
 echo ================================
 echo installing base python3 packages
 echo ================================
+echo ${normal}
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 pyenv activate neovim3
 python3 -m pip install --upgrade pip
 python3 -m pip install -r neovim-requirements.txt
 pyenv deactivate
+pyenv activate neovim2
+python -m pip install --upgrade pip
+python -m pip install -r neovim-requirements.txt
+pyenv deactivate
 
+echo ${bold}
 echo =================
 echo ensure latest npm
 echo =================
+echo ${normal}
 sudo npm install -g npm@latest
 sudo npm install -g neovim
 
+echo ${bold}
 echo ====================
 echo installing oh-my-zsh
 echo ====================
+echo ${normal}
 if [ ! -d ~/.oh-my-zsh ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 else
   echo oz-my-zsh already installed
 fi
 
+echo ${bold}
 echo zsh-autocompletion
+echo ${normal}
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
 
+echo ${bold}
 echo zsh-syntax-highlighting
+echo ${normal}
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
+echo ${bold}
 echo =====================
 echo installing nerd-fonts
 echo =====================
+echo ${normal}
 if [ ! -d ~/src/nerd-fonts ]; then
   git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1 ~/src/nerd-fonts/
   echo running nerd-fonts installer
@@ -90,29 +128,35 @@ else
   echo nerd-fonts already exists
 fi
 
+echo ${bold}
 echo =======================================================
 echo installing latest hyper terminal from https://hyper.is/
 echo =======================================================
+echo ${normal}
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' hyper | grep "install ok installed" )
 if [ "" == "$PKG_OK" ]; then
   wget https://releases.hyper.is/download/deb -O hyper.deb
   sudo apt -y install ./hyper.deb
   rm hyper.deb
 else
-  echo already installed
+  echo ${bold}already installed${normal}
 fi
 
+echo ${bold}
 echo ================================================
 echo installing gitrocket into hyper terminal plugins
 echo ================================================
+echo ${normal}
 if [ ! -d ~/.config/hyper/.hyper_plugins/node_modules/gitrocket ]; then
   mkdir -p ~/.config/hyper/.hyper_plugins/node_modules
   npm install --prefix ~/.config/hyper/.hyper_plugins gitrocket
 fi
 
+echo ${bold}
 echo =================
 echo installing vscode
 echo =================
+echo ${normal}
 if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
   sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
@@ -126,8 +170,23 @@ if [ "" == "$PKG_OK" ]; then
   sudo apt -y install code
 fi
 
+echo ${bold}
+echo ========================
+echo updating Dot Files
+echo ========================
+echo ${normal}
 ./settings.py --no-dryrun
 
+echo ${bold}
+echo ===================================
+echo ensure nvim vim-plug is up to date
+echo ===================================
+echo ${normal}
+nvim --headless +PlugUpgrade +qa
+nvim --headless +PlugInstall +qa
+
+echo ${bold}
 echo ========================
 echo DONE
 echo ========================
+echo ${normal}
