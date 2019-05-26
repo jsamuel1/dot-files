@@ -18,7 +18,8 @@ run settings.py
 
 ### Windows Subsystem for Linux
 - ensure upgraded to Disco or newer
-Outsite WSL:
+
+- Outsite WSL:
 * install scoop
 * scoop bucket add anurse https://github.com/anurse/scoop-bucket
 * scoop install win32yank     # clipboard support for neovim
