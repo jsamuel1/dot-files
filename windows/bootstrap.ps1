@@ -34,3 +34,7 @@ scoop install unzip
 scoop install vscode
 scoop install win32yank
 scoop install zip
+
+sudo Enable-WindowsOptionalFeature -Online -FeatureName containers -All -NoRestart
+sudo Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
+
