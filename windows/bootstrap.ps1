@@ -25,6 +25,7 @@ scoop install chrome
 scoop install go
 scoop install grep
 scoop install less
+scoop install pwsh
 scoop install sublime-text
 scoop install sudo
 scoop install sysinternals
