@@ -7,7 +7,7 @@ cinst git.install -y
 
 cinst cmder -y
 
-git clone https://github.com/powerline/fonts.git 
+git clone https://github.com/powerline/fonts.git
 # . fonts\install.ps1
 
 Install-PackageProvider NuGet -MinimumVersion '2.8.5.201' -Force
@@ -16,4 +16,19 @@ Install-Module -Name 'posh-git'
 Install-Module -Name 'oh-my-posh'
 Install-Module -Name 'Get-ChildItemColor'
 
-
+scoop bucket add anurse https://github.com/anurse/scoop-bucket
+scoop bucket add extras
+scoop install 7zip
+scoop install aria2
+scoop install beyondcompare
+scoop install chrome
+scoop install go
+scoop install grep
+scoop install less
+scoop install sublime-text
+scoop install sudo
+scoop install sysinternals
+scoop install unzip
+scoop install vscode
+scoop install win32yank
+scoop install zip
