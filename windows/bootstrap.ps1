@@ -22,6 +22,7 @@ scoop install 7zip
 scoop install aria2
 scoop install beyondcompare
 scoop install chrome
+scoop install docker-nightly docker-compose minikube kubectl
 scoop install go
 scoop install grep
 scoop install less
