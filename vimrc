@@ -1,12 +1,18 @@
 " Python -------------------------------
-let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
-let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
+if filereadable(expand('$HOME/scoop/shims/python.exe'))
+	let g:python3_host_prog = expand('$HOME/scoop/shims/python.exe')
+else
+	let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
+	let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
+endif
+
 " ============================================================================
 " Vim-plug initialization
 
 let vim_plug_just_installed = 0
 let vim_plug_path = expand('~/.config/nvim/autoload/plug.vim')
-if !filereadable(vim_plug_path)
+let vim_windows_plug_path = expand('~/AppData/Local/nvim/autoload/plug.vim')
+if !filereadable(vim_plug_path) && !filereadable(vim_windows_plug_path)
         echo "Installing Vim-plug..."
         echo ""
         silent !mkdir -p ~/.config/nvim/autoload
@@ -27,9 +33,6 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-sensible'
-
-" Vim HardTime
-"Plug 'takac/vim-hardtime'
 
 " Autocomplete
 if has('nvim')
@@ -117,9 +120,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make' }
 
-" Tmux completer
-"Plug 'wellle/tmux-complete.vim'
-
 " Async completer
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -205,8 +205,6 @@ highlight TabLineSel    ctermfg=202
 "             \ '*' : 1, 'help' : 0, 'markdown' : 0,
 "             \ }
 
-" Enable hard modeline
-let g:hardtime_default_on = 1
 
 " ============================================================================
 " Shorctuts & key bindings
@@ -284,18 +282,6 @@ nnoremap <esc> :noh<return><esc>
 
 " swap semi-colon for cmd mode
 nmap ; :
-
-" ============================================================================
-" Tmux
-
-" tmux and vim combination
-if &term =~ '^screen'
-        " tmux will send xterm-style keys when its xterm-keys option is on
-        execute "set <xUp>=\e[1;*A"
-        execute "set <xDown>=\e[1;*B"
-        execute "set <xRight>=\e[1;*C"
-        execute "set <xLeft>=\e[1;*D"
-endif
 
 " autocomplete
 if exists('$TMUX')
