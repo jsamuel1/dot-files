@@ -57,6 +57,7 @@ scoop install coreutils
 scoop install curl
 scoop install docker-nightly docker-compose minikube kubectl
 scoop install findutils
+scoop install hyper
 scoop install git
 scoop install gitversion
 scoop install go
@@ -96,4 +97,8 @@ if (-not (Test-Path "~\AppData\Local\nvim\init.vim")) {
 
 # finally, ensure Windows Subsystem for linux installed
 sudo cinst wsl-ubuntu-1804 -y
+
+mkdir "~\AppData\RoamingHyper\.hyper_plugins"
+Set-Location "~\AppData\Roaming\Hyper\.hyper_plugins\"
+npm install gitrocket
 
