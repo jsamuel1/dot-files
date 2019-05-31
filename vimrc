@@ -81,6 +81,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'Shougo/neosnippet-snippets'
 
+" Markdown syntax - required godlygeek/tabular
+Plug 'plasticboy/vim-markdown'
+
 " Git plugins
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -385,6 +388,9 @@ let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const
 
 " ============================================================================
 " Syntax highlighting and linting
+
+" vim-markdown ---------------------------
+let g:vim_markdown_folding_disabled = 1
 
 " Syntastic ------------------------------
 let g:syntastic_always_populate_loc_list = 1
