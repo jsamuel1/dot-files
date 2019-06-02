@@ -1,7 +1,8 @@
+Set-ExecutionPolicy Bypass -Scope CurrentUser
 Import-Module Get-ChildItemColor
 Set-Alias l Get-ChildItemColor -Option AllScope
 Set-Alias ls Get-ChildItemColorFormatWide -Option AllScope
-Set-Alias vim nvim
+Set-Alias vim nvim -Option AllScope
 
 function cuserprofile { Set-Location ~ }
 Set-Alias ~ cuserprofile -Option AllScope
@@ -12,9 +13,9 @@ Import-Module -Name oh-my-posh
 Set-Theme agnoster
 
 # Chocolatey profile
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
-}
+#$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+#if (Test-Path($ChocolateyProfile)) {
+#  Import-Module "$ChocolateyProfile"
+#}
 
 $DefaultUser='JSamuel'
