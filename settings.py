@@ -19,32 +19,25 @@ def install():
 
     if args.sync:
         gitsync()
-    files = [f for f in Path('.').glob('*')
+    files = [f for f in Path('./dots').glob('*')  # Only one level for ~/.blah
              if str(f) not in [
                 '.gitignore',
                 'Makefile',
                 'README.md',
-                'aptrequirements.txt',
-                'fix-cros-ui-config-pkg.sh',
-                'install.py',
-                'microsoft.gpg',
-                'neovim-requirements.txt',
-                'requirements.txt',
-                'settings.py'
              ]
              and os.path.isfile(f)]
     configfiles = [f for f in Path('.').glob('config/**/*') if os.path.isfile(f)]
     localfiles = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]
-    linkfiles(files, args.dryrun)
-    linkfiles(configfiles, args.dryrun)
-    linkfiles(localfiles, args.dryrun)
+    linkfiles(files, args.dryrun, "dots")
+    linkfiles(configfiles, args.dryrun, ".")
+    linkfiles(localfiles, args.dryrun, ".")
 
 
-def linkfiles(files, dryrun):
+def linkfiles(files, dryrun, relativepath):
     homedir = Path.home()
     thisdir = Path.cwd()
     for file_name in files:
-        dotf = os.path.join(homedir, '.'+str(file_name))
+        dotf = os.path.join(homedir, '.'+str(file_name.relative_to(relativepath)))
         status = getsymlinkstatus(file_name, dotf)
         targ = os.path.join(thisdir, file_name)
         print(targ + '->'+ dotf + ' :' + status)
