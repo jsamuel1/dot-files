@@ -3,12 +3,24 @@
 bold=$(tput bold)
 normal=$(tput sgr0)
 
-#for Chromebook Only
-if [ -v SOMMELIER_VERSION ]; then
+if [ "`hostnamectl | grep Debian`" != "" ]; then
+echo ${bold}
+echo ============================
+echo upgrade debian to buster
+echo ============================
+echo ${normal}
+  sudo sed -i s/stretch/buster/g /etc/apt/sources.list
+  sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
+  sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros-gpu.list
+  sudo apt update
+  sudo apt upgrade -y
+  sudo apt full-upgrade -y
+  sudo apt auto-remove -y
+elif [ -v SOMMELIER_VERSION ]; then
   echo ${bold}
-  echo ============================
-  echo chromebook preconfig
-  echo ============================
+  echo ===============================
+  echo chromebook preconfig for ubuntu
+  echo ===============================
   echo ${normal}
   ./fix-cros-ui-config-pkg.sh
 fi
