@@ -103,6 +103,14 @@ sudo npm install -g npm@latest
 sudo npm install -g neovim
 
 echo ${bold}
+echo ================================
+echo ensure neovim ruby gem installed
+echo ================================
+echo ${normal}
+sudo gem install neovim
+sudo gem environment
+
+echo ${bold}
 echo ====================
 echo installing oh-my-zsh
 echo ====================

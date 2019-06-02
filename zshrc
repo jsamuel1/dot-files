@@ -124,6 +124,7 @@ function sudo() {
 
 export GREP_COLORS="mt=01;31"
 export AWS_REGIONS="ap-southeast-2 us-west-2"
+export AWS_DEFAULT_REGION="ap-southeast-2"
 export PYENV_ROOT="${HOME}/.pyenv"
 export GOROOT="${HOME}/go"
 export GOPATH="${HOME}/goprojects"
