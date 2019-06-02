@@ -204,6 +204,7 @@ echo ===================================
 echo ${normal}
 nvim --headless +PlugUpgrade +qa
 nvim --headless +PlugInstall +qa
+nvim --headless +UpdateRemotePlugins +qa
 
 echo ${bold}
 echo ========================
