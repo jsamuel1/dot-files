@@ -1,0 +1,12 @@
+atom
+code
+docker
+docker-completion
+docker-compose
+docker-compose-completion
+github-desktop
+google-chrome
+hyper
+iterm2
+slack
+spotify
