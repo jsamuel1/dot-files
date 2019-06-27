@@ -218,6 +218,20 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   if [ "" == "$PKG_OK" ]; then
     sudo apt -y install code
   fi
+
+  echo ${bold}
+  echo =================
+  echo installing vscode
+  echo =================
+  echo ${normal}
+  if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
+    wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+    sudo apt install ./packages-microsoft-prod.deb -y
+    sudo apt update
+  fi
+  if [ ! -x /usr/bin/pwsh ]; then
+    sudo apt install -y powershell
+  fi
 fi
 
 echo ${bold}

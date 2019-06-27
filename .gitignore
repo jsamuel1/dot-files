@@ -1,6 +1,6 @@
 *.swp
 cros-ui-config*
 data.tar
-hyper.deb
 fonts
 microsoft.gpg
+*.deb

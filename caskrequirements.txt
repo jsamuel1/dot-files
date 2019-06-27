@@ -10,3 +10,4 @@ hyper
 iterm2
 slack
 spotify
+powershell

@@ -306,8 +306,8 @@ set t_Co=256
 " Color scheme
 colorscheme onedark
 
-" Highlight and underline on 80 characters
-autocmd BufWinEnter * match SpellBad /\%>79v.*\%<81v/
+" Highlight and underline on 99 characters
+autocmd BufWinEnter * match SpellBad /\%>98v.*\%<101v/
 
 " ============================================================================
 " Interface
@@ -427,7 +427,9 @@ let g:ansible_extra_keywords_highlight = 1
 " File extension --------------------
 " Language-specific formatting
 autocmd FileType go   setlocal autoindent noexpandtab tabstop=4 shiftwidth=4
-autocmd FileType py   setlocal autoindent expandtab   tabstop=4 shiftwidth=4
+" IRESS uses 99characters, vs 79 in PEP8
+autocmd FileType py   setlocal autoindent expandtab   tabstop=4 shiftwidth=4 textwidth=99
+autocmd FileType pl   setlocal autoindent expandtab   tabstop=4 shiftwidth=4
 autocmd FileType rb   setlocal autoindent expandtab   tabstop=2 shiftwidth=2
 autocmd FileType sh   setlocal autoindent expandtab   tabstop=2 shiftwidth=2
 autocmd FileType zsh  setlocal autoindent expandtab   tabstop=2 shiftwidth=2
