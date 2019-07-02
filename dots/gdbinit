@@ -1,0 +1,2 @@
+dir /usr/src/glibc/glibc-2.29/
+set substitute-path /build/glibc-KRRWSm/glibc-2.29 /usr/src/glibc/glibc-2.29
