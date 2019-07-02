@@ -14,7 +14,8 @@ run settings.py
 - pyenv
 
 ## Not yet done
-### okta aws cli pluggin
+unpack GLIBC source code to /usr/src/glibc/glibc-2.xx/, ensure gdbinit is correct for version of glibc
+
 
 ### Windows Subsystem for Linux
 - ensure upgraded to Disco or newer
