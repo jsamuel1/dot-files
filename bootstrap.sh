@@ -10,10 +10,12 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
   echo ============================
   echo ${normal}
   sudo xcode-select --install
+  sudo xcodebuild -license accept
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew doctor
-  xargs -a <(awk '! /^ *(#|$)/' "brewrequirements.txt") -r -- brew install
-  xargs -a <(awk '! /^ *(#|$)/' "caskrequirements.txt") -r -- brew cask install
+  # note xargs -a filename not supported on vanilla macos.  Pipe input only for first install
+  awk '! /^ *(#|$)/' "brewrequirements.txt" | xargs brew install
+  awk '! /^ *(#|$)/' "caskrequirements.txt" | xargs brew cask install
 elif [ "`hostnamectl | grep Debian`" != "" ]; then
   echo ${bold}
   echo ============================
