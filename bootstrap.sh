@@ -96,11 +96,9 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   export CPPFLAGS="${CPPFLAGS} -I/usrlocal/opt/sqllite/include"
   export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/sqllite/lib/pkgconfig"
 fi
-pyenv latest install 2 -s
 pyenv latest install 3 -s
 pyenv latest global
 pyenv virtualenv `pyenv latest --print 3` neovim3
-pyenv virtualenv `pyenv latest --print 2` neovim2
 
 echo ${bold}
 echo ================================
@@ -115,10 +113,6 @@ fi
 pyenv activate neovim3
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r neovim-requirements.txt
-pyenv deactivate
-pyenv activate neovim2
-python -m pip install --upgrade pip
-python -m pip install --upgrade -r neovim-requirements.txt
 pyenv deactivate
 
 echo ${bold}
@@ -220,6 +214,9 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   if [ "" == "$PKG_OK" ]; then
     sudo apt -y install code
   fi
+  ## get list of extensions with code --list-extensions
+  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs code --force --install-extension
+
 
   echo ${bold}
   echo =================

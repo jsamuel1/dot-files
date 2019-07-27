@@ -1,10 +1,12 @@
 " Python -------------------------------
 if filereadable(expand('$HOME/scoop/shims/python.exe'))
-	let g:python3_host_prog = expand('$HOME/scoop/shims/python.exe')
+        let g:python3_host_prog = expand('$HOME/scoop/shims/python.exe')
 else
-	let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
-	let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
+        let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
 endif
+
+" Disable Python2
+let g:loaded_python_provider=1
 
 " ============================================================================
 " Vim-plug initialization
@@ -55,6 +57,12 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 Plug 'Shougo/neco-vim'
 Plug 'Shougo/neosnippet.vim'
 
+" TabNine Deoplete
+if has("win32")
+        Plug 'tbodt/deoplete-tabnine', { 'do': 'powershell.exe .\install.ps1' }
+else
+        Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+endif
 " Code commenter
 Plug 'scrooloose/nerdcommenter'
 
@@ -398,7 +406,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_sh_shellcheck_args = "-x"
-let g:syntastic_python_flake8_exec = 'python'
+let g:syntastic_python_flake8_exec = 'python3'
 let g:syntastic_python_flake8_args = ['-m', 'flake8']
 let g:syntastic_filetype_map = {"Dockerfile": "dockerfile"}
 let g:syntastic_go_checkers = ['govet', 'errcheck', 'go']
