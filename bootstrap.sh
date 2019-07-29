@@ -122,6 +122,7 @@ echo =================
 echo ${normal}
 sudo npm install -g npm@latest
 sudo npm install -g neovim
+sudo npm install -g git-run
 
 echo ${bold}
 echo ================================

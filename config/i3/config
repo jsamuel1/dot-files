@@ -179,3 +179,29 @@ client.unfocused	#333333	#222222	#888888	#222222	#333333
 client.urgent		#222222	#900000	#FFFFFF	#900000	#222222
 client.placeholder	#000000	#0C0C0C	#FFFFFF	#0C0C0C	#000000
 client.background	#000000
+
+# Multiuse Function Keys
+#
+# Brightness
+bindsym XF86MonBrightnessUp exec xbacklight + 10
+bindsym XF86MonBrightnessDown exec xbacklight - 10
+# Pulse Audio controls
+#increase sound volume
+bindsym XF86AudioRaiseVolume exec --no-startup-id /bin/bash volume.sh up
+#decrease sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id /bin/bash volume.sh down
+# mute sound
+bindsym XF86AudioMute exec --no-startup-id /bin/bash volume.sh mute
+# Next Song
+bindsym XF86AudioNext exec --no-startup-id cmus-remote --next && pkill --signal SIGRTMIN+13 i3blocks
+# Prev Song
+bindsym XF86AudioPrev exec --no-startup-id cmus-remote --prev && pkill --signal SIGRTMIN+13 i3blocks
+# Play Pause
+bindsym XF86AudioPlay exec --no-startup-id cmus-remote --pause && pkill --signal SIGRTMIN+13 i3blocks
+# Screenshot
+bindsym Print exec teiler
+
+exec_always --no-startup-id nitrogen --set-auto --random --head=0
+exec_always --no-startup-id nitrogen --set-auto --random --head=1
+exec_always --no_startup-id nitrogen --set-auto --random --head=2
+
