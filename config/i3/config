@@ -201,6 +201,8 @@ bindsym XF86AudioPlay exec --no-startup-id cmus-remote --pause && pkill --signal
 # Screenshot
 bindsym Print exec teiler
 
+exec dex -ae i3
+
 exec_always --no-startup-id nitrogen --set-auto --random --head=0
 exec_always --no-startup-id nitrogen --set-auto --random --head=1
 exec_always --no_startup-id nitrogen --set-auto --random --head=2

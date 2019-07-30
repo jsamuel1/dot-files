@@ -216,7 +216,7 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
     sudo apt -y install code
   fi
   ## get list of extensions with code --list-extensions
-  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs code --force --install-extension
+  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code --force --install-extension
 
 
   echo ${bold}

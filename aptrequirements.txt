@@ -8,6 +8,7 @@ bundler
 caca-utils
 curl
 default-jdk
+dex
 fonts-firacode
 fonts-powerline
 fortune
