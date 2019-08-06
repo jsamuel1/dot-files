@@ -213,11 +213,11 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   fi
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' code | grep "install ok installed" )
   if [ "" == "$PKG_OK" ]; then
-    sudo apt -y install code
+    sudo apt -y install code code-insiders
   fi
   ## get list of extensions with code --list-extensions
   awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code --force --install-extension
-
+  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code-insiders --force --install-extension
 
   echo ${bold}
   echo =================
