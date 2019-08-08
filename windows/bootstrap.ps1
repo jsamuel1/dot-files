@@ -81,6 +81,7 @@ scoop install grep
 scoop install grep
 scoop install hub
 scoop install less
+scoop install make
 scoop install neovim
 scoop install nodejs
 scoop install pwsh
