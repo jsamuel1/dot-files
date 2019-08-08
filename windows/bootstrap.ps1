@@ -74,6 +74,7 @@ scoop install curl
 scoop install docker-nightly docker-compose minikube kubectl
 scoop install findutils
 scoop install hyper
+scoop install gawk
 scoop install git
 scoop install gitversion
 scoop install go
