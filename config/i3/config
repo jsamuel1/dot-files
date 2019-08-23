@@ -203,4 +203,5 @@ bindsym Print exec teiler
 
 exec dex -ae i3
 exec --no-startup-id bgchange.sh
+exec --no-startup-id pasystray
 
