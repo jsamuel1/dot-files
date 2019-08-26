@@ -1,12 +1,9 @@
 # to be sourced from zshrc or bashrc
-# always use current pipenv's python for pip
-alias pip='python -m pip'
-alias ls='ls -FG'
-# exclude some common annoyances when greping
 alias grep='grep --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
-# nvim nvim nvim.  for when the system override is wrong :)
-alias vim='nvim'
+alias ls='ls -FG'
+alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
+alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
 
 function sudo() {
 	if [[ ${1} == "vim" ]]; then

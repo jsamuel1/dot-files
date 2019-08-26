@@ -22,6 +22,7 @@ felipecaputo.git-project-manager
 gerane.Theme-dimmed-monokai
 hbenl.vscode-test-explorer
 hbrok.markdown-preview-bitbucket
+jakeboone02.cypher-query-language
 letmaik.git-tree-compare
 lextudio.restructuredtext
 llvm-vs-code-extensions.vscode-clangd

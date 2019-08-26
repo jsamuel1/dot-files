@@ -1,4 +1,6 @@
-# If you come from bash you might have to change your $PATH.
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # Path to your oh-my-zsh installation.

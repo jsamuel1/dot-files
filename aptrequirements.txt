@@ -1,3 +1,4 @@
+alacritty
 appmenu-gtk-module-common
 appmenu-gtk2-module
 appmenu-gtk3-module
@@ -20,6 +21,7 @@ golang
 gpg
 i3
 i3pystatus
+icdiff
 imagemagick
 libbz2-dev
 libdbus-1-dev

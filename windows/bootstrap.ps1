@@ -66,6 +66,7 @@ else
 scoop bucket add anurse https://github.com/anurse/scoop-bucket
 scoop bucket add extras
 scoop install 7zip
+scoop install alacritty
 scoop install aria2
 scoop install beyondcompare
 scoop install chrome
