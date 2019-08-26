@@ -1,23 +1,54 @@
 [user]
-	email = josh.samuel@iress.com
-	name = Josh Samuel
-
-[core]
-	editor = vim
-	visual = vim
-	autocrlf = input
-	filemode = false
-[diff]
-	tool = bc3
-[difftool "bc3"]
-	trustExistCode = true
-[merge]
-	tool = bc3
-[mergetool "bc3"]
-	trustExistCode = true
+        email = josh.samuel@iress.com
+        name = Josh Samuel
 [color]
-	ui = true
+        ui = true
+[color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+[color "diff"]
+        meta = yellow bold
+        frag = magenta bold
+        old = red
+        new = green
+[core]
+        editor = vim
+        visual = vim
+        autocrlf = input
+        filemode = false
+[diff]
+        tool = icdiff
+[difftool "icdiff"]
+        cmd = icdiff --line-numbers $LOCAL $REMOTE
+[merge]
+        tool = vimdiff
+[mergetool "vimdiff"]
+        cmd="vim -c 'Gdiff' $MERGED"    # uses fugutive.vim for 3-way merge
+        keepbackup=false
+[color]
+        ui = true
 [protocol]
-	version = 2
+        version = 2
 [github]
-	user = jsamuel1
+        user = jsamuel1
+[alias]
+        recent-branches = !git for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%refname:short)'
+        b = branch -v    # branch verbose
+        amend = commit --amend
+        ammend = commit --amend  # who wants to spelt it corectally?
+        dc = diff --cached
+        last = diff HEAD^
+        # pull request
+        pr = ! sh -c '(git push origin (git symbolic-ref --short -q HEAD) && hub pull-request)'r = ! sh -c '(git push origin (git symbolic-ref --short -q HEAD) && hub pull-request)'
+        unstage = reset HEAD # remove files from index
+        uncommit = reset --soft HEAD^ # go back before last commit, with files in uncommitted state
+[apply]
+        whitespace = nowarn
+[branch]
+        autosetupmerge = true
+[push]
+        default = upstream
+[rerere]
+        # remember my merges
+        enabled = true
