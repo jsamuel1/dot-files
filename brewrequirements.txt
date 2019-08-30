@@ -14,8 +14,11 @@ openssl
 pyenv
 python3
 readline
+skhd
 sqlite
 wget
 xz
+# yabai tiling window manager https://github.com/koekeishiya/yabai
+yabai
 zlib
 zsh
