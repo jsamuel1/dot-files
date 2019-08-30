@@ -1,2 +1,4 @@
-koekeishiya/formulae
+aws/tap
 denji/nginx
+koekeishiya/formulae
+wtfutil/wtfutil

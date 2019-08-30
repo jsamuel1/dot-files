@@ -17,6 +17,7 @@ python3
 readline
 skhd
 sqlite
+wtfutil
 wget
 xz
 # yabai tiling window manager https://github.com/koekeishiya/yabai
