@@ -66,6 +66,7 @@ else
 scoop bucket add anurse https://github.com/anurse/scoop-bucket
 scoop bucket add extras
 scoop install 7zip
+scoop install alacritty
 scoop install aria2
 scoop install beyondcompare
 scoop install chrome
@@ -74,6 +75,7 @@ scoop install curl
 scoop install docker-nightly docker-compose minikube kubectl
 scoop install findutils
 scoop install hyper
+scoop install gawk
 scoop install git
 scoop install gitversion
 scoop install go
@@ -81,6 +83,7 @@ scoop install grep
 scoop install grep
 scoop install hub
 scoop install less
+scoop install make
 scoop install neovim
 scoop install nodejs
 scoop install pwsh

@@ -13,6 +13,7 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
   sudo xcodebuild -license accept
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew doctor
+  brew tap aws/tap
   # note xargs -a filename not supported on vanilla macos.  Pipe input only for first install
   awk '! /^ *(#|$)/' "brewtaps.txt" | xargs -L 1 brew tap
   awk '! /^ *(#|$)/' "brewrequirements.txt" | xargs brew install
@@ -49,6 +50,12 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo installing base apt packages
   echo ============================
   echo ${normal}
+  # note - no eoan support in alacritty repo, manually adding disco in /etc/sources.list.d/... until updated
+  if [ ! -f /etc/apt/sources.list.d/alacritty.list  ]; then
+    sudo sh -c 'echo "deb http://ppa.launchpad.net/mmstick76/alacritty/ubuntu disco main" > /etc/apt/sources.list.d/alacritty.list'
+    sudo apt update
+  fi
+
   xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
 
   echo ${bold}
@@ -217,11 +224,11 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   fi
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' code | grep "install ok installed" )
   if [ "" == "$PKG_OK" ]; then
-    sudo apt -y install code
+    sudo apt -y install code code-insiders
   fi
   ## get list of extensions with code --list-extensions
   awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code --force --install-extension
-
+  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code-insiders --force --install-extension
 
   echo ${bold}
   echo =================

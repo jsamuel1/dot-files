@@ -1,4 +1,6 @@
-# If you come from bash you might have to change your $PATH.
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -107,19 +109,9 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
 
-export OKTA_USERNAME=jsamuel
-alias pip='python -m pip'
-alias ls='ls -FG'
-alias grep='grep --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
-alias vim='nvim'
+export OKTA_USERNAME=josh.samuel
 
-function sudo() {
-	if [[ ${1} == "vim" ]]; then
-		shift; command sudo -E vim "${@}"
-	else
-		command sudo "${@}"
-	fi
-}
+source $HOME/.aliases
 
 
 
