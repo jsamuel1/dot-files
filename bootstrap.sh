@@ -1,4 +1,4 @@
-#!/bin/bash
+#s!/bin/bash
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -243,6 +243,23 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
     sudo apt install -y powershell
   fi
 fi
+echo ${bold}
+echo ========================
+echo update submodules
+echo ========================
+echo ${normal}
+git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
+
+echo ${bold}
+echo ========================
+echo submodule - slack-dark-mode
+echo ========================
+echo ${normal}
+cd slack-dark-mode
+. slack-dark-mode.sh
+cd ..
+
+
 
 echo ${bold}
 echo ========================
