@@ -1,4 +1,4 @@
-#s!/bin/bash
+#!/bin/bash
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -248,6 +248,7 @@ echo ========================
 echo update submodules
 echo ========================
 echo ${normal}
+git submodule update --init
 git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
 
 echo ${bold}
