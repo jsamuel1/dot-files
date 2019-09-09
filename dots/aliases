@@ -4,6 +4,7 @@ alias ls='ls -FG'
 alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
+alias vi='nvim' # some things just like vi
 
 function sudo() {
 	if [[ ${1} == "vim" ]]; then

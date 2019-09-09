@@ -13,8 +13,8 @@
         old = red
         new = green
 [core]
-        editor = vim
-        visual = vim
+        editor = nvim
+        visual = nvim
         autocrlf = input
         filemode = false
 [diff]
@@ -24,7 +24,7 @@
 [merge]
         tool = vimdiff
 [mergetool "vimdiff"]
-        cmd="vim -c 'Gdiff' $MERGED"    # uses fugutive.vim for 3-way merge
+        cmd="nvim -c 'Gdiff' $MERGED"    # uses fugutive.vim for 3-way merge
         keepbackup=false
 [color]
         ui = true
