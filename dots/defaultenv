@@ -2,7 +2,7 @@
 export AWS_DEFAULT_REGION="ap-southeast-2"
 export AWS_REGIONS="ap-southeast-2 us-west-2"
 export DEFAULT_USER="jsamuel"
-export FZF_DEFAULT_COMMAND="fd --tpe file --hidden --follow --exclude .git --color=always"
+export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git --color=always"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--ansi"
 export GOPATH="${HOME}/goprojects"
