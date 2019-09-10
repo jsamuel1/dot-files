@@ -3,6 +3,7 @@ cask
 coreutils
 docker
 docker-compose
+fd
 findutils
 fortune
 git

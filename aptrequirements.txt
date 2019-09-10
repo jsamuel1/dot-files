@@ -10,6 +10,7 @@ caca-utils
 curl
 default-jdk
 dex
+fd-find
 fonts-firacode
 fonts-powerline
 fortune
