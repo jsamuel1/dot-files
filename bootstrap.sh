@@ -126,13 +126,11 @@ python3 -m pip install --upgrade -r neovim-requirements.txt
 pyenv deactivate
 
 echo ${bold}
-echo =================
-echo ensure latest npm
-echo =================
+echo ================================
+echo ensure latest npm and modules
+echo ================================
 echo ${normal}
-sudo npm install -g npm@latest
-sudo npm install -g neovim
-sudo npm install -g git-run
+awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
 
 echo ${bold}
 echo ================================
