@@ -118,8 +118,8 @@ Plug 'Raimondi/delimitMate'
 " Docker
 Plug 'ekalinin/Dockerfile.vim'
 
-" Theme
-Plug 'joshdick/onedark.vim'
+" Themes
+Plug 'chriskempson/base16-vim'
 Plug 'ryanoasis/vim-devicons'
 
 " Airline
@@ -312,7 +312,7 @@ set background=dark
 set t_Co=256
 
 " Color scheme
-colorscheme onedark
+colorscheme base16-default-dark
 
 " Highlight and underline on 99 characters
 autocmd BufWinEnter * match SpellBad /\%>98v.*\%<101v/

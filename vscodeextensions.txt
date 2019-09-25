@@ -8,6 +8,7 @@ Tyriar.sort-lines
 VisualStudioExptTeam.vscodeintellicode
 ajshort.include-autocomplete
 alefragnani.project-manager
+andrsdc.base16-themes
 aws-scripting-guy.cform
 cheshirekow.cmake-format
 codezombiech.gitignore
