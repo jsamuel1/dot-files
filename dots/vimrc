@@ -96,9 +96,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-" Go syntax
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
-
 " Grammar checker
 Plug 'rhysd/vim-grammarous'
 
@@ -423,7 +420,7 @@ let g:AWSSnips = "Alarm Authentication Base64 CreationPolicy FindInMap GetAtt In
 
 " Terraform -------------------------
 let g:terraform_align=1
-let g:terraform_fold_sections=1
+let g:terraform_fold_sections=0
 let g:terraform_remap_spacebar=1
 autocmd FileType terraform setlocal commentstring=//%s
 
