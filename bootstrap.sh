@@ -251,17 +251,6 @@ git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; gi
 
 echo ${bold}
 echo ========================
-echo submodule - slack-dark-mode
-echo ========================
-echo ${normal}
-cd slack-dark-mode
-. slack-dark-mode.sh
-cd ..
-
-
-
-echo ${bold}
-echo ========================
 echo updating Dot Files
 echo ========================
 echo ${normal}
