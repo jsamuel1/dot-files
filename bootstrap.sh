@@ -13,10 +13,7 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
   sudo xcodebuild -license accept
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew doctor
-  # note xargs -a filename not supported on vanilla macos.  Pipe input only for first install
-  awk '! /^ *(#|$)/' "brewtaps.txt" | xargs -L 1 brew tap
-  awk '! /^ *(#|$)/' "brewrequirements.txt" | xargs brew install
-  awk '! /^ *(#|$)/' "caskrequirements.txt" | xargs brew cask install
+  brew bundle
 
   curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
