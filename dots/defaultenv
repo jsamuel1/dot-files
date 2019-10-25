@@ -9,5 +9,5 @@ export GOPATH="${HOME}/goprojects"
 export GOROOT="${HOME}/go"
 export GREP_COLORS="mt=01;31"
 export OKTA_USERNAME=josh.samuel
-export PATH="${PATH}:${GOPATH}:{PYENV_ROOT}/bin"
+export PATH="${PATH}:${GOPATH}:${PYENV_ROOT}/bin"
 export PYENV_ROOT="${HOME}/.pyenv"

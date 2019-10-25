@@ -6,16 +6,36 @@ export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH=/$HOME/.oh-my-zsh
 
+# add to front of path
+prepend_path()
+{
+  if ! [ -d "$1" ]; then return; fi
+
+  case ":$PATH:" in
+      *":$1:"*) :;;
+      *) PATH=$1:$PATH ;;
+    esac
+}
+# add to front of path
+prepend_manpath()
+{
+  if ! [ -d "$1" ]; then return; fi
+
+  case ":$MANPATH:" in
+      *":$1:"*) :;;
+      *) MANPATH=$1:$MANPATH ;;
+    esac
+}
+
 #OktaAWSCLI
 if [[ -f "$HOME/.okta/bash_functions" ]]; then
 	. "$HOME/.okta/bash_functions"
 fi
-if [[ -d "$HOME/.okta/bin" && ":$PATH:" != *":$HOME/.okta/bin:"* ]]; then
-	PATH="$HOME/.okta/bin:$PATH"
-fi
-if [[ -d "/home/linuxbrew/.linuxbrew/bin" && ":$PATH:" != *":/home/linuxbrew/.linuxbrew/bin:" ]]; then
-	PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-fi
+
+prepend_path $HOME/.okta/bin
+prepend_path /home/linuxbrew/.linuxbrew/bin
+prepend_path /usr/local/opt/coreutils/libexec/gnubin
+prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 	# it'll load a random theme each time that oh-my-zsh is loaded.

@@ -9,10 +9,12 @@ fortune
 git
 git-lfs
 gnu-sed
+gpg
 moreutils
 neovim
 npm
 openssl
+pinentry-mac
 pyenv
 python3
 readline
