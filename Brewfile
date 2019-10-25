@@ -21,6 +21,7 @@ brew "git"
 brew "git-lfs"
 brew "gnu-sed"
 brew "gnupg"
+brew "mas"
 brew "moreutils"
 brew "neovim"
 brew "node"
@@ -39,3 +40,10 @@ cask "cmake"
 cask "docker"
 cask "github"
 cask "iterm2"
+mas "1Password 7", id: 1333542190
+mas "iMovie", id: 408981434
+mas "Numbers", id: 409203825
+mas "Okta Extension App", id: 1439967473
+mas "Slack", id: 803453959
+mas "Twitter", id: 1482454543
+mas "Xcode", id: 497799835
