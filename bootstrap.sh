@@ -162,19 +162,20 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
-echo ${bold}
-echo =====================
-echo installing nerd-fonts
-echo =====================
-echo ${normal}
-if [ ! -d ~/src/nerd-fonts ]; then
-  git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1 ~/src/nerd-fonts/
-  echo running nerd-fonts installer
-  ~/src/nerd-fonts/install.sh
-else
-  echo nerd-fonts already exists
+if ! [[ "$OSTYPE" =~ darwin* ]]; then
+  echo ${bold}
+  echo =====================
+  echo installing nerd-fonts
+  echo =====================
+  echo ${normal}
+  if [ ! -d ~/src/nerd-fonts ]; then
+    git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1 ~/src/nerd-fonts/
+    echo running nerd-fonts installer
+    ~/src/nerd-fonts/install.sh
+  else
+    echo nerd-fonts already exists
+  fi
 fi
-
 
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo ${bold}
