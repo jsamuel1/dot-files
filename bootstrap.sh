@@ -9,10 +9,24 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
   echo prepare MacOS
   echo ============================
   echo ${normal}
-  sudo xcode-select --install
-  sudo xcodebuild -license accept
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  if ! type brew > /dev/null; then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
   brew doctor
+  brew install mas
+  mas install 497799835   #xcode
+
+  if ! type xcodebuild > /dev/null; then
+    sudo xcode-select --install
+  fi
+  if ! xcodebuild -checkFirstLaunchStatus; then
+    # enable developer mode
+    sudo /usr/sbin/DevToolsSecurity -enable
+    sudo /usr/sbin/dseditgroup -o edit -t group -a staff _developer
+    # ensure first launch of xcode, otherwise commandline tools don't work
+    sudo xcodebuild -license accept
+    sudo xcodebuild -runFirstLaunch
+  fi
   brew bundle
 
   curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
@@ -221,13 +235,21 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   if [ "" == "$PKG_OK" ]; then
     sudo apt -y install code code-insiders
   fi
-  ## get list of extensions with code --list-extensions
-  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code --force --install-extension
-  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -l code-insiders --force --install-extension
+fi
 
+
+## get list of extensions with code --list-extensions
+if type code > /dev/null; then
+  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code --force --install-extension
+fi
+if type code-insiders > /dev/null; then
+  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code-insiders --force --install-extension
+fi
+
+if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo ${bold}
   echo =================
-  echo installing vscode
+  echo installing powershell
   echo =================
   echo ${normal}
   if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
