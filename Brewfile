@@ -7,6 +7,7 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "koekeishiya/formulae"
 tap "microsoft/mssql-release"
+tap "wtfutil/wtfutil"
 brew "cask"
 brew "coreutils"
 brew "docker"
@@ -23,7 +24,9 @@ brew "git-lfs"
 brew "gnu-sed"
 brew "gnupg"
 brew "graphviz"
+brew "imagemagick"
 brew "mas"
+brew "mono"
 brew "moreutils"
 brew "neovim"
 brew "node"
@@ -150,6 +153,8 @@ cask "mactex"
 cask "vagrant"
 cask "visual-studio-code"
 mas "1Password 7", id: 1333542190
+mas "Focus Dashcam Organizer", id: 1476008241
+mas "HP Smart", id: 1474276998
 mas "iMovie", id: 408981434
 mas "Magnet", id: 441258766
 mas "Numbers", id: 409203825
