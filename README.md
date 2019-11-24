@@ -26,4 +26,9 @@ unpack GLIBC source code to /usr/src/glibc/glibc-2.xx/, ensure gdbinit is correc
 * scoop install win32yank     # clipboard support for neovim
 
 
+### Mac
+- for AD auth in chrome:
+  `defaults write com.google.Chrome AuthServerWhitelist authserver.domain.local,authserver2.domain.local`
+
+
 
