@@ -55,7 +55,25 @@ ZSH_TMUX_AUTOSTART=true
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-git git-extras gitfast git-prompt github gpg-agent screen aws chucknorris command-not-found docker dircycle virtualenv magic-enter vault pyenv zsh-autosuggestions zsh-syntax-highlighting sudo
+aws
+chucknorris
+command-not-found
+dircycle
+docker
+git
+git-extras
+git-prompt
+gitfast
+github
+gpg-agent
+magic-enter
+osx
+pyenv
+screen
+vault
+virtualenv
+zsh-autosuggestions
+zsh-syntax-highlighting sudo
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -78,6 +96,6 @@ source $HOME/.defaultenv
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # authenticate to dev environment script
-[ -f ~/.authenticate-venv/lib/authenticate ] && source ~/.authenticate-venv/lib/authenticate
+[-f ~/.authenticate/authenticate ] && source ~/.authenticate/authenticate
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

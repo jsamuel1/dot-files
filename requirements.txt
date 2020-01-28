@@ -7,3 +7,4 @@ powerline-status-i3
 pygit2
 pylint
 sqlparse
+virtualenvwrapper
