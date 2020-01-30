@@ -96,6 +96,6 @@ source $HOME/.defaultenv
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # authenticate to dev environment script
-[-f ~/.authenticate/authenticate ] && source ~/.authenticate/authenticate
+[ -f ~/.authenticate/authenticate ] && source ~/.authenticate/authenticate
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
