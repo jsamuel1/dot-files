@@ -38,7 +38,9 @@ Plug 'tpope/vim-sensible'
 
 " Autocomplete
 if has('nvim')
+        Plug 'neovim/nvim-lsp'
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        Plug 'Shougo/deoplete-lsp'
 else
         Plug 'Shougo/deoplete.nvim'
         Plug 'roxma/nvim-yarp'
@@ -51,7 +53,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'zchee/deoplete-jedi'
 
 " Go autocomplete
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+" Plug 'zchee/deoplete-go', { 'do': 'make'}
 
 " Shougo deoplete prereqs
 Plug 'Shougo/neco-vim'
@@ -63,13 +65,9 @@ if has("win32")
 else
         Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 endif
+
 " Code commenter
 Plug 'scrooloose/nerdcommenter'
-
-" File browswer
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Better language packs
 Plug 'sheerun/vim-polyglot'
@@ -148,6 +146,8 @@ if vim_plug_just_installed
         :PlugInstall
 endif
 
+lua require 'nvim_lsp'.rust_analyzer.setup{}
+
 " ============================================================================
 " Bootstrap configuration
 
@@ -178,6 +178,7 @@ set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,*.gi
 
 " nuke all trailing space before a write
 au BufWritePre * :%s/\s\+$//e
+autocmd BufWrite * :Autoformat
 
 " put cursor back where it was last time when re-opening a file
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -440,6 +441,7 @@ autocmd FileType sh   setlocal autoindent expandtab   tabstop=2 shiftwidth=2
 autocmd FileType zsh  setlocal autoindent expandtab   tabstop=2 shiftwidth=2
 autocmd FileType make setlocal autoindent noexpandtab tabstop=2 shiftwidth=2
 autocmd FileType yaml setlocal autoindent expandtab   tabstop=2 shiftwidth=2
+autocmd FileType rust setlocal omnifunc=v:lua.vim.lsp.omnifunc autoindent noexpandtab tabstop=4 shiftwidth=4
 
 " File type formatting
 au BufRead,BufNewFile *.tf         setlocal filetype=terraform
