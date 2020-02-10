@@ -10,7 +10,7 @@ source $HOME/.zshrc-helpers
 
 #OktaAWSCLI
 if [[ -f "$HOME/.okta/bash_functions" ]]; then
-	. "$HOME/.okta/bash_functions"
+  . "$HOME/.okta/bash_functions"
 fi
 
 prepend_path $HOME/.okta/bin
@@ -21,8 +21,8 @@ prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
 append_path $HOME/.cargo/bin
 
 # Set name of the theme to load. Optionally, if you set this to "random"
-	# it'll load a random theme each time that oh-my-zsh is loaded.
-	# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
 
 # Set list of themes to load
@@ -38,6 +38,7 @@ HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 export UPDATE_ZSH_DAYS=5
+DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to enable command auto-correction.
 #ENABLE_CORRECTION="true"
@@ -56,25 +57,25 @@ ZSH_TMUX_AUTOSTART=true
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-aws
-chucknorris
-command-not-found
-dircycle
-docker
-git
-git-extras
-git-prompt
-gitfast
-github
-gpg-agent
-magic-enter
-osx
-pyenv
-screen
-vault
-virtualenv
-zsh-autosuggestions
-zsh-syntax-highlighting sudo
+  aws
+  chucknorris
+  command-not-found
+  dircycle
+  docker
+  git
+  git-extras
+  git-prompt
+  gitfast
+  github
+  gpg-agent
+  magic-enter
+  osx
+  pyenv
+  screen
+  vault
+  virtualenv
+  zsh-autosuggestions
+  zsh-syntax-highlighting sudo
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -88,7 +89,7 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-	source /etc/profile.d/vte.sh
+  source /etc/profile.d/vte.sh
 fi
 
 
