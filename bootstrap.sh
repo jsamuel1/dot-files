@@ -31,6 +31,8 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
 
   curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
+  ./macdefaults.sh
+
 elif [ "`hostnamectl | grep Debian`" != "" ]; then
   echo ${bold}
   echo ============================
