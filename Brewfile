@@ -41,6 +41,7 @@ brew "koekeishiya/formulae/skhd"
 brew "koekeishiya/formulae/yabai", args: ["HEAD"]
 brew "microsoft/mssql-release/msodbcsql"
 brew "microsoft/mssql-release/mssql-tools"
+cask "aerial"
 cask "alacritty"
 cask "alfred"
 cask "cmake"
