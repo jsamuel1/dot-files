@@ -1,20 +1,17 @@
-First-time:
-run bootstrap.sh to setup common tools and required apt packages
-
-Subsequent runs:
-run settings.py
-
+run bootstrap.sh to setup common tools, required packages and symlink dotfiles.
 
 ###
-- Bash
 - Zsh
 - Git
-- Hyper Terminal
 - neovim
 - pyenv
+- and more
 
-## Not yet done
-unpack GLIBC source code to /usr/src/glibc/glibc-2.xx/, ensure gdbinit is correct for version of glibc
+### Mac
+- Ensure logged into AppStore before running bootstrap.sh, otherwise xcode won't install correctly.
+- Installs Brew, along with AppStore packages through Brew mas.
+- Installs customized defaults
+- Sets up yabi tiled window manager.
 
 
 ### Windows Subsystem for Linux
@@ -24,11 +21,3 @@ unpack GLIBC source code to /usr/src/glibc/glibc-2.xx/, ensure gdbinit is correc
 * install scoop
 * scoop bucket add anurse https://github.com/anurse/scoop-bucket
 * scoop install win32yank     # clipboard support for neovim
-
-
-### Mac
-- for AD auth in chrome:
-  `defaults write com.google.Chrome AuthServerWhitelist authserver.domain.local,authserver2.domain.local`
-
-
-
