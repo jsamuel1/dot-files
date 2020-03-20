@@ -16,7 +16,7 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
   echo ============================
   echo ${normal}
   if ! type brew > /dev/null; then
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
   brew doctor
   brew install mas
@@ -33,11 +33,21 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
     sudo xcodebuild -license accept
     sudo xcodebuild -runFirstLaunch
   fi
-  brew bundle
+  HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=y brew bundle -v
 
   curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
   ./macdefaults.sh
+
+  if [ ! -d "/Applications/Google Chrome" ]; then
+    temp=$TMPDIR$(uuidgen)
+    mkdir -p $temp/mount
+    curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg > $temp/1.dmg
+yes | hdiutil attach -noverify -nobrowse -mountpoint $temp/mount $temp/1.dmg
+    cp -r $temp/mount/*.app /Applications
+    hdiutil detach $temp/mount
+    rm -r $temp
+  fi
 
 elif [ "`hostnamectl | grep Debian`" != "" ]; then
   echo ${bold}
