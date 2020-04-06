@@ -6,70 +6,70 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-bold=$(tput bold)
-normal=$(tput sgr0)
+  bold=$(tput bold)
+  normal=$(tput sgr0)
 
-if [[ "$OSTYPE" =~ darwin* ]]; then
-  echo ${bold}
-  echo ============================
-  echo prepare MacOS
-  echo ============================
-  echo ${normal}
-  if ! type brew > /dev/null; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  if [[ "$OSTYPE" =~ darwin* ]]; then
+    echo ${bold}
+    echo ============================
+    echo prepare MacOS
+    echo ============================
+    echo ${normal}
+    if ! type brew > /dev/null; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    fi
+    brew doctor
+    brew install mas
+    mas install 497799835   #xcode
+
+    if ! type xcodebuild > /dev/null; then
+      sudo xcode-select --install
+    fi
+    if ! xcodebuild -checkFirstLaunchStatus; then
+      # enable developer mode
+      sudo /usr/sbin/DevToolsSecurity -enable
+      sudo /usr/sbin/dseditgroup -o edit -t group -a staff _developer
+      # ensure first launch of xcode, otherwise commandline tools don't work
+      sudo xcodebuild -license accept
+      sudo xcodebuild -runFirstLaunch
+    fi
+    HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=y brew bundle -v
+
+    curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+
+    ./macdefaults.sh
+
+    if [ ! -d "/Applications/Google Chrome" ]; then
+      temp=$TMPDIR$(uuidgen)
+      mkdir -p $temp/mount
+      curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg > $temp/1.dmg
+      yes | hdiutil attach -noverify -nobrowse -mountpoint $temp/mount $temp/1.dmg
+      cp -r $temp/mount/*.app /Applications
+      hdiutil detach $temp/mount
+      rm -r $temp
+    fi
+
+  elif [ "`hostnamectl | grep Debian`" != "" ]; then
+    echo ${bold}
+    echo ============================
+    echo upgrade debian to buster
+    echo ============================
+    echo ${normal}
+    sudo sed -i s/stretch/buster/g /etc/apt/sources.list
+    sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
+    sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros-gpu.list
+    sudo apt update
+    sudo apt upgrade -y
+    sudo apt full-upgrade -y
+    sudo apt auto-remove -y
+  elif [ -v SOMMELIER_VERSION ]; then
+    echo ${bold}
+    echo ===============================
+    echo chromebook preconfig for ubuntu
+    echo ===============================
+    echo ${normal}
+    ./fix-cros-ui-config-pkg.sh
   fi
-  brew doctor
-  brew install mas
-  mas install 497799835   #xcode
-
-  if ! type xcodebuild > /dev/null; then
-    sudo xcode-select --install
-  fi
-  if ! xcodebuild -checkFirstLaunchStatus; then
-    # enable developer mode
-    sudo /usr/sbin/DevToolsSecurity -enable
-    sudo /usr/sbin/dseditgroup -o edit -t group -a staff _developer
-    # ensure first launch of xcode, otherwise commandline tools don't work
-    sudo xcodebuild -license accept
-    sudo xcodebuild -runFirstLaunch
-  fi
-  HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=y brew bundle -v
-
-  curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
-
-  ./macdefaults.sh
-
-  if [ ! -d "/Applications/Google Chrome" ]; then
-    temp=$TMPDIR$(uuidgen)
-    mkdir -p $temp/mount
-    curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg > $temp/1.dmg
-yes | hdiutil attach -noverify -nobrowse -mountpoint $temp/mount $temp/1.dmg
-    cp -r $temp/mount/*.app /Applications
-    hdiutil detach $temp/mount
-    rm -r $temp
-  fi
-
-elif [ "`hostnamectl | grep Debian`" != "" ]; then
-  echo ${bold}
-  echo ============================
-  echo upgrade debian to buster
-  echo ============================
-  echo ${normal}
-  sudo sed -i s/stretch/buster/g /etc/apt/sources.list
-  sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
-  sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros-gpu.list
-  sudo apt update
-  sudo apt upgrade -y
-  sudo apt full-upgrade -y
-  sudo apt auto-remove -y
-elif [ -v SOMMELIER_VERSION ]; then
-  echo ${bold}
-  echo ===============================
-  echo chromebook preconfig for ubuntu
-  echo ===============================
-  echo ${normal}
-  ./fix-cros-ui-config-pkg.sh
-fi
 
 # Install base apt packages
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
@@ -137,6 +137,7 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
 fi
 pyenv latest install 3 -s
 pyenv latest global
+rehash
 pyenv virtualenv `pyenv latest --print 3` neovim3
 
 echo ${bold}
@@ -166,8 +167,18 @@ echo ================================
 echo ensure neovim ruby gem installed
 echo ================================
 echo ${normal}
-sudo gem install neovim
-sudo gem environment
+eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer)"
+# for first time.   .zshrc will take care of this later
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# install last version without a dash in its name, skipping existing
+rbenv install -s $(rbenv install -l | grep -v - | tail -1)
+rbenv global $(rbenv install -l | grep -v - | tail -1)
+rehash
+gem install bundler
+gem install neovim
+gem environment
 
 echo ${bold}
 echo ====================

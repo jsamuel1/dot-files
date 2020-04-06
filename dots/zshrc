@@ -1,3 +1,4 @@
+#!/bin/zsh
 #when profiling, uncomment this line
 #_ZSH_PROFILE=1
 if [ $_ZSH_PROFILE ]; then
@@ -79,6 +80,7 @@ plugins=(
   magic-enter
   osx
   pyenv
+  rbenv
   screen
   vault
   virtualenv
