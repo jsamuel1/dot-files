@@ -4,3 +4,4 @@ data.tar
 fonts
 microsoft.gpg
 *.deb
+Brewfile.lock.json
