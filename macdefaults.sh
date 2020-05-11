@@ -145,6 +145,8 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryCli
 # Enable “natural” (Lion-style) scrolling
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true
 
+defaults write NSGlobalDomain NSUserDictionaryReplacementItems -array '{ on = 1; replace = ":shrug:"; with = "\\U00af\\\\_(\\U30c4)_/\\U00af"; }'
+
 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
