@@ -441,6 +441,7 @@ autocmd FileType sh   setlocal autoindent expandtab   tabstop=2 shiftwidth=2
 autocmd FileType zsh  setlocal autoindent expandtab   tabstop=2 shiftwidth=2
 autocmd FileType make setlocal autoindent noexpandtab tabstop=2 shiftwidth=2
 autocmd FileType yaml setlocal autoindent expandtab   tabstop=2 shiftwidth=2
+autocmd FileType yaml let g:autoformat_autoindent=0
 autocmd FileType rust setlocal omnifunc=v:lua.vim.lsp.omnifunc autoindent noexpandtab tabstop=4 shiftwidth=4
 
 " File type formatting
