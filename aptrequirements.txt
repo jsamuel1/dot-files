@@ -2,7 +2,6 @@ alacritty
 appmenu-gtk-module-common
 appmenu-gtk2-module
 appmenu-gtk3-module
-appmenu-qt
 apt-transport-https
 build-essential
 bundler
@@ -17,7 +16,6 @@ fortune
 gdb
 gdebi
 git
-git-hub
 git-lfs
 golang
 gpg
@@ -47,6 +45,7 @@ npm
 openssh-server
 pasystray
 python3
+python3-pip
 python3-psutil
 python3-pyalsa
 ruby

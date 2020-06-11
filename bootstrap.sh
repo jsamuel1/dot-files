@@ -78,11 +78,8 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo installing base apt packages
   echo ============================
   echo ${normal}
-  # note - no eoan support in alacritty repo, manually adding disco in /etc/sources.list.d/... until updated
-  if [ ! -f /etc/apt/sources.list.d/alacritty.list  ]; then
-    sudo sh -c 'echo "deb http://ppa.launchpad.net/mmstick76/alacritty/ubuntu disco main" > /etc/apt/sources.list.d/alacritty.list'
-    sudo apt update
-  fi
+  sudo add-apt-repository ppa:mmstick76/alacritty --yes --update
+  sudo add-apt-repository ppa:git-core/ppa --yes --update
 
   xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
 
