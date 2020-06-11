@@ -93,7 +93,6 @@ scoop install sysinternals
 scoop install unzip
 scoop install vscode
 scoop install win32-openssh
-scoop install win32yank
 scoop install yarn
 scoop install zip
 
@@ -101,6 +100,9 @@ scoop install zip
 
 sudo Enable-WindowsOptionalFeature -Online -FeatureName containers -All -NoRestart
 sudo Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
+sudo Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -NoRestart
+sudo wsl --set-default-version 2
+
 # Enable Long Paths support in Windows 10
 Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -Value 1
 
