@@ -2,13 +2,11 @@
 # to be sourced from bash or zsh
 export AWS_DEFAULT_REGION="ap-southeast-2"
 export AWS_REGIONS="ap-southeast-2 us-west-2"
-export DEFAULT_USER="jsamuel"
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git --color=always"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--ansi"
 export GOPATH="${HOME}/goprojects"
 export GOROOT="${HOME}/go"
 export GREP_COLORS="mt=01;31"
-export OKTA_USERNAME=josh.samuel
 export PATH="${PATH}:${GOPATH}:${PYENV_ROOT}/bin"
 export PYENV_ROOT="${HOME}/.pyenv"

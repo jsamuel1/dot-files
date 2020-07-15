@@ -134,7 +134,6 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
 fi
 pyenv latest install 3 -s
 pyenv latest global
-rehash
 pyenv virtualenv `pyenv latest --print 3` neovim3
 
 echo ${bold}
@@ -158,24 +157,6 @@ echo ensure latest npm and modules
 echo ================================
 echo ${normal}
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
-
-echo ${bold}
-echo ================================
-echo ensure neovim ruby gem installed
-echo ================================
-echo ${normal}
-eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer)"
-# for first time.   .zshrc will take care of this later
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# install last version without a dash in its name, skipping existing
-rbenv install -s $(rbenv install -l | grep -v - | tail -1)
-rbenv global $(rbenv install -l | grep -v - | tail -1)
-rehash
-gem install bundler
-gem install neovim
-gem environment
 
 echo ${bold}
 echo ====================
@@ -330,6 +311,24 @@ echo ${normal}
 nvim --headless +PlugUpgrade +qa
 nvim --headless +PlugInstall +qa
 nvim --headless +UpdateRemotePlugins +qa
+
+echo ${bold}
+echo ================================
+echo ensure neovim ruby gem installed
+echo ================================
+echo ${normal}
+eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer)"
+# for first time.   .zshrc will take care of this later
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# install last version without a dash in its name, skipping existing
+rbenv install -s $(rbenv install -l | grep -v - | tail -1)
+rbenv global $(rbenv install -l | grep -v - | tail -1)
+gem install bundler
+gem install neovim
+gem environment
+
 
 echo ${bold}
 echo ========================

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # Based on:
 # ~/.macos — https://mths.be/macos
@@ -44,15 +44,15 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
 
 # Menu bar: hide the Time Machine, AirPort, User icons
-for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
-  defaults write "${domain}" dontAutoLoad -array \
-    "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
-    "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
-    "/System/Library/CoreServices/Menu Extras/User.menu"
-  done
-  defaults write com.apple.systemuiserver menuExtras -array \
-    "/System/Library/CoreServices/Menu Extras/Battery.menu" \
-    "/System/Library/CoreServices/Menu Extras/Clock.menu"
+#for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
+#  defaults write "${domain}" dontAutoLoad -array \
+#    "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
+#    "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
+#    "/System/Library/CoreServices/Menu Extras/User.menu"
+#  done
+#  defaults write com.apple.systemuiserver menuExtras -array \
+#    "/System/Library/CoreServices/Menu Extras/Battery.menu" \
+#    "/System/Library/CoreServices/Menu Extras/Clock.menu"
 
 
 # Increase window resize speed for Cocoa applications
@@ -86,7 +86,7 @@ defaults write NSGlobalDomain NSTextShowsControlCharacters -bool false
 defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
 
 # Disable automatic termination of inactive apps
-defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
+#defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
 
 # Disable the crash reporter
 #defaults write com.apple.CrashReporter DialogType -string "none"
@@ -210,7 +210,7 @@ sudo pmset -b sleep 15
 sudo pmset -a standbydelay 86400
 
 # Never go into computer sleep mode
-sudo systemsetup -setcomputersleep Off > /dev/null
+#sudo systemsetup -setcomputersleep Off > /dev/null
 
 # Hibernation mode
 # 0: Disable hibernation (speeds up entering sleep mode)
@@ -219,11 +219,11 @@ sudo systemsetup -setcomputersleep Off > /dev/null
 sudo pmset -a hibernatemode 0
 
 # Remove the sleep image file to save disk space
-sudo rm -f /private/var/vm/sleepimage
+#sudo rm -f /private/var/vm/sleepimage
 # Create a zero-byte file instead…
-sudo touch /private/var/vm/sleepimage
+#sudo touch /private/var/vm/sleepimage
 # …and make sure it can’t be rewritten
-sudo chflags uchg /private/var/vm/sleepimage
+#sudo chflags uchg /private/var/vm/sleepimage
 
 ###############################################################################
 # Screen                                                                      #
@@ -267,8 +267,8 @@ defaults write com.apple.finder NewWindowTarget -string "PfLo"
 defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
 # Show icons for hard drives, servers, and removable media on the desktop
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
+#defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+#defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
@@ -397,7 +397,7 @@ defaults write com.apple.dock show-process-indicators -bool true
 #defaults write com.apple.dock persistent-apps -array ""
 
 # Show only open applications in the Dock
-defaults write com.apple.dock static-only -bool true
+defaults write com.apple.dock static-only -bool false
 
 # Don’t animate opening applications from the Dock
 defaults write com.apple.dock launchanim -bool false
@@ -429,13 +429,13 @@ defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock showhidden -bool true
 
 # Don’t show recent applications in Dock
-defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock show-recents -bool true
 
 # Disable the Launchpad gesture (pinch with thumb and three fingers)
 #defaults write com.apple.dock showLaunchpadGestureEnabled -int 0
 
 # Reset Launchpad, but keep the desktop wallpaper intact
-find "${HOME}/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -delete
+#find "${HOME}/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -delete
 
 # Add iOS & Watch Simulator to Launchpad
 sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app" "/Applications/Simulator.app"
@@ -468,7 +468,8 @@ defaults write com.apple.dock wvous-tr-modifier -int 0
 # Bottom left screen corner → Start screen saver
 defaults write com.apple.dock wvous-bl-corner -int 11
 defaults write com.apple.dock wvous-bl-modifier -int 0
-
+# Bottom right screen corner -> Mission Control
+defaults write com.apple.dock wvous-br-corner -int 2
 ###############################################################################
 # Safari & WebKit                                                             #
 ###############################################################################
@@ -601,35 +602,35 @@ sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Vol
 #   MENU_SPOTLIGHT_SUGGESTIONS (send search queries to Apple)
 #   MENU_WEBSEARCH             (send search queries to Apple)
 #   MENU_OTHER
-defaults write com.apple.spotlight orderedItems -array \
-  '{"enabled" = 1;"name" = "APPLICATIONS";}' \
-  '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
-  '{"enabled" = 1;"name" = "DIRECTORIES";}' \
-  '{"enabled" = 1;"name" = "PDF";}' \
-  '{"enabled" = 1;"name" = "FONTS";}' \
-  '{"enabled" = 0;"name" = "DOCUMENTS";}' \
-  '{"enabled" = 0;"name" = "MESSAGES";}' \
-  '{"enabled" = 0;"name" = "CONTACT";}' \
-  '{"enabled" = 0;"name" = "EVENT_TODO";}' \
-  '{"enabled" = 0;"name" = "IMAGES";}' \
-  '{"enabled" = 0;"name" = "BOOKMARKS";}' \
-  '{"enabled" = 0;"name" = "MUSIC";}' \
-  '{"enabled" = 0;"name" = "MOVIES";}' \
-  '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
-  '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
-  '{"enabled" = 0;"name" = "SOURCE";}' \
-  '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
-  '{"enabled" = 0;"name" = "MENU_OTHER";}' \
-  '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
-  '{"enabled" = 0;"name" = "MENU_EXPRESSION";}' \
-  '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
-  '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
-  # Load new settings before rebuilding the index
-  killall mds > /dev/null 2>&1
-  # Make sure indexing is enabled for the main volume
-  sudo mdutil -i on / > /dev/null
-  # Rebuild the index from scratch
-  sudo mdutil -E / > /dev/null
+#defaults write com.apple.spotlight orderedItems -array \
+#  '{"enabled" = 1;"name" = "APPLICATIONS";}' \
+#  '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
+#  '{"enabled" = 1;"name" = "DIRECTORIES";}' \
+#  '{"enabled" = 1;"name" = "PDF";}' \
+#  '{"enabled" = 1;"name" = "FONTS";}' \
+#  '{"enabled" = 0;"name" = "DOCUMENTS";}' \
+#  '{"enabled" = 0;"name" = "MESSAGES";}' \
+#  '{"enabled" = 0;"name" = "CONTACT";}' \
+#  '{"enabled" = 0;"name" = "EVENT_TODO";}' \
+#  '{"enabled" = 0;"name" = "IMAGES";}' \
+#  '{"enabled" = 0;"name" = "BOOKMARKS";}' \
+#  '{"enabled" = 0;"name" = "MUSIC";}' \
+#  '{"enabled" = 0;"name" = "MOVIES";}' \
+#  '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
+#  '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
+#  '{"enabled" = 0;"name" = "SOURCE";}' \
+#  '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
+#  '{"enabled" = 0;"name" = "MENU_OTHER";}' \
+#  '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
+#  '{"enabled" = 0;"name" = "MENU_EXPRESSION";}' \
+#  '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
+#  '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
+# Load new settings before rebuilding the index
+#  killall mds > /dev/null 2>&1
+# Make sure indexing is enabled for the main volume
+#  sudo mdutil -i on / > /dev/null
+# Rebuild the index from scratch
+#  sudo mdutil -E / > /dev/null
 
 ###############################################################################
 # Terminal & iTerm 2                                                          #
@@ -862,6 +863,7 @@ for app in "Activity Monitor" \
   "iCal"; do
   killall "${app}" &> /dev/null
   #  "Google Chrome Canary" \
+  #  A
   #  "Google Chrome" \
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
