@@ -40,7 +40,6 @@ ms-vscode-remote.remote-ssh-explorer
 ms-vscode-remote.remote-wsl
 ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.cpptools
-ms-vscode.csharp
 ms-vscode.powershell
 pstreule.codebucket
 redhat.vscode-yaml
