@@ -123,3 +123,5 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export GOPATH=~/go
+
+export PATH=$HOME/.toolbox/bin:$PATH
