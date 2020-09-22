@@ -11,3 +11,6 @@ export GREP_COLORS="mt=01;31"
 export PATH="${PATH}:${GOPATH}:${PYENV_ROOT}/bin"
 export PYENV_ROOT="${HOME}/.pyenv"
 export DEFAULT_USER=`whoami`
+if [ -x /usr/libexec/java_home ]; then
+  export JAVA_HOME=$(/usr/libexec/java_home)
+fi
