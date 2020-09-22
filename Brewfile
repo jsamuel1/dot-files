@@ -7,24 +7,30 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "microsoft/mssql-release"
+tap "teamookla/speedtest"
 tap "wtfutil/wtfutil"
-brew "awscli"
-brew "cask"
+brew "cmake", link: false
 brew "coreutils"
 brew "openssl@1.1"
 brew "readline"
 brew "sqlite"
 brew "xz"
 brew "python@3.8"
+brew "awscli"
+brew "libffi"
+brew "cask"
 brew "fd"
 brew "findutils"
 brew "fortune"
+brew "gh"
 brew "git"
 brew "git-lfs"
 brew "gnu-sed"
 brew "gnupg"
 brew "graphviz"
 brew "imagemagick"
+brew "ircii"
+brew "libyaml"
 brew "mas"
 brew "mono"
 brew "moreutils"
@@ -33,14 +39,15 @@ brew "node"
 brew "pinentry-mac"
 brew "pyenv"
 brew "rbenv"
+brew "ruby"
 brew "subversion"
 brew "wget"
 brew "zlib"
 brew "zsh"
 brew "aws/tap/aws-sam-cli"
-brew "github/gh/gh"
 brew "microsoft/mssql-release/msodbcsql"
 brew "microsoft/mssql-release/mssql-tools"
+brew "teamookla/speedtest/speedtest"
 cask "aerial"
 cask "alfred"
 cask "cmake"
@@ -97,22 +104,27 @@ cask "font-ubuntu-mono-derivative-powerline"
 cask "font-ubuntu-nerd-font"
 cask "font-ubuntumono-nerd-font"
 cask "github"
+cask "iglance"
 cask "iterm2"
 cask "mactex"
+cask "powershell"
+cask "stay"
+cask "textual"
 cask "vagrant"
 cask "visual-studio-code"
+cask "zoomus"
 mas "Developer", id: 640199958
 mas "Focus Dashcam Organizer", id: 1476008241
-mas "GarageBand", id: 682658836
 mas "HP Smart", id: 1474276998
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
+mas "LimeChat", id: 414030210
 mas "Magnet", id: 441258766
+mas "Microsoft OneNote", id: 784801555
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Quip", id: 1003160018
 mas "Ring", id: 1142753258
 mas "Skitch", id: 425955336
-mas "Slack", id: 803453959
 mas "Twitter", id: 1482454543
 mas "Xcode", id: 497799835
