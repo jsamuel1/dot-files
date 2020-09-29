@@ -266,6 +266,9 @@ defaults write com.apple.finder DisableAllAnimations -bool true
 defaults write com.apple.finder NewWindowTarget -string "PfLo"
 defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
+# Select and copy text from Apple Preview
+defaults write com.apple.finder QLEnableTextSelection -bool true
+
 # Show icons for hard drives, servers, and removable media on the desktop
 #defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
 #defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
@@ -836,8 +839,6 @@ defaults write com.twitter.twitter-mac ShowFullNames -bool true
 # Hide the app in the background if it’s not the front-most window
 defaults write com.twitter.twitter-mac HideInBackground -bool true
 
-# ensure zsh directories are secure
-compaudit | xargs chmod g-w,o-w
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
