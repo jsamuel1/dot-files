@@ -839,6 +839,9 @@ defaults write com.twitter.twitter-mac ShowFullNames -bool true
 # Hide the app in the background if it’s not the front-most window
 defaults write com.twitter.twitter-mac HideInBackground -bool true
 
+# Amazon Workspaces - Don't Remap Command key to Ctrl, keep it as Windows key.
+defaults write "com.amazon.Amazon WorkSpaces Client" remap_cmd_to_ctrl 0
+
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################

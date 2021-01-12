@@ -45,5 +45,3 @@ pstreule.codebucket
 redhat.vscode-yaml
 sidneys1.gitconfig
 twxs.cmake
-vector-of-bool.cmake-tools
-ziyasal.vscode-open-in-github
