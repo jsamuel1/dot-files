@@ -86,7 +86,15 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo ============================
   echo ${normal}
   sudo apt install software-properties-common
-  sudo add-apt-repository ppa:git-core/ppa --yes --update
+
+  # git-core PPA doesn't work with Debian Buster
+  if [ "`hostnamectl | grep Debian`" == "" ]; then
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
+    sudo add-apt-repository ppa:git-core/ppa --yes --update
+  fi
+  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+  sudo apt-add-repository https://cli.github.com/packages
+  sudo apt update
 
   xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
 
