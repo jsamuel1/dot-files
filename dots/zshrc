@@ -1,18 +1,19 @@
-#!/bin/zsh
+#!/bin/sh
+
 #when profiling, uncomment this line
 #_ZSH_PROFILE=1
+
 if [ $_ZSH_PROFILE ]; then
   zmodload zsh/zprof
 fi
 
-# Ensure path arrays do not contain duplicates.
+#ensure path arrays do not contain duplicates
 typeset -gU cdpath fpath mailpath path
 
 OLDPATH=$PATH
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin
 
-# Path to your oh-my-zsh installation.
-export ZSH=/$HOME/.oh-my-zsh
+
 fpath=(~/.zsh/completion $fpath)
 
 source $HOME/.zshrc-helpers
@@ -34,79 +35,57 @@ export PATH=$PATH:$OLDPATH
 
 source $HOME/.defaultenv
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
-
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-#ZSH_THEME_RANDOM_CANDIDATES=( "agnoster" "gallois" "af-magic" )
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
 export UPDATE_ZSH_DAYS=5
 DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to enable command auto-correction.
-#ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
 HIST_STAMPS="yyyy-mm-dd"
-
-
 ZSH_TMUX_AUTOSTART=true
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  aws
-  chucknorris
-  command-not-found
-  dircycle
-  docker
-  git
-  git-extras
-  git-prompt
-  gitfast
-  github
-  gpg-agent
-  helm
-  kubectl
-  magic-enter
-  osx
-  pyenv
-  rbenv
-  screen
-  sublime
-  sublime-merge
-  sudo
-  vault
-  virtualenv
-  zsh-autosuggestions
-  zsh-interactive-cd
-  zsh-syntax-highlighting
-)
 
-source $ZSH/oh-my-zsh.sh
+[[ ! -d ~/.antigen.git ]] && \
+  git clone https://github.com/zsh-users/antigen.git ~/.antigen.git
 
+source ~/.antigen.git/antigen.zsh
+
+antigen use oh-my-zsh
+antigen bundles << EOBUNDLES
+aws
+brew
+chucknorris
+command-not-found
+dircycle
+docker
+git
+git-extras
+git-prompt
+gitfast
+github
+gnu-utils
+gpg-agent
+helm
+history
+kubectl
+kubernetes
+magic-enter
+osx
+pyenv
+rbenv
+screen
+sublime
+sublime-merge
+sudo
+vault
+virtualenv
+zsh-interactive-cd
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+
+EOBUNDLES
+
+antigen theme agnoster
+antigen apply
 # User configuration
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
 export EDITOR='nvim'
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then

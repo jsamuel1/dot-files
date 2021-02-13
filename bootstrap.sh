@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ask for the administrator password upfront
-sudo -v
+sudo true
 
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -49,6 +49,14 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
       rm -r $temp
     fi
 
+    echo ${bold}
+    echo ==============================
+    echo Installing/Updating AWS CLI v2
+    echo ==============================
+    echo ${normal}
+    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+    sudo installer -pkg AWSCLIV2.pkg -target /
+
   elif [ "`hostnamectl | grep Debian`" != "" ]; then
     echo ${bold}
     echo ============================
@@ -57,7 +65,6 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     echo ${normal}
     sudo sed -i s/stretch/buster/g /etc/apt/sources.list
     sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
-    sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros-gpu.list
     sudo apt update
     sudo apt upgrade -y
     sudo apt full-upgrade -y
@@ -78,7 +85,7 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo installing base apt packages
   echo ============================
   echo ${normal}
-  sudo add-apt-repository ppa:mmstick76/alacritty --yes --update
+  sudo apt install software-properties-common
   sudo add-apt-repository ppa:git-core/ppa --yes --update
 
   xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
@@ -158,31 +165,6 @@ echo ================================
 echo ${normal}
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
 
-echo ${bold}
-echo ====================
-echo installing oh-my-zsh
-echo ====================
-echo ${normal}
-if [ ! -d ~/.oh-my-zsh ]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-else
-  echo oz-my-zsh already installed
-fi
-
-echo ${bold}
-echo zsh-autocompletion
-echo ${normal}
-if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-fi
-
-echo ${bold}
-echo zsh-syntax-highlighting
-echo ${normal}
-if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-fi
-
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo ${bold}
   echo =====================
@@ -200,31 +182,16 @@ fi
 
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo ${bold}
-  echo =======================================================
-  echo installing latest hyper terminal from https://hyper.is/
-  echo =======================================================
+  echo ====================
+  echo Installing/Updating AWS Cli 2
+  echo ====================
   echo ${normal}
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  sudo ./aws/install
+  rm -rf ./aws
+  rm awscliv2.zip
 
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' hyper | grep "install ok installed" )
-  if [ "" == "$PKG_OK" ]; then
-    wget https://releases.hyper.is/download/deb -O hyper.deb
-    sudo apt -y install ./hyper.deb
-    rm hyper.deb
-  else
-    echo ${bold}already installed${normal}
-  fi
-  echo ${bold}
-  echo ================================================
-  echo installing gitrocket into hyper terminal plugins
-  echo ================================================
-  echo ${normal}
-  if [ ! -d ~/.config/hyper/.hyper_plugins/node_modules/gitrocket ]; then
-    mkdir -p ~/.config/hyper/.hyper_plugins/node_modules
-    npm install --prefix ~/.config/hyper/.hyper_plugins gitrocket
-  fi
-fi
-
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo ${bold}
   echo =================
   echo installing vscode
@@ -329,6 +296,7 @@ gem install bundler
 gem install neovim
 gem environment
 
+sudo chsh $USER -s /bin/zsh
 
 echo ${bold}
 echo ========================

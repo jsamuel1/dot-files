@@ -38,7 +38,7 @@ Plug 'tpope/vim-sensible'
 
 " Autocomplete
 if has('nvim')
-        Plug 'neovim/nvim-lsp'
+        "        Plug 'neovim/nvim-lspconfig'
         Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
         Plug 'Shougo/deoplete-lsp'
 else
@@ -146,7 +146,7 @@ if vim_plug_just_installed
         :PlugInstall
 endif
 
-lua require 'nvim_lsp'.rust_analyzer.setup{}
+" lua require 'lspconfig'.rust_analyzer.setup{}
 
 " ============================================================================
 " Bootstrap configuration
