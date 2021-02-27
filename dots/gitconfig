@@ -67,6 +67,6 @@
         allowed = AKIAIOSFODNN7EXAMPLE
         allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 [credential]
-        helper =
-        helper = !aws codecommit credential-helper $@
+        helper = cache
+#        helper = !aws codecommit credential-helper $@
         UseHttpPath = true
