@@ -52,7 +52,6 @@ cask "alfred"
 cask "cmake"
 cask "doteditor"
 cask "dotnet-sdk"
-cask "doxygen"
 cask "font-3270-nerd-font"
 cask "font-arimo-nerd-font"
 cask "font-aurulentsansmono-nerd-font"
@@ -105,20 +104,19 @@ cask "font-ubuntumono-nerd-font"
 cask "github"
 cask "iglance"
 cask "iterm2"
-cask "mactex"
 cask "powershell"
 cask "stay"
 cask "textual"
 cask "vagrant"
 cask "visual-studio-code"
-cask "zoomus"
+cask "zoom"
 mas "Developer", id: 640199958
 mas "Focus Dashcam Organizer", id: 1476008241
 mas "HP Smart", id: 1474276998
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "LimeChat", id: 414030210
-mas "Magnet", id: 441258766
+#mas "Magnet", id: 441258766
 mas "Microsoft OneNote", id: 784801555
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
