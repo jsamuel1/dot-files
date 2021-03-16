@@ -56,6 +56,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     echo ${normal}
     curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
     sudo installer -pkg AWSCLIV2.pkg -target /
+    rm AWSCLIV2.pkg
 
   elif [ "`hostnamectl | grep Debian`" != "" ]; then
     echo ${bold}
