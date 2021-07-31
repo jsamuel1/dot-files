@@ -31,9 +31,11 @@ append_path  "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
 append_path $HOME/.cargo/bin
 append_path $HOME/.dotnet/tools
+append_path $HOME/.pyenv/bin
 export PATH=$PATH:$OLDPATH
 
 source $HOME/.defaultenv
+
 
 HYPHEN_INSENSITIVE="true"
 export UPDATE_ZSH_DAYS=5
@@ -41,6 +43,8 @@ DISABLE_UPDATE_PROMPT="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
+
+eval "$(pyenv init -)"
 
 [[ ! -d ~/.antigen.git ]] && \
   git clone https://github.com/zsh-users/antigen.git ~/.antigen.git
@@ -95,6 +99,7 @@ fi
 
 source $HOME/.aliases
 
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # authenticate to dev environment script
 [ -f ~/.authenticate/authenticate ] && source ~/.authenticate/authenticate
@@ -109,6 +114,8 @@ if [ -d $HOME/.nvm ]; then
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
+
+neofetch
 
 if [ $_ZSH_PROFILE ]; then
   zprof

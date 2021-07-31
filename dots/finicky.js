@@ -49,6 +49,10 @@ module.exports = {
                         browser: "Firefox"
                 },
                 {
+                        match: ({ url }) => url.pathname.endsWith(".xpi"),
+                        browser: "Firefox"
+                },
+                {
                         // open chime: url in Chime.app
                         match: ({
                                 url

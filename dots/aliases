@@ -23,11 +23,6 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
 # Finally, clear download history from quarantine. https://mths.be/bum
 alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
-# One of @janmoesen’s ProTip™s
-for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-alias "${method}"="lwp-request -m '${method}'"
-done
-
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; gem update; gem cleanup'
 
@@ -49,3 +44,7 @@ function sudo() {
 alias vpn='~/.local/bin/vpn-onetouch'
 alias vpns='/opt/cisco/anyconnect/bin/vpn status'
 alias vpnd='/opt/cisco/anyconnect/bin/vpn disconnect'
+
+if command -v isengardcli &>/dev/null ; then
+eval "$(isengardcli shell-profile)"
+fi
