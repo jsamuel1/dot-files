@@ -7,22 +7,28 @@
 (
 setopt LOCAL_OPTIONS EXTENDED_GLOB
 autoload -U zrecompile
-local OHMYZSH=~/.oh-my-zsh
+# Compile zcompdump, if modified, to increase startup speed.
+zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+  zcompile "$zcompdump"
+fi
+# zcompile .zshrc
+zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
+zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
+zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshenv
+zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc-helpers
+# recompile all zsh or sh
+if [ -d ~/.oh-my-zsh ]; then
+  local OHMYZSH=~/.oh-my-zsh
+elif [ -d ~/.antigen/bundles/oh-my-zsh ]; then
+  local OHMYZSH=~/.antigen/bundles/robbyrussell/oh-my-zsh
+else
+  return
+fi
 
-  # Compile zcompdump, if modified, to increase startup speed.
-  zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
-  if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
-    zcompile "$zcompdump"
-  fi
-  # zcompile .zshrc
-  zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
-  zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
-  zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshenv
-  zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc-helpers
-  # recompile all zsh or sh
-  for f in $OHMYZSH/**/*.*sh
-  do
-    zrecompile -pq $f
-  done
-  ) &!
+for f in $OHMYZSH/**/*.*sh
+do
+  zrecompile -pq $f
+done
+) &!
 
