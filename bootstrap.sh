@@ -236,7 +236,7 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   echo =================
   echo ${normal}
   if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
-    wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+    wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
     sudo apt install ./packages-microsoft-prod.deb -y
     sudo apt update
   fi
