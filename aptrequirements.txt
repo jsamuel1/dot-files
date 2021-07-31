@@ -40,6 +40,7 @@ libxml2-dev
 libxmlsec1-dev
 llvm
 make
+neofetch
 neovim
 npm
 openssh-server
