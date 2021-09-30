@@ -29,6 +29,7 @@ prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
 append_path $HOME/.cargo/bin
 append_path $HOME/.dotnet/tools
 append_path $HOME/.pyenv/bin
+append_path ${KREW_ROOT:-$HOME/.krew}/bin
 export PATH=$PATH:$OLDPATH
 
 source $HOME/.defaultenv
@@ -67,6 +68,7 @@ gpg-agent
 helm
 history
 kubectl
+kubectx
 kubernetes
 magic-enter
 osx
