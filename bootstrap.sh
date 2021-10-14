@@ -90,10 +90,10 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
 
   # git-core PPA doesn't work with Debian Buster
   if [ "`hostnamectl | grep Debian`" == "" ]; then
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
     sudo add-apt-repository ppa:git-core/ppa --yes --update
   fi
-  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C99B11DEB97541F0
   sudo apt-add-repository https://cli.github.com/packages
   sudo apt update
 
