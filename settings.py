@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import argparse
 import subprocess
-import glob
 import os
 import tempfile
 from pathlib import Path
@@ -15,7 +14,7 @@ def install():
     parser.add_argument('--sync', action='store_true')
     args = parser.parse_args()
 
-    print('dryrun: %s   sync: %s' % (args.dryrun, args.sync))
+    print(f'dryrun: {args.dryrun}   sync: {args.sync}')
 
     if args.sync:
         gitsync()
@@ -28,9 +27,13 @@ def install():
              and os.path.isfile(f)]
     configfiles = [f for f in Path('.').glob('config/**/*') if os.path.isfile(f)]
     localfiles = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]
+    sheldonfiles = [f for f in Path('.').glob('sheldon/**/*') if os.path.isfile(f)]
+    zshfiles = [f for f in Path('.').glob('zsh/**/*') if os.path.isfile(f)]
     linkfiles(files, args.dryrun, "dots")
     linkfiles(configfiles, args.dryrun, ".")
     linkfiles(localfiles, args.dryrun, ".")
+    linkfiles(sheldonfiles, args.dryrun, ".")
+    linkfiles(zshfiles, args.dryrun, ".")
 
 
 def linkfiles(files, dryrun, relativepath):

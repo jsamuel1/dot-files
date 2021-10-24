@@ -77,7 +77,7 @@ brew "wget"
 brew "yarn"
 brew "youtube-dl"
 brew "zlib"
-brew "zsh"
+brew "zsh", args: ["HEAD"]
 brew "armmbed/formulae/arm-none-eabi-gcc"
 brew "aws/tap/aws-sam-cli"
 brew "fluxcd/tap/flux"

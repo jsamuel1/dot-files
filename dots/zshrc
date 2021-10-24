@@ -34,6 +34,7 @@ export PATH=$PATH:$OLDPATH
 
 source $HOME/.defaultenv
 
+ZSH_THEME="agnoster"
 
 HYPHEN_INSENSITIVE="true"
 export UPDATE_ZSH_DAYS=5
@@ -42,52 +43,43 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
 
+plugins=(
+  aws
+  chucknorris
+  command-not-found
+  dircycle
+  docker
+  git
+  git-extras
+  git-prompt
+  gitfast
+  github
+  gpg-agent
+  helm
+  history
+  kubectl
+  kubectx
+  magic-enter
+  osx
+  pyenv
+  rbenv
+  screen
+  sublime
+  sublime-merge
+  sudo
+  vault
+  virtualenv
+  zsh-interactive-cd
+)
+
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-[[ ! -d ~/.antigen.git ]] && \
-  git clone https://github.com/zsh-users/antigen.git ~/.antigen.git
+export ZSH="$HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh"
 
-source ~/.antigen.git/antigen.zsh
+eval "$(sheldon source)"
 
-antigen use oh-my-zsh
-antigen bundles << EOBUNDLES
-aws
-brew
-chucknorris
-command-not-found
-dircycle
-docker
-git
-git-extras
-git-prompt
-gitfast
-github
-gnu-utils
-gpg-agent
-helm
-history
-kubectl
-kubectx
-kubernetes
-magic-enter
-osx
-pyenv
-rbenv
-screen
-sublime
-sublime-merge
-sudo
-vault
-virtualenv
-zsh-interactive-cd
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-syntax-highlighting
-
-EOBUNDLES
-
-antigen theme agnoster
-antigen apply
 # User configuration
 
 export EDITOR='nvim'
@@ -99,6 +91,14 @@ fi
 
 source $HOME/.aliases
 
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' $HOME/.zcompdump) ]; then
+  rm -f $HOME/.zcompdump; compinit
+else
+  compinit -C
+fi
+autoload -Uz bashcompinit && bashcompinit
+autoload -Uz colors && colors
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

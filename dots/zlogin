@@ -18,10 +18,10 @@ zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
 zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshenv
 zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc-helpers
 # recompile all zsh or sh
+if [ -d ~/.sheldon/reports/github.com/ohmyzsh/ohmyzsh ]
+  local OHMYZSH=~/.sheldon/reports/github.com/ohmyzsh/ohmyzsh
 if [ -d ~/.oh-my-zsh ]; then
   local OHMYZSH=~/.oh-my-zsh
-elif [ -d ~/.antigen/bundles/oh-my-zsh ]; then
-  local OHMYZSH=~/.antigen/bundles/robbyrussell/oh-my-zsh
 else
   return
 fi

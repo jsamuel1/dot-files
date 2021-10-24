@@ -13,6 +13,8 @@ run bootstrap.sh to setup common tools, required packages and symlink dotfiles.
 - Installs customized defaults
 - Sets up yabi tiled window manager.
 
+    To change zsh to Homebrew version:
+    sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
 ### Windows Subsystem for Linux
 - ensure upgraded to Disco or newer
