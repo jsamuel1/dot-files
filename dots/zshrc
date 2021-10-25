@@ -32,8 +32,6 @@ append_path $HOME/.pyenv/bin
 append_path ${KREW_ROOT:-$HOME/.krew}/bin
 export PATH=$PATH:$OLDPATH
 
-source $HOME/.defaultenv
-
 ZSH_THEME="agnoster"
 
 HYPHEN_INSENSITIVE="true"
@@ -89,8 +87,6 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
 fi
 
 
-source $HOME/.aliases
-
 autoload -Uz compinit
 if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' $HOME/.zcompdump) ]; then
   rm -f $HOME/.zcompdump; compinit
@@ -106,9 +102,6 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 if [ -d $HOME/.nvm ]; then
   export NVM_DIR="$HOME/.nvm"
-  if [ -d $HOME/.nvm/versions/node/v16.1.0/bin ]; then
-    export PATH=$PATH:$HOME/.nvm/versions/node/v16.1.0/bin
-  fi
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi

@@ -14,20 +14,36 @@ shell = "zsh"
 
 [plugins]
 
+# Local plugins/customizations
+[plugins.lib]
+local = "~/.local/lib"
+
 [plugins.oh-my-zsh]
 github = 'ohmyzsh/ohmyzsh'
+
+[plugins.zsh-defer]
+github = 'romkatv/zsh-defer'
 
 [plugins.zsh-autosuggestions]
 github = 'zsh-users/zsh-autosuggestions'
 use = ['{{ name }}.zsh']
+apply = ["defer"]
 
 [plugins.zsh-syntax-highlighting]
 github = 'zsh-users/zsh-syntax-highlighting'
+apply = ["defer"]
 
 [plugins.zsh-completions]
 github = 'zsh-users/zsh-completions'
+apply = ["defer"]
 
-# For example:
-#
-# [plugins.base16]
-# github = "chriskempson/base16-shell"
+[plugins.zsh-better-npm-completion]
+github = "lukechilds/zsh-better-npm-completion"
+apply = ["defer"]# For example:
+
+[plugins.alias-tips]
+github = 'djui/alias-tips'
+apply = ["defer"]#
+
+[templates]
+defer = { value = 'zsh-defer source "{{ file }}"', each = true }
