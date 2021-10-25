@@ -74,10 +74,8 @@ export ZSH="$HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh"
 
 eval "$(sheldon source)"
 
-zsh-defer eval "$(pyenv init -)"
-zsh-defer eval "$(pyenv virtualenv-init -)"
-
-# User configuration
+RPS1="%F{240}loading (\$(( $#_zsh_defer_tasks )) tasks)%f"
+test -e "${HOME}/.iterm2_shell_integration.zsh" && zsh-defer source "${HOME}/.iterm2_shell_integration.zsh"
 
 export EDITOR='nvim'
 
@@ -87,7 +85,8 @@ fi
 
 [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && zsh-defer source "${HOME}/.iterm2_shell_integration.zsh"
+zsh-defer eval "$(pyenv init -)"
+zsh-defer eval "$(pyenv virtualenv-init -)"
 
 if [ -d $HOME/.nvm ]; then
   export NVM_DIR="$HOME/.nvm"
@@ -95,6 +94,7 @@ if [ -d $HOME/.nvm ]; then
   [ -s "$NVM_DIR/bash_completion" ] && zsh-defer source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
+zsh-defer -c 'unset RPS1'
 neofetch
 
 if [ $_ZSH_PROFILE ]; then
