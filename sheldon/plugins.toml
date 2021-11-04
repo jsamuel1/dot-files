@@ -37,13 +37,8 @@ apply = ["defer"]
 github = 'zsh-users/zsh-completions'
 apply = ["defer"]
 
-[plugins.zsh-better-npm-completion]
-github = "lukechilds/zsh-better-npm-completion"
-apply = ["defer"]# For example:
-
-[plugins.alias-tips]
-github = 'djui/alias-tips'
-apply = ["defer"]#
+[plugins.zsh-pyenv-lazy]
+github = 'davidparsson/zsh-pyenv-lazy'
 
 [templates]
 defer = { value = 'zsh-defer source "{{ file }}"', each = true }
