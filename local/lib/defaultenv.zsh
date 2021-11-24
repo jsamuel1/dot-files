@@ -16,5 +16,5 @@ if [ -x /usr/libexec/java_home ]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 export PAGER="less"
-export LESS="-EFiMQX~ --tabs=4"
+export LESS="-EFiMQR~ --tabs=4"
 export AWS_PAGER="less"
