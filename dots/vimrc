@@ -321,15 +321,15 @@ autocmd BufWinEnter * match SpellBad /\%>98v.*\%<101v/
 " Interface
 
 " NERDTree ----------------------------------
-autocmd vimenter * if !argc() | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-noremap <C-Bslash> :NERDTreeToggle<CR>
-syn match NERDTreeTxtFile #^\s\+.*txt$#
-highlight NERDTreeTxtFile ctermbg=red ctermfg=magenta
-let NERDTreeRespectWildIgnore=1
+" autocmd vimenter * if !argc() | NERDTree | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" noremap <C-Bslash> :NERDTreeToggle<CR>
+" syn match NERDTreeTxtFile #^\s\+.*txt$#
+" highlight NERDTreeTxtFile ctermbg=red ctermfg=magenta
+" let NERDTreeRespectWildIgnore=1
 
 " Show hidden files
-let NERDTreeShowHidden=1
+" let NERDTreeShowHidden=1
 
 " Disable editor mode in default bar
 set noshowmode
@@ -367,10 +367,14 @@ let g:indentLine_char = "▏"
 " Deoplete -----------------------------
 
 " Use deoplete.
+"     " Pass a dictionary to set multiple options
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_smart_case = 1
-let g:SuperTabDefaultCompletionType = "<c-n>"
+call deoplete#custom#option({
+    \ 'ignore_case': v:true,
+    \ 'smart_case': v:true,
+    \ })
+
+    let g:SuperTabDefaultCompletionType = "<c-n>"
 set pumheight=15
 set completeopt=menuone,noinsert,noselect
 call deoplete#custom#source('ultisnips', 'rank', 1000)
