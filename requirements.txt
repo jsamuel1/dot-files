@@ -1,9 +1,5 @@
-aws-cdk.core
 click
-dbus-python
 gobject
-iwlib
-powerline-status-i3
 python-language-server
 pygit2
 pylint

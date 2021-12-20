@@ -16,11 +16,6 @@ fpath=(~/.zsh/completion $fpath)
 
 source $HOME/.zshrc-helpers
 
-#OktaAWSCLI
-if [[ -f "$HOME/.okta/bash_functions" ]]; then
-  . "$HOME/.okta/bash_functions"
-fi
-
 prepend_path /home/linuxbrew/.linuxbrew/bin
 prepend_path /usr/local/opt/coreutils/libexec/gnubin
 prepend_path $HOME/.toolbox/bin
@@ -43,7 +38,6 @@ ZSH_TMUX_AUTOSTART=true
 
 plugins=(
   aws
-  chucknorris
   command-not-found
   dircycle
   docker
@@ -65,7 +59,6 @@ plugins=(
   sublime
   sublime-merge
   sudo
-  vault
   virtualenv
   zsh-interactive-cd
 )
@@ -77,40 +70,13 @@ eval "$(sheldon source)"
 RPS1="%F{240}loading%f"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && zsh-defer source "${HOME}/.iterm2_shell_integration.zsh"
 
-export EDITOR='nvim'
+[ -x nvim ] && export EDITOR='nvim'
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
   zsh-defer source /etc/profile.d/vte.sh
 fi
 
 [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
-
-if [ -d $HOME/.nvm ]; then
-  export NVM_DIR="$HOME/.nvm"
-
-  lazy_load_nvm() {
-    unset -f node
-    unset -f npm
-    unset -f nvm
-    export NVM_DIR=~/.nvm
-    [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-    [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  }
-
-  nvm() {
-    lazy_load_nvm
-    nvm $@
-  }
-
-  node() {
-    lazy_load_nvm
-    node $@
-  }
-  npm() {
-    lazy_load_nvm
-    npm $@
-  }
-fi
 
 zsh-defer -c 'unset RPS1'
 neofetch
@@ -119,3 +85,4 @@ if [ $_ZSH_PROFILE ]; then
   zprof
 fi
 
+export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"

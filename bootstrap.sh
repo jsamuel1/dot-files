@@ -158,10 +158,7 @@ echo installing base python3 packages
 echo ================================
 echo ${normal}
 python3 -m pip install --upgrade pip
-
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
-  python3 -m pip install --upgrade -r requirements.txt
-fi
+python3 -m pip install --upgrade -r requirements.txt
 pyenv activate neovim3
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r neovim-requirements.txt
