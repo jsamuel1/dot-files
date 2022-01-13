@@ -1,0 +1,17 @@
+autoconf 
+automake 
+cmake 
+curl
+gcc 
+gcc-c++ 
+gettext 
+git 
+libtool 
+make 
+ninja-build 
+patch 
+pkgconfig 
+sudo 
+unzip 
+wget
+zsh
