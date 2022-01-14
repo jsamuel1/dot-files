@@ -39,6 +39,11 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
 
+
+if [[ "$OSTYPE" == "darwin"* ]]; then 
+  OSXPLUGIN=osx
+fi
+
 plugins=(
   aws
   command-not-found
@@ -56,7 +61,7 @@ plugins=(
   kubectl
   kubectx
   magic-enter
-  macos
+  ${OSXPLUGIN}
   pyenv
   rbenv
   screen
