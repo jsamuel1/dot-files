@@ -18,6 +18,9 @@ shell = "zsh"
 [plugins.lib]
 local = "~/.local/lib"
 
+[plugins.zsh-pyenv-lazy]
+github = 'davidparsson/zsh-pyenv-lazy'
+
 [plugins.oh-my-zsh]
 github = 'ohmyzsh/ohmyzsh'
 
@@ -36,9 +39,6 @@ apply = ["defer"]
 [plugins.zsh-completions]
 github = 'zsh-users/zsh-completions'
 apply = ["defer"]
-
-[plugins.zsh-pyenv-lazy]
-github = 'davidparsson/zsh-pyenv-lazy'
 
 [templates]
 defer = { value = 'zsh-defer source "{{ file }}"', each = true }
