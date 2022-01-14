@@ -219,7 +219,7 @@ else
   echo rust-analyzer already exists
 fi
 
-xargs -a <(awk '! /^ *(#|$)/' "dnfrequirements.txt") -r -- cargo install 
+xargs -a <(awk '! /^ *(#|$)/' "cargorequirements.txt") -r -- cargo install 
 
 
 echo ${bold}
