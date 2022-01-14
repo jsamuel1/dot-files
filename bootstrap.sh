@@ -219,6 +219,9 @@ else
   echo rust-analyzer already exists
 fi
 
+xargs -a <(awk '! /^ *(#|$)/' "dnfrequirements.txt") -r -- cargo install 
+
+
 echo ${bold}
 echo ===================================
 echo ensure nvim vim-plug is up to date

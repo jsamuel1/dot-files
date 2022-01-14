@@ -41,6 +41,7 @@ plugins=(
   command-not-found
   dircycle
   docker
+  fzf
   git
   git-extras
   git-prompt
@@ -67,22 +68,21 @@ export ZSH="$HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh"
 
 eval "$(sheldon source)"
 
-RPS1="%F{240}loading%f"
-test -e "${HOME}/.iterm2_shell_integration.zsh" && zsh-defer source "${HOME}/.iterm2_shell_integration.zsh"
+command -v zsh-defer >/dev/null 2>&1 && RPS1="%F{240}loading%f"
 
-[ -x nvim ] && export EDITOR='nvim'
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+command -v nvim >/dev/null 2>&1 && export EDITOR='nvim'
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-  zsh-defer source /etc/profile.d/vte.sh
+  source /etc/profile.d/vte.sh
 fi
 
-[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
-
 zsh-defer -c 'unset RPS1'
-neofetch
+command -v neofetch >/dev/null 2>&1 && neofetch
+
+export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
 if [ $_ZSH_PROFILE ]; then
   zprof
 fi
-
-export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
