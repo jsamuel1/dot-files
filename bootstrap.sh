@@ -248,6 +248,19 @@ gem install bundler
 gem install neovim
 gem environment
 
+echo ${bold}
+echo ================================
+echo fzf install / upgrade
+echo ================================
+echo ${normal}
+
+if [ ! -d ~/.fzf ]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
+else
+  cd ~/.fzf && git pull && ./install && cd -
+fi
+
 sudo chsh $USER -s /bin/zsh
 
 echo ${bold}
