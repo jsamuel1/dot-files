@@ -6,7 +6,7 @@ if [ $_ZSH_PROFILE ]; then
 fi
 
 #ensure path arrays do not contain duplicates
-typeset -gU cdpath fpath mailpath path
+typeset -gU cdpath fpath mailpath path PATH
 
 OLDPATH=$PATH
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin
@@ -40,15 +40,21 @@ HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
 
 
-if [[ "$OSTYPE" == "darwin"* ]]; then 
-  OSXPLUGIN=osx
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  OSXPLUGIN=macos
+fi
+
+# now that docker isn't free anymore,
+# I can't have it on all my machines :(
+if [[ $(command -v docker) ]]; then
+  DOCKERPLUGIN=docker
 fi
 
 plugins=(
   aws
   command-not-found
   dircycle
-  docker
+  ${DOCKERPLUGIN}
   fzf
   git
   git-extras
