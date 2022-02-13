@@ -78,7 +78,15 @@ plugins=(
   zsh-interactive-cd
 )
 
-export ZSH="$HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh"
+if [ -d $HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then
+  export ZSH=$HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh
+elif [ -d $HOME/.local/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then
+  export ZSH=$HOME/.local/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]
+elif [ -d $HOME/.oh-my-zsh ]; then
+  export ZSH=$HOME/.oh-my-zsh
+else
+  return
+fi
 
 eval "$(sheldon source)"
 
@@ -100,3 +108,7 @@ export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 if [ $_ZSH_PROFILE ]; then
   zprof
 fi
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
