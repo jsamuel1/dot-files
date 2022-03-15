@@ -219,7 +219,7 @@ else
   echo rust-analyzer already exists
 fi
 
-xargs -a <(awk '! /^ *(#|$)/' "cargorequirements.txt") -r -- cargo install 
+xargs -a <(awk '! /^ *(#|$)/' "cargorequirements.txt") -r -- cargo install
 
 
 echo ${bold}
@@ -244,8 +244,7 @@ eval "$(rbenv init -)"
 # install last version without a dash in its name, skipping existing
 rbenv install -s $(rbenv install -l | grep -v - | tail -1)
 rbenv global $(rbenv install -l | grep -v - | tail -1)
-gem install bundler
-gem install neovim
+xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- gem install
 gem environment
 
 echo ${bold}
