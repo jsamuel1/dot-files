@@ -41,7 +41,7 @@ ZSH_TMUX_AUTOSTART=true
 
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  OSXPLUGIN=macos
+  OSXPLUGIN=osx
 fi
 
 # now that docker isn't free anymore,

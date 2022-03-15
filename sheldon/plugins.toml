@@ -14,9 +14,6 @@ shell = "zsh"
 
 [plugins]
 
-# Local plugins/customizations
-[plugins.lib]
-local = "~/.local/lib"
 
 [plugins.zsh-pyenv-lazy]
 github = 'davidparsson/zsh-pyenv-lazy'
@@ -26,6 +23,10 @@ github = 'ohmyzsh/ohmyzsh'
 
 [plugins.zsh-defer]
 github = 'romkatv/zsh-defer'
+
+# Local plugins/customizations - after ohmyzsh
+[plugins.lib]
+local = "~/.local/lib"
 
 [plugins.zsh-autosuggestions]
 github = 'zsh-users/zsh-autosuggestions'
