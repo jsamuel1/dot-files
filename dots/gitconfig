@@ -26,6 +26,8 @@
 	trustExitCode = true
 [difftool "nvimdiff"]
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+  trustExitCode = true
+
 [merge]
         tool = nfutitive
 	guitool = bc4
@@ -93,3 +95,8 @@
 [credential "https://gist.www.github.com"]
 	helper =
 	helper = !gh auth git-credential
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
