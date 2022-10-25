@@ -78,13 +78,12 @@ plugins=(
   zsh-interactive-cd
 )
 
-if [ -d $HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then
-  export ZSH=$HOME/.sheldon/repos/github.com/ohmyzsh/ohmyzsh
-elif [ -d $HOME/.local/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then
-  export ZSH=$HOME/.local/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]
+if [ -d $HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then
+  export ZSH=$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh
 elif [ -d $HOME/.oh-my-zsh ]; then
   export ZSH=$HOME/.oh-my-zsh
 else
+  echo "ZSH dir not found"
   return
 fi
 
