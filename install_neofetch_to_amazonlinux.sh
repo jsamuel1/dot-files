@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-set +e
-echo fetchin neofetch
-if ! [ -d neofetch ]; then
+(
+  cd "$(mktemp -d)"
   git clone https://github.com/dylanaraps/neofetch
-fi
-cd neofetch
-sudo make install
-echo done.
+  cd neofetch
+  sudo make install
+)
+
