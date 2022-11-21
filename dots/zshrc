@@ -43,7 +43,6 @@ ZSH_TMUX_AUTOSTART=true
 
 plugins=(
   aws
-  chucknorris
   command-not-found
   dircycle
   docker
