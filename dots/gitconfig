@@ -26,6 +26,8 @@
 	trustExitCode = true
 [difftool "nvimdiff"]
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+  trustExitCode = true
+
 [merge]
         tool = nfutitive
 	guitool = bc4
@@ -79,3 +81,22 @@
 #        helper = !aws codecommit credential-helper $@
         UseHttpPath = true
 
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://www.github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.www.github.com"]
+	helper =
+	helper = !gh auth git-credential
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process

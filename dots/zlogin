@@ -18,11 +18,12 @@ zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
 zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshenv
 zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc-helpers
 # recompile all zsh or sh
-if [ -d ~/.sheldon/reports/github.com/ohmyzsh/ohmyzsh ]
-  local OHMYZSH=~/.sheldon/reports/github.com/ohmyzsh/ohmyzsh
-if [ -d ~/.oh-my-zsh ]; then
+if [ -d ~/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then
+  local OHMYZSH=~/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh
+elif [ -d ~/.oh-my-zsh ]; then
   local OHMYZSH=~/.oh-my-zsh
 else
+  "OHMYZSH dir not found"
   return
 fi
 

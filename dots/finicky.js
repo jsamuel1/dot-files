@@ -12,7 +12,7 @@ module.exports = {
                         pathname: "meeting",
                         protocol: "chime"
                 })
-        }, {
+        }, /*{
                 // rewrite http[s]://quip.com/<documentID>/* to quip://<documentID>
                 match: finicky.matchHostnames(["quip-amazon.com"]),
                 url: ({
@@ -24,7 +24,7 @@ module.exports = {
                         pathname: url.pathname.split('/')[1] == "email" ? decodeURIComponent(url.search).split('/')[2].split('&')[0] : url.pathname.split('/')[1],
                         protocol: "quip"
                 })
-        }, {
+        },*/ {
                 // rewrite https://amzn-aws.slack.com/archives/C016MF9NNTU To slack://channel?team=T016V3P6FHQ&id=C016MF9NNTU
                 match: finicky.matchHostnames(["amzn-aws.slack.com"]),
                 url: ({

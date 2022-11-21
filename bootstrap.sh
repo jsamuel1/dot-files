@@ -2,6 +2,10 @@
 
 # Ask for the administrator password upfront
 sudo true
+MACOS=0
+APT=0
+DNF=0
+GUI=1
 
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -15,61 +19,33 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     echo prepare MacOS
     echo ============================
     echo ${normal}
-    if ! type brew > /dev/null; then
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-    fi
-    brew doctor
-    brew install mas
-    mas install 497799835   #xcode
-
-    if ! type xcodebuild > /dev/null; then
-      sudo xcode-select --install
-    fi
-    if ! xcodebuild -checkFirstLaunchStatus; then
-      # enable developer mode
-      sudo /usr/sbin/DevToolsSecurity -enable
-      sudo /usr/sbin/dseditgroup -o edit -t group -a staff _developer
-      # ensure first launch of xcode, otherwise commandline tools don't work
-      sudo xcodebuild -license accept
-      sudo xcodebuild -runFirstLaunch
-    fi
-    HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=y brew bundle -v
-
-    curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
-
-    ./macdefaults.sh
-
-    if [ ! -d "/Applications/Google Chrome" ]; then
-      temp=$TMPDIR$(uuidgen)
-      mkdir -p $temp/mount
-      curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg > $temp/1.dmg
-      yes | hdiutil attach -noverify -nobrowse -mountpoint $temp/mount $temp/1.dmg
-      cp -r $temp/mount/*.app /Applications
-      hdiutil detach $temp/mount
-      rm -r $temp
-    fi
-
-    echo ${bold}
-    echo ==============================
-    echo Installing/Updating AWS CLI v2
-    echo ==============================
-    echo ${normal}
-    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-    sudo installer -pkg AWSCLIV2.pkg -target /
-    rm AWSCLIV2.pkg
-
+    ./macos.sh
+    MACOS=1
+  elif [[ -f /etc/os-release && `grep al2022 /etc/os-release` ]]; then
+    DNF=1
+    YUM=0
+    APT=0
+    GUI=0
+  elif [ "`hostnamectl | grep 'Amazon Linux 2'`" != ""]; then
+    DNF=0
+    YUM=1
+    APT=0
   elif [ "`hostnamectl | grep Debian`" != "" ]; then
     echo ${bold}
     echo ============================
     echo upgrade debian to buster
     echo ============================
     echo ${normal}
+    APT=1
+    DNF=0
+    APT=0
     sudo sed -i s/stretch/buster/g /etc/apt/sources.list
     sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
     sudo apt update
     sudo apt upgrade -y
     sudo apt full-upgrade -y
     sudo apt auto-remove -y
+
   elif [ -v SOMMELIER_VERSION ]; then
     echo ${bold}
     echo ===============================
@@ -77,33 +53,58 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     echo ===============================
     echo ${normal}
     ./fix-cros-ui-config-pkg.sh
+    APT=1
+    DNF=0
+    APT=0
+  else
+    APT=1
+    DNF=0
+    APT=0
   fi
 
 # Install base apt packages
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
+if [[ $APT -ne 0 ]]; then
   echo ${bold}
   echo ============================
   echo installing base apt packages
   echo ============================
   echo ${normal}
 
-  if [ "`hostnamectl | grep 'Amazon Linux 2'`" != ""]; then
-  	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
-  else
-  	sudo apt install software-properties-common
+  sudo apt install software-properties-common
 
-  	# git-core PPA doesn't work with Debian Buster
-  	if [ "`hostnamectl | grep Debian`" == "" ]; then
-    		sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
-    		sudo add-apt-repository ppa:git-core/ppa --yes --update
-  	fi
-  	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C99B11DEB97541F0
-  	sudo apt-add-repository https://cli.github.com/packages
-  	sudo apt update
-
-  	xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
+  # git-core PPA doesn't work with Debian Buster
+  if [ "`hostnamectl | grep Debian`" == "" ]; then
+      sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
+      sudo add-apt-repository ppa:git-core/ppa --yes --update
   fi
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C99B11DEB97541F0
+  sudo apt-add-repository https://cli.github.com/packages
+  sudo apt update
 
+  xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
+
+  ./apt-install.sh
+fi
+
+if [[ $YUM -ne 0 ]]; then
+    echo ${bold}
+    echo ============================
+    echo installing base yum packages
+    echo ============================
+    echo ${normal}
+  	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
+fi
+
+if [[ $DNF -ne 0 ]]; then
+  echo ${bold}
+  echo ============================
+  echo installing base dnf packages
+  echo ============================
+  echo ${normal}
+  ./dnf-install.sh
+fi
+
+if [[ -x /usr/bin/nvim ]]; then
   echo ${bold}
   echo =====================================
   echo ensure nvim is our default vim editor
@@ -144,7 +145,7 @@ echo installing latest python for user
 echo =================================
 echo ${normal}
 
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
+if [[ $MACOS -eq 0 ]]; then
   export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
   export CPPFLAGS="${CPPFLAGS} -I/usrlocal/opt/zlib/include"
   export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/zlib/lib/pkgconfig"
@@ -163,10 +164,7 @@ echo installing base python3 packages
 echo ================================
 echo ${normal}
 python3 -m pip install --upgrade pip
-
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
-  python3 -m pip install --upgrade -r requirements.txt
-fi
+python3 -m pip install --upgrade -r requirements.txt
 pyenv activate neovim3
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r neovim-requirements.txt
@@ -177,9 +175,13 @@ echo ================================
 echo ensure latest npm and modules
 echo ================================
 echo ${normal}
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+nvm install 'lts/*' --latest-npm --reinstall-packages-from=current
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
 
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
+if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
   echo ${bold}
   echo =====================
   echo installing nerd-fonts
@@ -194,7 +196,7 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   fi
 fi
 
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
+if [[ $MACOS -eq 0 ]]; then
   echo ${bold}
   echo ====================
   echo Installing/Updating AWS Cli 2
@@ -205,50 +207,18 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
   sudo ./aws/install --update
   rm -rf ./aws
   rm awscliv2.zip
+fi
 
-  echo ${bold}
-  echo =================
-  echo installing vscode
-  echo =================
-  echo ${normal}
-  if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+if [[ $GUI -eq 1 ]]; then
+  ## get list of extensions with code --list-extensions
+  if type code > /dev/null; then
+    awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code --force --install-extension
   fi
-  if [ ! -f /etc/apt/sources.list.d/vscode.list  ]; then
-    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-    sudo apt update
-  fi
-  PKG_OK=$(dpkg-query -W --showformat='${Status}\n' code | grep "install ok installed" )
-  if [ "" == "$PKG_OK" ]; then
-    sudo apt -y install code code-insiders
+  if type code-insiders > /dev/null; then
+    awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code-insiders --force --install-extension
   fi
 fi
 
-
-## get list of extensions with code --list-extensions
-if type code > /dev/null; then
-  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code --force --install-extension
-fi
-if type code-insiders > /dev/null; then
-  awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code-insiders --force --install-extension
-fi
-
-if ! [[ "$OSTYPE" =~ darwin* ]]; then
-  echo ${bold}
-  echo =================
-  echo installing powershell
-  echo =================
-  echo ${normal}
-  if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
-    wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
-    sudo apt install ./packages-microsoft-prod.deb -y
-    sudo apt update
-  fi
-  if [ ! -x /usr/bin/pwsh ]; then
-    sudo apt install -y powershell
-  fi
-fi
 echo ${bold}
 echo ========================
 echo update submodules
@@ -284,6 +254,9 @@ else
   echo rust-analyzer already exists
 fi
 
+xargs -a <(awk '! /^ *(#|$)/' "cargorequirements.txt") -r -- cargo install
+
+
 echo ${bold}
 echo ===================================
 echo ensure nvim vim-plug is up to date
@@ -306,9 +279,21 @@ eval "$(rbenv init -)"
 # install last version without a dash in its name, skipping existing
 rbenv install -s $(rbenv install -l | grep -v - | tail -1)
 rbenv global $(rbenv install -l | grep -v - | tail -1)
-gem install bundler
-gem install neovim
+xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- gem install
 gem environment
+
+echo ${bold}
+echo ================================
+echo fzf install / upgrade
+echo ================================
+echo ${normal}
+
+if [ ! -d ~/.fzf ]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
+else
+  cd ~/.fzf && git pull && ./install && cd -
+fi
 
 sudo chsh $USER -s /bin/zsh
 
