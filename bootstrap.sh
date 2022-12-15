@@ -271,7 +271,7 @@ echo ================================
 echo ensure neovim ruby gem installed
 echo ================================
 echo ${normal}
-eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer)"
+eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer)"
 # for first time.   .zshrc will take care of this later
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
