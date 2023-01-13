@@ -259,12 +259,15 @@ xargs -a <(awk '! /^ *(#|$)/' "cargorequirements.txt") -r -- cargo install
 
 echo ${bold}
 echo ===================================
-echo ensure nvim vim-plug is up to date
+echo ensure nvim Packer is up to date
 echo ===================================
 echo ${normal}
-nvim --headless +PlugUpgrade +qa
-nvim --headless +PlugInstall +qa
+nvim --headless +PackerInstall +qa
+nvim --headless +PackerUpdate +qa
+nvim --headless +PackerClean +qa
+nvim --headless +PackerCompile +qa
 nvim --headless +UpdateRemotePlugins +qa
+nvim --headless +TSUpdate +qa
 
 echo ${bold}
 echo ================================
