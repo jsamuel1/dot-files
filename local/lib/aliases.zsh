@@ -24,7 +24,7 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
 alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; gem update; gem cleanup'
+alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; gem update; sudo gem cleanup'
 
 
 fi
@@ -41,10 +41,16 @@ function sudo() {
                         fi
 }
 
+if command -v /opt/cisco/anyconnect/bin/vpn &>/dev/null ; then
 alias vpn='~/.local/bin/vpn-onetouch'
 alias vpns='/opt/cisco/anyconnect/bin/vpn status'
 alias vpnd='/opt/cisco/anyconnect/bin/vpn disconnect'
+fi
 
 if command -v isengardcli &>/dev/null ; then
 eval "$(isengardcli shell-profile)"
+fi
+
+if command -v finch &>/dev/null ; then
+  alias docker=finch
 fi

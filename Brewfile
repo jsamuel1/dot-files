@@ -23,7 +23,6 @@ brew "sqlite"
 brew "xz"
 brew "python@3.8"
 brew "cask"
-brew "chrony"
 brew "dfu-util"
 brew "expect"
 brew "fd"
@@ -166,14 +165,11 @@ cask "vnc-viewer"
 cask "zoom"
 mas "Developer", id: 640199958
 mas "Focus Dashcam Organizer", id: 1476008241
-mas "HP Smart", id: 1474276998
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "LimeChat", id: 414030210
 mas "Microsoft OneNote", id: 784801555
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "Quip", id: 1003160018
 mas "Skitch", id: 425955336
 mas "Twitter", id: 1482454543
-mas "Xcode", id: 497799835

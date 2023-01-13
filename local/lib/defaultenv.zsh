@@ -18,3 +18,4 @@ fi
 export PAGER="less"
 export LESS="-EFiMQR~ --tabs=4"
 export AWS_PAGER="less"
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"

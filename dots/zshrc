@@ -51,7 +51,9 @@ if [[ $(command -v docker) ]]; then
 fi
 
 plugins=(
+  autojump
   aws
+  bgnotify
   command-not-found
   dircycle
   ${DOCKERPLUGIN}
@@ -75,6 +77,7 @@ plugins=(
   sublime-merge
   sudo
   virtualenv
+  yarn
   zsh-interactive-cd
 )
 
