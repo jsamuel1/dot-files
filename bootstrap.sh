@@ -212,10 +212,10 @@ fi
 if [[ $GUI -eq 1 ]]; then
   ## get list of extensions with code --list-extensions
   if type code > /dev/null; then
-    awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code --force --install-extension
+    code --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension
   fi
   if type code-insiders > /dev/null; then
-    awk '! /^ *(#|$)/' "vscodeextensions.txt" | xargs -L1 code-insiders --force --install-extension
+    code-insiders --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
   fi
 fi
 
@@ -254,8 +254,7 @@ else
   echo rust-analyzer already exists
 fi
 
-xargs -a <(awk '! /^ *(#|$)/' "cargorequirements.txt") -r -- cargo install
-
+awk '! /^ *(#|$)/' "cargorequirements.txt"  | xargs -r -- cargo install
 
 echo ${bold}
 echo ===================================
