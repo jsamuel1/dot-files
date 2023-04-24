@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if ! type brew > /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -18,13 +18,15 @@ if ! xcodebuild -checkFirstLaunchStatus; then
     sudo xcodebuild -license accept
     sudo xcodebuild -runFirstLaunch
 fi
-HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=y brew bundle -v
+ACCEPT_EULA=y brew bundle -v
 
-curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+if ! type it2check > /dev/null ; then
+    curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+fi
 
 ./macdefaults.sh
 
-if [ ! -d "/Applications/Google Chrome" ]; then
+if [ ! -d "/Applications/Google Chrome.app" ]; then
     temp=$TMPDIR$(uuidgen)
     mkdir -p $temp/mount
     curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg > $temp/1.dmg

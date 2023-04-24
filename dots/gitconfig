@@ -19,7 +19,8 @@
         filemode = false
 [diff]
 	tool = nvimdiff
-	guitool = bc4
+  guitool = bc4
+  colorMoved = default
 [difftool]
 	prompt = false
 [difftool "bc4"]
@@ -29,7 +30,7 @@
   trustExitCode = true
 
 [merge]
-        tool = nfutitive
+  tool = nfugitive
 	guitool = bc4
 	keepbackup = false
 [mergetool "nvimdiff4"]

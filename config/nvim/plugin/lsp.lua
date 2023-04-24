@@ -97,7 +97,7 @@ local servers = {
   ocamllsp = {},
   pyright = { settings = { python = { formatting = { provider = 'yapf' }, linting = { pytypeEnabled = true } } } },
   rust_analyzer = {},
-  sumneko_lua = { prefer_null_ls = true },
+  lua_ls = { prefer_null_ls = true },
   -- sumneko_lua = {
   --   prefer_null_ls = true,
   --   cmd = { 'lua-language-server' },

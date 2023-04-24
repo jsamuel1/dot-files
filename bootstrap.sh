@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Ask for the administrator password upfront
 sudo true
@@ -261,13 +261,13 @@ echo ===================================
 echo ensure nvim Packer is up to date
 echo ===================================
 echo ${normal}
+git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 nvim --headless +PackerInstall +qa
 nvim --headless +PackerUpdate +qa
 nvim --headless +PackerClean +qa
 nvim --headless +PackerCompile +qa
-nvim --headless +UpdateRemotePlugins +qa
 nvim --headless +TSUpdate +qa
-
 echo ${bold}
 echo ================================
 echo ensure neovim ruby gem installed

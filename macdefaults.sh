@@ -145,10 +145,12 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryCli
 # Enable “natural” (Lion-style) scrolling
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true
 
+defaults write NSGlobalDomain NSUserDictionaryReplacementItems -array '{ on = 1; replace = ":shurg:"; with = "\\U00af\\\\_(\\U30c4)_/\\U00af"; }'
 defaults write NSGlobalDomain NSUserDictionaryReplacementItems -array '{ on = 1; replace = ":shrug:"; with = "\\U00af\\\\_(\\U30c4)_/\\U00af"; }'
 
 # Increase sound quality for Bluetooth headphones/headsets
-defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
+defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 80
+defaults write com.apple.BluetoothAudioAgent "Negotiated Bitpool Min" -int 80
 
 # Enable full keyboard access for all controls
 # (e.g. enable Tab in modal dialogs)
@@ -346,7 +348,7 @@ defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
 
 # Use Column view in all Finder windows by default
-# Four-letter codes for the other view modes: `Nlsv`, `icnv`, `clmv`, `Flwv`
+# Four-letter codes for the other view modes: `Nlsv`, `icnv`, `clmv`, `Flwv`, 'glyv'
 defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 
 # Disable the warning before emptying the Trash

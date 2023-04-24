@@ -9,7 +9,6 @@ tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
-tap "homebrew/core"
 tap "homebrew/services"
 tap "microsoft/mssql-release"
 tap "teamookla/speedtest"
@@ -68,7 +67,6 @@ brew "neofetch"
 brew "neovim", args: ["HEAD"]
 brew "ninja"
 brew "node"
-brew "octant"
 brew "oras"
 brew "p7zip"
 brew "pinentry-mac"
@@ -114,7 +112,6 @@ cask "corretto"
 cask "disk-inventory-x"
 cask "doteditor"
 cask "dotnet-sdk"
-cask "doxygen"
 cask "drawio"
 cask "finch"
 cask "finicky"
@@ -189,10 +186,6 @@ cask "vnc-viewer"
 cask "wickrenterprise"
 cask "zoom"
 mas "Developer", id: 640199958
-mas "Focus Dashcam Organizer", id: 1476008241
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
 mas "LimeChat", id: 414030210
 mas "Magnet", id: 441258766
 mas "Microsoft OneNote", id: 784801555
