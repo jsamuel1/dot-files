@@ -51,6 +51,7 @@ python3-psutil
 python3-pyalsa
 ruby
 ruby-dev
+ruby-build
 scrot
 software-properties-common
 tk-dev

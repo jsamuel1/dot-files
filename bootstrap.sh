@@ -8,6 +8,13 @@ DNF=0
 GUI=1
 YUM=0
 
+if [ ! -z "$WSL_DISTRO_NAME" ]; then
+  echo ${bold}
+  echo "Windows Subsystem for Linux (WSL) detection"
+  echo ${normal}
+  GUI=0
+fi
+
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -269,6 +276,8 @@ eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-i
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+sudo mkdir -p /usr/local/opt/sqllite
+sudo mkdir -p /usr/local/opt/zlib/lib
 # install last version without a dash in its name, skipping existing
 rbenv install -s $(rbenv install -l | grep -v - | tail -1)
 rbenv global $(rbenv install -l | grep -v - | tail -1)

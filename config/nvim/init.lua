@@ -1,5 +1,7 @@
 require 'plugins'
-require 'impatient'
+
+-- nvim 0.7 or higher, enable this
+-- vim.loader.enable()
 vim.notify = require 'notify'
 
 local g = vim.g
