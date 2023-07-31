@@ -4,13 +4,8 @@ set laststatus=3
 
 " Setup the colors
 function! s:setup_colors() abort
-  if g:colors_name ==# 'nazgul'
-    let s:bg_color = '#222222'
-    let s:fg_color = '#e9e9e9'
-  else
-    let s:bg_color = synIDattr(synIDtrans(hlID('Statusline')), 'bg#', 'gui')
-    let s:fg_color = synIDattr(synIDtrans(hlID('Statusline')), 'fg#', 'gui')
-  endif
+  let s:bg_color = synIDattr(synIDtrans(hlID('Statusline')), 'bg#', 'gui')
+  let s:fg_color = synIDattr(synIDtrans(hlID('Statusline')), 'fg#', 'gui')
 
   exec 'hi Statusline guifg=' . s:fg_color . ' guibg=' . s:bg_color . ' gui=none'
   exec 'hi StatuslineSeparator guifg=' . s:bg_color . ' gui=none guibg=none'

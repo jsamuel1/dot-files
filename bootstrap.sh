@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash 
 
 # Ask for the administrator password upfront
 sudo true
@@ -143,17 +143,8 @@ echo installing latest python for user
 echo =================================
 echo ${normal}
 
-if [[ $MACOS -eq 0 ]]; then
-  export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
-  export CPPFLAGS="${CPPFLAGS} -I/usrlocal/opt/zlib/include"
-  export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/zlib/lib/pkgconfig"
-
-  export LDFLAGS="${LDFLAGS} -L/usr/local/opt/sqllite/lib"
-  export CPPFLAGS="${CPPFLAGS} -I/usrlocal/opt/sqllite/include"
-  export PKG_CONFIG_PATH="${PKG_CONFIG_PATH} /usr/local/opt/sqllite/lib/pkgconfig"
-fi
-pyenv latest install 3 -s
-pyenv latest global
+pyenv install 3.11 
+pyenv global 3.11
 pyenv virtualenv `pyenv latest --print 3` neovim3
 
 echo ${bold}

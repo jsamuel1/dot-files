@@ -1,8 +1,7 @@
+vim.loader.enable()
 require 'plugins'
 
--- nvim 0.7 or higher, enable this
--- vim.loader.enable()
-vim.notify = require 'notify'
+--vim.notify = require 'notify'
 
 local g = vim.g
 local cmd = vim.cmd
@@ -79,10 +78,6 @@ opt.encoding = 'utf8'
 opt.termguicolors = true
 opt.background = 'dark'
 
--- cmd [[colorscheme gruvbox-material]]
--- cmd [[colorscheme nazgul]]
--- cmd [[colorscheme base16-gruvbox-light-hard]]
-cmd [[colorscheme base16-default-dark]]
 
 -- Autocommands
 local autocmd = vim.api.nvim_create_autocmd
@@ -163,3 +158,9 @@ map('n', '<c-l>', '<c-w>l', silent)
 -- Tab movement
 map('n', '<c-Left>', '<cmd>tabpre<cr>', silent)
 map('n', '<c-Right>', '<cmd>tabnext<cr>', silent)
+
+
+-- cmd [[colorscheme gruvbox-material]]
+-- cmd [[colorscheme nazgul]]
+-- cmd [[colorscheme base16-gruvbox-light-hard]]
+cmd [[colorscheme base16-default-dark]]
