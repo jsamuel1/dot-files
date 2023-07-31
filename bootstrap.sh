@@ -6,6 +6,7 @@ MACOS=0
 APT=0
 DNF=0
 GUI=1
+YUM=0
 
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -21,12 +22,12 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     echo ${normal}
     ./macos.sh
     MACOS=1
-  elif [[ -f /etc/os-release && `grep al2022 /etc/os-release` ]]; then
+  elif [[ -f /etc/os-release && `grep al2023 /etc/os-release` ]]; then
     DNF=1
     YUM=0
     APT=0
     GUI=0
-  elif [ "`hostnamectl | grep 'Amazon Linux 2'`" != ""]; then
+  elif [ "`hostnamectl | grep 'Amazon Linux 2'`" != "" ]; then
     DNF=0
     YUM=1
     APT=0
@@ -38,7 +39,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     echo ${normal}
     APT=1
     DNF=0
-    APT=0
+    YUM=0
     sudo sed -i s/stretch/buster/g /etc/apt/sources.list
     sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
     sudo apt update
@@ -55,11 +56,14 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
     ./fix-cros-ui-config-pkg.sh
     APT=1
     DNF=0
-    APT=0
+    YUM=0
   else
+    echo ==
+    echo Standard APT install
+    echo ==
     APT=1
     DNF=0
-    APT=0
+    YUM=0
   fi
 
 # Install base apt packages
@@ -70,20 +74,7 @@ if [[ $APT -ne 0 ]]; then
   echo ============================
   echo ${normal}
 
-  sudo apt install software-properties-common
-
-  # git-core PPA doesn't work with Debian Buster
-  if [ "`hostnamectl | grep Debian`" == "" ]; then
-      sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
-      sudo add-apt-repository ppa:git-core/ppa --yes --update
-  fi
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C99B11DEB97541F0
-  sudo apt-add-repository https://cli.github.com/packages
-  sudo apt update
-
-  xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
-
-  ./apt-install.sh
+  . ./apt-install.sh
 fi
 
 if [[ $YUM -ne 0 ]]; then
@@ -101,7 +92,7 @@ if [[ $DNF -ne 0 ]]; then
   echo installing base dnf packages
   echo ============================
   echo ${normal}
-  ./dnf-install.sh
+  . ./dnf-install.sh
 fi
 
 if [[ -x /usr/bin/nvim ]]; then
