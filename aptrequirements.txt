@@ -2,6 +2,7 @@ appmenu-gtk-module-common
 appmenu-gtk2-module
 appmenu-gtk3-module
 apt-transport-https
+autojump
 build-essential
 bundler
 caca-utils
