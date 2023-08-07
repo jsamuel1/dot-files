@@ -25,6 +25,7 @@ append_path $HOME/.cargo/bin
 append_path $HOME/.dotnet/tools
 append_path $HOME/.pyenv/bin
 append_path ${KREW_ROOT:-$HOME/.krew}/bin
+append_path /snap/bin
 export PATH=$PATH:$OLDPATH
 
 # This must be before sheldon/ohmhyzsh, otherwise we get warnings
