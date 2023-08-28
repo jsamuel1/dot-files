@@ -12,8 +12,6 @@ OLDPATH=$PATH
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin
 
 
-fpath=(~/.zsh/completion $fpath)
-
 source $HOME/.zshrc-helpers
 
 prepend_path /home/linuxbrew/.linuxbrew/bin
@@ -27,6 +25,15 @@ append_path $HOME/.pyenv/bin
 append_path ${KREW_ROOT:-$HOME/.krew}/bin
 append_path /snap/bin
 export PATH=$PATH:$OLDPATH
+
+fpath=(~/.zsh/completion $fpath)
+if type brew &>/dev/null; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+    FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
+
+    autoload -Uz compinit && compinit -i
+fi
+
 
 # This must be before sheldon/ohmhyzsh, otherwise we get warnings
 eval "$(pyenv init -)"
@@ -80,7 +87,7 @@ plugins=(
   virtualenv
   yarn
   zsh-interactive-cd
-  starship
+#  starship
 )
 
 if [ -d $HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then

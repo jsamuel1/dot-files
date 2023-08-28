@@ -1,5 +1,6 @@
 module.exports = {
-        defaultBrowser: "Google Chrome",
+        //defaultBrowser: "Google Chrome",
+        defaultBrowser: "Arc",
         rewrite: [{
                 // rewrite http[s]://chime.aws/<meetingID> to chime://meeting?pin=meetingId>
                 match: finicky.matchHostnames(["chime.aws"]),
