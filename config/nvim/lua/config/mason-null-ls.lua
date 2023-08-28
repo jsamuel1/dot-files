@@ -6,6 +6,7 @@ local sources = {
 	null_ls.builtins.formatting.stylua,
 }
 
+
 null_ls.setup({
 	debug = false,
 	log_level = "warn",

@@ -86,3 +86,4 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'Buf
         vim.opt.foldexpr   = 'nvim_treesitter#foldexpr()'
     end
 })
+

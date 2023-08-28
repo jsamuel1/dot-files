@@ -1,5 +1,6 @@
 -- define your colorscheme here
-local colorscheme = 'monokai_pro'
+-- local colorscheme = 'monokai_pro'
+local colorscheme = 'onedark'
 
 local is_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not is_ok then

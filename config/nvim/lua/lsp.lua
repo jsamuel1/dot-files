@@ -9,10 +9,18 @@ require('mason').setup({
     }
 })
 
-require('mason-lspconfig').setup({
+require('neodev').setup()
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+local mason_lspconfig = require 'mason-lspconfig'
+mason_lspconfig.setup({
     -- A list of servers to automatically install if they're not already installed
-    ensure_installed = { 'pylsp', 'gopls', 'lua_ls', 'bashls', 'rust_analyzer' },
+    ensure_installed = { 'pylsp', 'gopls', 'lua_ls', 'bashls', 'rust_analyzer'}
 })
+
 
 
 -- Set different settings for different languages' LSP
@@ -62,6 +70,14 @@ local on_attach = function(client, bufnr)
     end, bufopts)
 end
 
+mason_lspconfig.setup_handlers {
+    function(server_name)
+        lspconfig[server_name].setup {
+            capabilities = capabilities,
+            on_attach = on_attach,
+        }
+    end
+}
 -- Configure each language
 -- How to add LSP for a specific language?
 -- 1. use `:Mason` to install corresponding LSP
@@ -88,7 +104,8 @@ lspconfig.lua_ls.setup {
             },
             workspace = {
                 -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
+                library = vim.api.nvim_get_runtime_file("", true), 
+                checkThirdParty = false 
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
