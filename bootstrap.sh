@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Ask for the administrator password upfront
 sudo true
@@ -8,150 +8,154 @@ DNF=0
 GUI=1
 YUM=0
 
-if [ ! -z "$WSL_DISTRO_NAME" ]; then
-  echo ${bold}
-  echo "Windows Subsystem for Linux (WSL) detection"
-  echo ${normal}
-  GUI=0
+if [ -n "$WSL_DISTRO_NAME" ]; then
+	echo "${bold}"
+	echo "Windows Subsystem for Linux (WSL) detection"
+	echo "${normal}"
+	GUI=0
 fi
 
 # Keep-alive: update existing `sudo` time stamp until script has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+	sudo -n true
+	sleep 60
+	kill -0 "$$" || exit
+done 2>/dev/null &
 
-  bold=$(tput bold)
-  normal=$(tput sgr0)
+bold=$(tput bold)
+normal=$(tput sgr0)
 
-  if [[ "$OSTYPE" =~ darwin* ]]; then
-    echo ${bold}
-    echo ============================
-    echo prepare MacOS
-    echo ============================
-    echo ${normal}
-    ./macos.sh
-    MACOS=1
-  elif [[ -f /etc/os-release && `grep al2023 /etc/os-release` ]]; then
-    DNF=1
-    YUM=0
-    APT=0
-    GUI=0
-  elif [ "`hostnamectl | grep 'Amazon Linux 2'`" != "" ]; then
-    DNF=0
-    YUM=1
-    APT=0
-  elif [ "`hostnamectl | grep Debian`" != "" ]; then
-    echo ${bold}
-    echo ============================
-    echo upgrade debian to buster
-    echo ============================
-    echo ${normal}
-    APT=1
-    DNF=0
-    YUM=0
-    sudo sed -i s/stretch/buster/g /etc/apt/sources.list
-    sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
-    sudo apt update
-    sudo apt upgrade -y
-    sudo apt full-upgrade -y
-    sudo apt auto-remove -y
+if [[ "$OSTYPE" =~ darwin* ]]; then
+	echo "${bold}"
+	echo ============================
+	echo prepare MacOS
+	echo ============================
+	echo "${normal}"
+	./macos.sh
+	MACOS=1
+elif [[ -f /etc/os-release && $(grep al2023 /etc/os-release) ]]; then
+	DNF=1
+	YUM=0
+	APT=0
+	GUI=0
+elif [ "$(hostnamectl | grep 'Amazon Linux 2')" != "" ]; then
+	DNF=0
+	YUM=1
+	APT=0
+elif [ "$(hostnamectl | grep Debian)" != "" ]; then
+	echo "${bold}"
+	echo ============================
+	echo upgrade debian to buster
+	echo ============================
+	echo "${normal}"
+	APT=1
+	DNF=0
+	YUM=0
+	sudo sed -i s/stretch/buster/g /etc/apt/sources.list
+	sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
+	sudo apt update
+	sudo apt upgrade -y
+	sudo apt full-upgrade -y
+	sudo apt auto-remove -y
 
-  elif [ -v SOMMELIER_VERSION ]; then
-    echo ${bold}
-    echo ===============================
-    echo chromebook preconfig for ubuntu
-    echo ===============================
-    echo ${normal}
-    ./fix-cros-ui-config-pkg.sh
-    APT=1
-    DNF=0
-    YUM=0
-  else
-    echo ==
-    echo Standard APT install
-    echo ==
-    APT=1
-    DNF=0
-    YUM=0
-  fi
+elif [ -v SOMMELIER_VERSION ]; then
+	echo "${bold}"
+	echo ===============================
+	echo chromebook preconfig for ubuntu
+	echo ===============================
+	echo "${normal}"
+	./fix-cros-ui-config-pkg.sh
+	APT=1
+	DNF=0
+	YUM=0
+else
+	echo '=='
+	echo Standard APT install
+	echo '=='
+	APT=1
+	DNF=0
+	YUM=0
+fi
 
 # Install base apt packages
 if [[ $APT -ne 0 ]]; then
-  echo ${bold}
-  echo ============================
-  echo installing base apt packages
-  echo ============================
-  echo ${normal}
+	echo "${bold}"
+	echo ============================
+	echo installing base apt packages
+	echo ============================
+	echo "${normal}"
 
-  . ./apt-install.sh
+	. ./apt-install.sh
 fi
 
 if [[ $YUM -ne 0 ]]; then
-    echo ${bold}
-    echo ============================
-    echo installing base yum packages
-    echo ============================
-    echo ${normal}
-  	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
+	echo "${bold}"
+	echo ============================
+	echo installing base yum packages
+	echo ============================
+	echo "${normal}"
+	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
 fi
 
 if [[ $DNF -ne 0 ]]; then
-  echo ${bold}
-  echo ============================
-  echo installing base dnf packages
-  echo ============================
-  echo ${normal}
-  . ./dnf-install.sh
+	echo "${bold}"
+	echo ============================
+	echo installing base dnf packages
+	echo ============================
+	echo "${normal}"
+	. ./dnf-install.sh
 fi
 
 if [[ -x /usr/bin/nvim ]]; then
-  echo ${bold}
-  echo =====================================
-  echo ensure nvim is our default vim editor
-  echo =====================================
-  echo ${normal}
-  sudo update-alternatives --set vim /usr/bin/nvim
+	echo "${bold}"
+	echo =====================================
+	echo ensure nvim is our default vim editor
+	echo =====================================
+	echo "${normal}"
+	sudo update-alternatives --set vim /usr/bin/nvim
 fi
 
 # Install pyenv.  zshrc already setup to run it.
-echo ${bold}
+echo "${bold}"
 echo =================
 echo downloading pyenv
 echo =================
-echo ${normal}
+echo "${normal}"
 if [ ! -d ~/.pyenv ]; then
-  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-  # temporary - zshrc will have these already for persistence
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
+	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+	# temporary - zshrc will have these already for persistence
+	export PYENV_ROOT="$HOME/.pyenv"
+	export PATH="$PYENV_ROOT/bin:$PATH"
 else
-  echo ${bold}already downloaded${normal}
+	echo "${bold}already downloaded${normal}"
 fi
 
 if [ ! -d ~/.pyenv/plugins/xxenv-latest ]; then
-  git clone https://github.com/momo-lab/xxenv-latest.git $(pyenv root)/plugins/xxenv-latest
+	git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)/plugins/xxenv-latest"
 fi
 
 if [ ! -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
-  git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+	git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv"
 fi
 
 eval "$(pyenv init - bash)"
 eval "$(pyenv virtualenv-init - bash)"
 
-echo ${bold}
+echo "${bold}"
 echo =================================
 echo installing latest python for user
 echo =================================
-echo ${normal}
+echo "${normal}"
 
-pyenv install 3.11 
+pyenv install 3.11
 pyenv global 3.11
-pyenv virtualenv `pyenv latest --print 3` neovim3
+pyenv virtualenv "$(pyenv latest --print 3)" neovim3
 
-echo ${bold}
+echo "${bold}"
 echo ================================
 echo installing base python3 packages
 echo ================================
-echo ${normal}
+echo "${normal}"
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r requirements.txt
 pyenv activate neovim3
@@ -159,11 +163,11 @@ python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r neovim-requirements.txt
 pyenv deactivate
 
-echo ${bold}
+echo "${bold}"
 echo ================================
 echo ensure latest npm and modules
 echo ================================
-echo ${normal}
+echo "${normal}"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -171,83 +175,82 @@ nvm install 'lts/*' --latest-npm --reinstall-packages-from=current
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
 
 if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
-  echo ${bold}
-  echo =====================
-  echo installing nerd-fonts
-  echo =====================
-  echo ${normal}
-  if [ ! -d ~/src/nerd-fonts ]; then
-    git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1 ~/src/nerd-fonts/
-    echo running nerd-fonts installer
-    ~/src/nerd-fonts/install.sh
-  else
-    echo nerd-fonts already exists
-  fi
+	echo "${bold}"
+	echo =====================
+	echo installing nerd-fonts
+	echo =====================
+	echo "${normal}"
+	if [ ! -d ~/src/nerd-fonts ]; then
+		git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1 ~/src/nerd-fonts/
+		echo running nerd-fonts installer
+		~/src/nerd-fonts/install.sh
+	else
+		echo nerd-fonts already exists
+	fi
 fi
 
 if [[ $MACOS -eq 0 ]]; then
-  echo ${bold}
-  echo ====================
-  echo Installing/Updating AWS Cli 2
-  echo ====================
-  echo ${normal}
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  unzip awscliv2.zip
-  sudo ./aws/install --update
-  rm -rf ./aws
-  rm awscliv2.zip
+	echo "${bold}"
+	echo ====================
+	echo Installing/Updating AWS Cli 2
+	echo ====================
+	echo "${normal}"
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+	unzip awscliv2.zip
+	sudo ./aws/install --update
+	rm -rf ./aws
+	rm awscliv2.zip
 fi
 
 if [[ $GUI -eq 1 ]]; then
-  ## get list of extensions with code --list-extensions
-  if type code > /dev/null; then
-    code --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension
-  fi
-  if type code-insiders > /dev/null; then
-    code-insiders --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
-  fi
+	## get list of extensions with code --list-extensions
+	if type code >/dev/null; then
+		code --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension
+	fi
+	if type code-insiders >/dev/null; then
+		code-insiders --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
+	fi
 fi
 
-echo ${bold}
+echo "${bold}"
 echo ========================
 echo update submodules
 echo ========================
-echo ${normal}
+echo "${normal}"
 git submodule update --init
 git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
 
-echo ${bold}
+echo "${bold}"
 echo ========================
 echo updating Dot Files
 echo ========================
-echo ${normal}
+echo "${normal}"
 ./settings.py --no-dryrun
 
-echo ${bold}
+echo "${bold}"
 echo ========================
 echo installing rust
 echo ========================
-echo ${normal}
+echo "${normal}"
 
 . ./rust-install.sh
 
-echo ${bold}
+echo "${bold}"
 echo ===================================
 echo ensure nvim Packer is up to date
 echo ===================================
-echo ${normal}
-git clone --depth 1 https://github.com/wbthomason/packer.nvim\
- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+echo "${normal}"
+git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 nvim --headless +PackerInstall +qa
 nvim --headless +PackerUpdate +qa
 nvim --headless +PackerClean +qa
 nvim --headless +PackerCompile +qa
 nvim --headless +TSUpdate +qa
-echo ${bold}
+echo "${bold}"
 echo ================================
 echo ensure neovim ruby gem installed
 echo ================================
-echo ${normal}
+echo "${normal}"
 eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer)"
 # for first time.   .zshrc will take care of this later
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -261,30 +264,30 @@ rbenv global $(rbenv install -l | grep -v - | tail -1)
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- gem install
 gem environment
 
-echo ${bold}
+echo "${bold}"
 echo ================================
 echo fzf install / upgrade
 echo ================================
-echo ${normal}
+echo "${normal}"
 
 if [ ! -d ~/.fzf ]; then
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
 else
-  cd ~/.fzf && git pull && ./install && cd -
+	cd ~/.fzf && git pull && ./install && cd -
 fi
 
-echo ${bold}
+echo "${bold}"
 echo ================================
 echo Installing Starship prompt
 echo ================================
-echo ${normal}
+echo "${normal}"
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-sudo chsh $USER -s /bin/zsh
+sudo chsh "$USER" -s /bin/zsh
 
-echo ${bold}
+echo "${bold}"
 echo ========================
 echo DONE
 echo ========================
-echo ${normal}
+echo "${normal}"
