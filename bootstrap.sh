@@ -284,7 +284,7 @@ echo ================================
 echo "${normal}"
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-sudo chsh "$USER" -s /bin/zsh
+sudo chsh "$USER" -s /bin/zsh || true
 
 echo "${bold}"
 echo ========================
