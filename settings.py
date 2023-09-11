@@ -5,17 +5,6 @@ import os
 import tempfile
 from pathlib import Path
 
-# upload blob to azure blob storage
-
-
-def upload_blob(container_name, blob_name, file_path):
-    # Upload the created file, use local_file_name for the blob name
-    block_blob_service = BlockBlobService(
-        account_name='storageaccountname', account_key='storageaccountkey')
-    block_blob_service.create_blob_from_path(
-        container_name, blob_name, file_path)
-        
-
 
 def install():
     parser = argparse.ArgumentParser(
