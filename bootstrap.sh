@@ -174,6 +174,13 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 'lts/*' --latest-npm --reinstall-packages-from=current
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
 
+echo "${bold}"
+echo ================================
+echo ensure latest go modules
+echo ================================
+echo "${normal}"
+awk '! /^ *(#|$)/' "gorequirements.txt" | xargs go install
+
 if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
 	echo "${bold}"
 	echo =====================

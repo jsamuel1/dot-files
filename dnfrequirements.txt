@@ -6,6 +6,7 @@ gcc
 gcc-c++ 
 gettext 
 git 
+golang
 libtool 
 make 
 ninja-build 
