@@ -12,7 +12,8 @@ make
 ninja-build 
 openssl-devel
 patch 
-pkgconfig 
+pkgconfig
+rtx
 sudo 
 unzip 
 wget

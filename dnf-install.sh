@@ -1,5 +1,8 @@
 #!/bin/bash
 
+dnf install -y dnf-plugins-core
+dnf config-manager --add-repo https://rtx.pub/rpm/rtx.repo
+
 xargs -a <(awk '! /^ *(#|$)/' "dnfrequirements.txt") -r -- sudo dnf -y install
 
 if [[ $GUI -eq 1 ]]; then

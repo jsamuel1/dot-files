@@ -21,9 +21,6 @@ github = 'davidparsson/zsh-pyenv-lazy'
 [plugins.oh-my-zsh]
 github = 'ohmyzsh/ohmyzsh'
 
-[plugins.zsh-defer]
-github = 'romkatv/zsh-defer'
-
 # Local plugins/customizations - after ohmyzsh
 [plugins.lib]
 local = "~/.local/lib"
@@ -31,15 +28,10 @@ local = "~/.local/lib"
 [plugins.zsh-autosuggestions]
 github = 'zsh-users/zsh-autosuggestions'
 use = ['{{ name }}.zsh']
-apply = ["defer"]
 
 [plugins.zsh-syntax-highlighting]
 github = 'zsh-users/zsh-syntax-highlighting'
-apply = ["defer"]
 
 [plugins.zsh-completions]
 github = 'zsh-users/zsh-completions'
-apply = ["defer"]
 
-[templates]
-defer = "{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}"

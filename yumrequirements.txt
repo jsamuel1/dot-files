@@ -4,6 +4,7 @@ bzip2
 bzip2-devel
 readline
 readline-devel
+rtx
 sqlite
 sqlite-devel
 openssl11

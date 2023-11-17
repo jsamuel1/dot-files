@@ -94,6 +94,8 @@ if [[ $YUM -ne 0 ]]; then
 	echo installing base yum packages
 	echo ============================
 	echo "${normal}"
+	yum install -y yum-utils
+  yum-config-manager --add-repo https://rtx.pub/rpm/rtx.repo
 	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
 fi
 
@@ -105,6 +107,14 @@ if [[ $DNF -ne 0 ]]; then
 	echo "${normal}"
 	. ./dnf-install.sh
 fi
+
+echo "${bold}"
+echo ========================
+echo installing rust
+echo ========================
+echo "${normal}"
+
+. ./rust-install.sh
 
 if [[ -x /usr/bin/nvim ]]; then
 	echo "${bold}"
@@ -168,10 +178,8 @@ echo ================================
 echo ensure latest npm and modules
 echo ================================
 echo "${normal}"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-nvm install 'lts/*' --latest-npm --reinstall-packages-from=current
+rtx install nodejs@lts
+rtx global nodejs@lts
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
 
 echo "${bold}"
@@ -233,14 +241,6 @@ echo updating Dot Files
 echo ========================
 echo "${normal}"
 ./settings.py --no-dryrun
-
-echo "${bold}"
-echo ========================
-echo installing rust
-echo ========================
-echo "${normal}"
-
-. ./rust-install.sh
 
 echo "${bold}"
 echo ===================================

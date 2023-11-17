@@ -12,9 +12,13 @@ sudo add-apt-repository ppa:neovim-ppa/stable --yes
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg 
 sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-sudo apt update 
-sudo apt install gh -y
 
+sudo install -dm 755 /etc/apt/keyrings
+wget -qO - https://rtx.pub/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/rtx-archive-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=$(dpkg --print-architecture)] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
+
+sudo apt update
+sudo apt install gh -y
 
 sudo apt -y upgrade
 
