@@ -5,6 +5,11 @@ if [ $_ZSH_PROFILE ]; then
   zmodload zsh/zprof
 fi
 
+INTERACTIVE=1
+if [ -z "$INTELLIJ_ENVIRONMENT_READER" ]; then
+    INTERACTIVE=0
+fi
+
 #ensure path arrays do not contain duplicates
 typeset -gU cdpath fpath mailpath path PATH
 
@@ -82,9 +87,8 @@ plugins=(
   ${OSXPLUGIN}
   pyenv
   rbenv
+  rtx
   screen
-  sublime
-  sublime-merge
   sudo
   virtualenv
   yarn
@@ -103,8 +107,6 @@ fi
 
 eval "$(sheldon source)"
 
-command -v zsh-defer >/dev/null 2>&1 && RPS1="%F{240}loading%f"
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 command -v nvim >/dev/null 2>&1 && export EDITOR='nvim'
@@ -113,23 +115,17 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
   source /etc/profile.d/vte.sh
 fi
 
-zsh-defer -c 'unset RPS1'
+if [ $INTERACTIVE -gt 0 ]; then
 command -v neofetch >/dev/null 2>&1 && neofetch
+fi
 
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
+
+export AWS_EC2_METADATA_DISABLED=true
+
+eval "$(/usr/local/bin/brew shellenv)"
 
 if [ $_ZSH_PROFILE ]; then
   zprof
 fi
-
-if [ -e $HOME/.config/nvm ] ; then
-   export NVM_DIR="$HOME/.config/nvm"
-else 
-   export NVM_DIR="$HOME/.nvm"
-fi
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export AWS_EC2_METADATA_DISABLED=true
 
