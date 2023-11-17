@@ -8,3 +8,4 @@ Brewfile.lock.json
 *.zwc
 neofetch/
 packages-microsoft*
+.idea/
