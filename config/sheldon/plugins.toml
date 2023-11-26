@@ -15,9 +15,6 @@ shell = "zsh"
 [plugins]
 
 
-[plugins.zsh-pyenv-lazy]
-github = 'davidparsson/zsh-pyenv-lazy'
-
 [plugins.oh-my-zsh]
 github = 'ohmyzsh/ohmyzsh'
 
@@ -25,9 +22,9 @@ github = 'ohmyzsh/ohmyzsh'
 [plugins.lib]
 local = "~/.local/lib"
 
-[plugins.zsh-autosuggestions]
-github = 'zsh-users/zsh-autosuggestions'
-use = ['{{ name }}.zsh']
+#[plugins.zsh-autosuggestions]
+#github = 'zsh-users/zsh-autosuggestions'
+#use = ['{{ name }}.zsh']
 
 [plugins.zsh-syntax-highlighting]
 github = 'zsh-users/zsh-syntax-highlighting'

@@ -63,6 +63,7 @@
         autosetupmerge = true
 [push]
         default = upstream
+	autoSetupRemote = true
 [rerere]
         # remember my merges
         enabled = true

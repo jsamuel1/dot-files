@@ -1,14 +1,15 @@
-#when profiling, uncomment this line
-#_ZSH_PROFILE=1
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
+
+# when profiling, uncomment this line
+# _ZSH_PROFILE=1
 
 if [ $_ZSH_PROFILE ]; then
   zmodload zsh/zprof
 fi
 
-INTERACTIVE=1
-if [ -z "$INTELLIJ_ENVIRONMENT_READER" ]; then
-    INTERACTIVE=0
-fi
+((INTERACTIVE)) || INTERACTIVE=1
+((INTELLIJ_ENVIRONMENT_READER)) || INTERACTIVE=0
 
 #ensure path arrays do not contain duplicates
 typeset -gU cdpath fpath mailpath path PATH
@@ -35,13 +36,10 @@ fpath=(~/.zsh/completion $fpath)
 if type brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
     FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
-
-    autoload -Uz compinit && compinit -i
 fi
 
-
 # This must be before sheldon/ohmhyzsh, otherwise we get warnings
-eval "$(pyenv init -)"
+#eval "$(pyenv init -)"
 
 ZSH_THEME="agnoster"
 
@@ -65,6 +63,8 @@ if [[ $(command -v docker) ]]; then
   DOCKERPLUGIN=docker
 fi
 
+  # pyenv
+  # rbenv
 plugins=(
   autojump
   aws
@@ -72,7 +72,6 @@ plugins=(
   command-not-found
   dircycle
   ${DOCKERPLUGIN}
-  fzf
   git
   git-extras
   git-prompt
@@ -85,12 +84,9 @@ plugins=(
   kubectx
   magic-enter
   ${OSXPLUGIN}
-  pyenv
-  rbenv
   rtx
   screen
   sudo
-  virtualenv
   yarn
   zsh-interactive-cd
 #  starship
@@ -129,3 +125,5 @@ if [ $_ZSH_PROFILE ]; then
   zprof
 fi
 
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
