@@ -1,7 +1,8 @@
 click
 gobject
-python-language-server
 pygit2
 pylint
+pynvim
+python-language-server
 sqlparse
 virtualenvwrapper

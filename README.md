@@ -4,7 +4,7 @@ run bootstrap.sh to setup common tools, required packages and symlink dotfiles.
 - Zsh
 - Git
 - neovim
-- pyenv
+- rtx
 - and more
 
 ### Mac
@@ -13,8 +13,16 @@ run bootstrap.sh to setup common tools, required packages and symlink dotfiles.
 - Installs customized defaults
 - Sets up yabi tiled window manager.
 
-    To change zsh to Homebrew version:
-    sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
+#### To change zsh to Homebrew version:
+Execute from the zsh shell: 
+```bash
+sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh 
+```
+
+#### To setup iterm to nice default profile:
+- Load iTerm2 
+- Navigate to Settings -> Profiles -> Import JSON.   
+- Import iterm-default.json from this repo.
 
 ### Windows Subsystem for Linux
 - ensure upgraded to Disco or newer

@@ -125,41 +125,13 @@ if [[ -x /usr/bin/nvim ]]; then
 	sudo update-alternatives --set vim /usr/bin/nvim
 fi
 
-# Install pyenv.  zshrc already setup to run it.
-echo "${bold}"
-echo =================
-echo downloading pyenv
-echo =================
-echo "${normal}"
-if [ ! -d ~/.pyenv ]; then
-	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-	# temporary - zshrc will have these already for persistence
-	export PYENV_ROOT="$HOME/.pyenv"
-	export PATH="$PYENV_ROOT/bin:$PATH"
-else
-	echo "${bold}already downloaded${normal}"
-fi
-
-if [ ! -d ~/.pyenv/plugins/xxenv-latest ]; then
-	git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)/plugins/xxenv-latest"
-fi
-
-if [ ! -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
-	git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv"
-fi
-
-eval "$(pyenv init - bash)"
-eval "$(pyenv virtualenv-init - bash)"
-
 echo "${bold}"
 echo =================================
 echo installing latest python for user
 echo =================================
 echo "${normal}"
 
-pyenv install 3.11
-pyenv global 3.11
-pyenv virtualenv "$(pyenv latest --print 3)" neovim3
+rtx use -g python 3.12
 
 echo "${bold}"
 echo ================================
@@ -168,10 +140,6 @@ echo ================================
 echo "${normal}"
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade -r requirements.txt
-pyenv activate neovim3
-python3 -m pip install --upgrade pip
-python3 -m pip install --upgrade -r neovim-requirements.txt
-pyenv deactivate
 
 echo "${bold}"
 echo ================================
@@ -243,31 +211,16 @@ echo "${normal}"
 ./settings.py --no-dryrun
 
 echo "${bold}"
-echo ===================================
-echo ensure nvim Packer is up to date
-echo ===================================
-echo "${normal}"
-git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-nvim --headless +PackerInstall +qa
-nvim --headless +PackerUpdate +qa
-nvim --headless +PackerClean +qa
-nvim --headless +PackerCompile +qa
-nvim --headless +TSUpdate +qa
-echo "${bold}"
 echo ================================
 echo ensure neovim ruby gem installed
 echo ================================
 echo "${normal}"
-eval "$(curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer)"
-# for first time.   .zshrc will take care of this later
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
 
 sudo mkdir -p /usr/local/opt/sqllite
 sudo mkdir -p /usr/local/opt/zlib/lib
-# install last version without a dash in its name, skipping existing
-rbenv install -s $(rbenv install -l | grep -v - | tail -1)
-rbenv global $(rbenv install -l | grep -v - | tail -1)
+
+# install latest stable version and use globbaly
+rtx use -g ruby
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- gem install
 gem environment
 

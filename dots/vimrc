@@ -2,7 +2,7 @@
 if filereadable(expand('$HOME/scoop/shims/python.exe'))
         let g:python3_host_prog = expand('$HOME/scoop/shims/python.exe')
 else
-        let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
+        let g:python3_host_prog = 'python'
 endif
 
 " Disable Python2

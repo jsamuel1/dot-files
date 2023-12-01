@@ -1,4 +1,0 @@
-pynvim
-pylint
-python-language-server
-sqlparse
