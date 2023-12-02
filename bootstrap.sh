@@ -224,26 +224,6 @@ rtx use -g ruby
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- gem install
 gem environment
 
-echo "${bold}"
-echo ================================
-echo fzf install / upgrade
-echo ================================
-echo "${normal}"
-
-if [ ! -d ~/.fzf ]; then
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install
-else
-	cd ~/.fzf && git pull && ./install && cd -
-fi
-
-echo "${bold}"
-echo ================================
-echo Installing Starship prompt
-echo ================================
-echo "${normal}"
-curl -sS https://starship.rs/install.sh | sh -s -- -y
-
 sudo chsh "$USER" -s /bin/zsh || true
 
 echo "${bold}"

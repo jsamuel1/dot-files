@@ -63,8 +63,6 @@ if [[ $(command -v docker) ]]; then
   DOCKERPLUGIN=docker
 fi
 
-  # pyenv
-  # rbenv
 plugins=(
   autojump
   aws
@@ -89,7 +87,6 @@ plugins=(
   sudo
   yarn
   zsh-interactive-cd
-#  starship
 )
 
 if [ -d $HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh ]; then

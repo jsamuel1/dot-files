@@ -36,12 +36,4 @@ if [ ! -d "/Applications/Google Chrome.app" ]; then
     rm -r $temp
 fi
 
-echo ${bold}
-echo ==============================
-echo Installing/Updating AWS CLI v2
-echo ==============================
-echo ${normal}
-curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-sudo installer -pkg AWSCLIV2.pkg -target /
-rm AWSCLIV2.pkg
 
