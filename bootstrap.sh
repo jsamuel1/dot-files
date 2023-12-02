@@ -134,14 +134,15 @@ echo =================================
 echo "${normal}"
 
 rtx use -g python@3.12
+$(rtx hook-env)
 
 echo "${bold}"
 echo ================================
 echo installing base python3 packages
 echo ================================
 echo "${normal}"
-python3 -m pip install --upgrade pip
-python3 -m pip install --upgrade -r requirements.txt
+rtx x -- python3 -m pip install --upgrade pip
+rtx x -- python3 -m pip install --upgrade -r requirements.txt
 
 echo "${bold}"
 echo ================================
@@ -150,7 +151,8 @@ echo ================================
 echo "${normal}"
 rtx install nodejs@lts
 rtx global nodejs@lts
-awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo npm install -g
+$(rtx hook-env)
+awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo rtx x -- npm install -g
 
 echo "${bold}"
 echo ================================
@@ -223,8 +225,9 @@ sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly
 rtx use -g ruby
-xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- gem install
-gem environment
+$(rtx hook-env)
+xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
+rtx x -- gem environment
 
 sudo chsh "$USER" -s /bin/zsh || true
 

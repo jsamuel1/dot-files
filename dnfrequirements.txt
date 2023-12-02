@@ -28,6 +28,8 @@ rtx
 sqlite-devel
 sudo
 unzip
+util-linux
+util-linux-user
 wget
 xz-lzma-compat
 zlib
