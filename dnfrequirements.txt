@@ -1,5 +1,6 @@
 autoconf
 automake
+bzip2-devel
 clang
 cmake
 curl-minimal
@@ -21,10 +22,14 @@ ninja-build
 openssl-devel
 patch
 pkgconfig
+readline
+readline-devel
 rtx
+sqlite-devel
 sudo
 unzip
 wget
+xz-lzma-compat
 zlib
 zlib-devel
 zsh
