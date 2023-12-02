@@ -1,7 +1,8 @@
 autoconf 
 automake 
 cmake 
-curl
+clang
+curl-minimal
 gcc 
 gcc-c++ 
 gettext 

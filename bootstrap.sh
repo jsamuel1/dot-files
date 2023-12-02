@@ -131,7 +131,7 @@ echo installing latest python for user
 echo =================================
 echo "${normal}"
 
-rtx use -g python 3.12
+rtx use -g python@3.12
 
 echo "${bold}"
 echo ================================
