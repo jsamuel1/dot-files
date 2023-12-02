@@ -1,7 +1,9 @@
 #!/bin/bash
 
 sudo dnf install -y dnf-plugins-core
+sudo dnf install 'dnf-command(config-manager)'
 sudo dnf config-manager --add-repo https://rtx.pub/rpm/rtx.repo
+sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
 
 xargs -a <(awk '! /^ *(#|$)/' "dnfrequirements.txt") -r -- sudo dnf -y install
 

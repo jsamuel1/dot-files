@@ -7,6 +7,7 @@ APT=0
 DNF=0
 GUI=1
 YUM=0
+SKIPAWSCLI=0
 
 if [ -n "$WSL_DISTRO_NAME" ]; then
 	echo "${bold}"
@@ -38,6 +39,7 @@ elif [[ -f /etc/os-release && $(grep al2023 /etc/os-release) ]]; then
 	YUM=0
 	APT=0
 	GUI=0
+  SKIPAWSCLI=1
 elif [ "$(hostnamectl | grep 'Amazon Linux 2')" != "" ]; then
 	DNF=0
 	YUM=1
@@ -172,7 +174,7 @@ if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
 	fi
 fi
 
-if [[ $MACOS -eq 0 ]]; then
+if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
 	echo "${bold}"
 	echo ====================
 	echo Installing/Updating AWS Cli 2
