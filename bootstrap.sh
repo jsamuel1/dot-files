@@ -39,7 +39,7 @@ elif [[ -f /etc/os-release && $(grep al2023 /etc/os-release) ]]; then
 	YUM=0
 	APT=0
 	GUI=0
-  SKIPAWSCLI=1
+	SKIPAWSCLI=1
 elif [ "$(hostnamectl | grep 'Amazon Linux 2')" != "" ]; then
 	DNF=0
 	YUM=1
@@ -97,7 +97,7 @@ if [[ $YUM -ne 0 ]]; then
 	echo ============================
 	echo "${normal}"
 	yum install -y yum-utils
-  yum-config-manager --add-repo https://rtx.pub/rpm/rtx.repo
+	yum-config-manager --add-repo https://rtx.pub/rpm/rtx.repo
 	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
 fi
 
@@ -132,8 +132,7 @@ echo =================================
 echo installing latest python for user
 echo =================================
 echo "${normal}"
-
-rtx use -g python@3.12
+rtx use -g python
 $(rtx hook-env)
 
 echo "${bold}"
@@ -141,18 +140,17 @@ echo ================================
 echo installing base python3 packages
 echo ================================
 echo "${normal}"
-rtx x -- python3 -m pip install --upgrade pip
-rtx x -- python3 -m pip install --upgrade -r requirements.txt
+rtx x -- python3 -m pip install --upgrade pip | grep -v 'already satisfied'
+rtx x -- python3 -m pip install --upgrade -r requirements.txt | grep -v 'already satisfied'
 
 echo "${bold}"
 echo ================================
 echo ensure latest npm and modules
 echo ================================
 echo "${normal}"
-rtx install nodejs@lts
-rtx global nodejs@lts
+rtx use -g nodejs@lts
 $(rtx hook-env)
-awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs sudo rtx x -- npm install -g
+awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
 
 echo "${bold}"
 echo ================================
@@ -229,7 +227,7 @@ $(rtx hook-env)
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
 rtx x -- gem environment
 
-sudo chsh "$USER" -s /bin/zsh || true
+. ./install_oh_my_zsh.sh
 
 echo "${bold}"
 echo ========================

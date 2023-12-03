@@ -123,12 +123,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" Fuzzy searchers
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-let g:CommandTPreferredImplementation='lua'
-Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make' }
-
 " Async completer
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -199,9 +193,6 @@ set undofile
 set backup
 set backupdir=$HOME/.vim/tmp/
 set dir=$HOME/.vim/tmp/
-
-" fuzzy completion
-set rtp+=/.fzf
 
 " set utf8 encoding by default
 set encoding=utf8
@@ -279,10 +270,6 @@ imap <C-s> <ESC>:w!<CR>
 " Resize panes
 map <C-D-left> <C-W><<>
 map <C-D-right> :vertical resize -20<CR>
-
-" fzf
-map <C-f> :FZF<CR>
-let g:fzf_layout = { 'down': '~20%' }
 
 " Paste below line
 nmap <F4> o<ESC>p

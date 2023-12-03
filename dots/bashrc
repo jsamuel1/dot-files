@@ -121,8 +121,6 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
 	source /etc/profile.d/vte.sh
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 export GOPATH=~/go
 
 export PATH=$HOME/.toolbox/bin:$PATH
