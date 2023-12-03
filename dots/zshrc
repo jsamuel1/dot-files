@@ -41,7 +41,7 @@ fi
 # This must be before sheldon/ohmhyzsh, otherwise we get warnings
 #eval "$(pyenv init -)"
 
-ZSH_THEME="agnoster"
+ZSH_THEME="agnoster" # set by `omz`
 
 HYPHEN_INSENSITIVE="true"
 export UPDATE_ZSH_DAYS=5
@@ -51,7 +51,10 @@ HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
 
 # For OS's such as AmazonLinux that don't include autojump
-[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
+if [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]]; then
+  source $HOME/.autojump/etc/profile.d/autojump.sh
+  AUTOJUMPPLUGIN=autojump
+fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   OSXPLUGIN=macos
@@ -64,7 +67,7 @@ if [[ $(command -v docker) ]]; then
 fi
 
 plugins=(
-  autojump
+  ${AUTOJUMPPLUGIN}
   aws
   bgnotify
   command-not-found
@@ -98,7 +101,11 @@ else
   return
 fi
 
-eval "$(sheldon source)"
+if [ -x sheldon ]; then
+   eval "$(sheldon source)"
+ else
+   source $ZSH/oh-my-zsh.sh
+fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -116,7 +123,9 @@ export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
 export AWS_EC2_METADATA_DISABLED=true
 
-eval "$(/usr/local/bin/brew shellenv)"
+if [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
 
 if [ $_ZSH_PROFILE ]; then
   zprof
