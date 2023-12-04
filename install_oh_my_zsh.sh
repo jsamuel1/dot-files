@@ -34,7 +34,7 @@ else
   git -C ~/.local/lib/zsh-completions pull
 fi
 
-sudo chsh "$USER" -s $(which zsh) || true
+sudo chsh -s $(which zsh) "$USER" || true
 
 echo "${bold}"
 echo "============================"
