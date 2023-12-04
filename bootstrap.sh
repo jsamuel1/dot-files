@@ -133,7 +133,6 @@ echo installing latest python for user
 echo =================================
 echo "${normal}"
 rtx use -g python
-$(rtx hook-env)
 
 echo "${bold}"
 echo ================================
@@ -149,7 +148,6 @@ echo ensure latest npm and modules
 echo ================================
 echo "${normal}"
 rtx use -g nodejs@lts
-$(rtx hook-env)
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
 
 echo "${bold}"
@@ -223,7 +221,6 @@ sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly
 rtx use -g ruby
-$(rtx hook-env)
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
 rtx x -- gem environment
 
