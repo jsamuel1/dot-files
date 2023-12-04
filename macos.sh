@@ -4,7 +4,9 @@ if ! type brew >/dev/null; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 brew doctor
-brew install mas
+if ! type mas >/dev/null; then
+	brew install mas
+fi
 mas install 497799835 #xcode
 
 if ! type xcodebuild >/dev/null; then
@@ -20,18 +22,19 @@ if ! xcodebuild -checkFirstLaunchStatus; then
 fi
 ACCEPT_EULA=y brew bundle
 
-if ! type it2ssh >/dev/null; then
-	curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+if [ ! -f "$HOME/.iterm2_shell_integration.zsh" ]; then
+	curl -L https://iterm2.com/shell_integration/zsh \
+		-o ~/.iterm2_shell_integration.zsh
 fi
 
 ./macdefaults.sh
 
 if [ ! -d "/Applications/Google Chrome.app" ]; then
 	temp=$TMPDIR$(uuidgen)
-	mkdir -p $temp/mount
-	curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg >$temp/1.dmg
-	yes | hdiutil attach -noverify -nobrowse -mountpoint $temp/mount $temp/1.dmg
-	cp -r $temp/mount/*.app /Applications
-	hdiutil detach $temp/mount
-	rm -r $temp
+	mkdir -p "$temp/mount"
+	curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg >"$temp/1.dmg"
+	yes | hdiutil attach -noverify -nobrowse -mountpoint "$temp/mount" "$temp/1.dmg"
+	cp -r "$temp/mount/*.app" /Applications
+	hdiutil detach "$temp/mount"
+	rm -r "$temp"
 fi

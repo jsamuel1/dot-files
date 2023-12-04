@@ -5,4 +5,5 @@ pylint
 pynvim
 python-language-server
 sqlparse
+youtube-dl
 virtualenvwrapper
