@@ -45,7 +45,7 @@ npm install -g neovim
 		# don't build if installed nvim is same git hash
 		# shellcheck disable=SC2143
 		[[ $(which nvim) &&
-		$(nvim -v || grep -q "$(git rev-parse --short HEAD)") ]] &&
+		$(nvim -v | grep -q "$(git rev-parse --short HEAD)") ]] &&
 			exit
 	fi
 
