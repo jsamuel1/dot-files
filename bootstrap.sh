@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# shellcheck source=helpers.sh
+source helpers.sh
+
 # Ask for the administrator password upfront
 sudo true
 MACOS=0
@@ -23,15 +26,8 @@ while true; do
 	kill -0 "$$" || exit
 done 2>/dev/null &
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-
 if [[ "$OSTYPE" =~ darwin* ]]; then
-	echo "${bold}"
-	echo ============================
-	echo prepare MacOS
-	echo ============================
-	echo "${normal}"
+	heading "prepare MacOS"
 	./macos.sh
 	MACOS=1
 elif [[ -f /etc/os-release && $(grep al2023 /etc/os-release) ]]; then
@@ -45,11 +41,7 @@ elif [ "$(hostnamectl | grep 'Amazon Linux 2')" != "" ]; then
 	YUM=1
 	APT=0
 elif [ "$(hostnamectl | grep Debian)" != "" ]; then
-	echo "${bold}"
-	echo ============================
-	echo upgrade debian to buster
-	echo ============================
-	echo "${normal}"
+	heading "upgrade debian to buster"
 	APT=1
 	DNF=0
 	YUM=0
@@ -61,19 +53,13 @@ elif [ "$(hostnamectl | grep Debian)" != "" ]; then
 	sudo apt auto-remove -y
 
 elif [ -v SOMMELIER_VERSION ]; then
-	echo "${bold}"
-	echo ===============================
-	echo chromebook preconfig for ubuntu
-	echo ===============================
-	echo "${normal}"
+	heading "chromebook preconfig for ubuntu"
 	./fix-cros-ui-config-pkg.sh
 	APT=1
 	DNF=0
 	YUM=0
 else
-	echo '=='
-	echo Standard APT install
-	echo '=='
+	subheading "Standard APT install"
 	APT=1
 	DNF=0
 	YUM=0
@@ -81,103 +67,58 @@ fi
 
 # Install base apt packages
 if [[ $APT -ne 0 ]]; then
-	echo "${bold}"
-	echo ============================
-	echo installing base apt packages
-	echo ============================
-	echo "${normal}"
+	subheading "installing base apt packages"
 
 	. ./apt-install.sh
 fi
 
 if [[ $YUM -ne 0 ]]; then
-	echo "${bold}"
-	echo ============================
-	echo installing base yum packages
-	echo ============================
-	echo "${normal}"
+	subheading "installing base yum packages"
 	yum install -y yum-utils
 	yum-config-manager --add-repo https://rtx.pub/rpm/rtx.repo
 	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
 fi
 
 if [[ $DNF -ne 0 ]]; then
-	echo "${bold}"
-	echo ============================
-	echo installing base dnf packages
-	echo ============================
-	echo "${normal}"
+	subheading "installing base dnf packages"
 	. ./dnf-install.sh
 fi
 
-echo "${bold}"
-echo ========================
-echo installing rust
-echo ========================
-echo "${normal}"
-
+heading "installing rust"
 . ./rust-install.sh
 
 if [[ -x /usr/bin/nvim ]]; then
-	echo "${bold}"
-	echo =====================================
-	echo ensure nvim is our default vim editor
-	echo =====================================
-	echo "${normal}"
+	subheading "ensure nvim is our default vim editor"
 	sudo update-alternatives --set vim /usr/bin/nvim
 fi
 
-echo "${bold}"
-echo =================================
-echo installing latest python for user
-echo =================================
-echo "${normal}"
+heading "installing latest python for user"
 rtx use -g python
 
-echo "${bold}"
-echo ================================
-echo installing base python3 packages
-echo ================================
-echo "${normal}"
+subheading "installing base python3 packages"
 rtx x -- python3 -m pip install --upgrade pip | grep -v 'already satisfied'
 rtx x -- python3 -m pip install --upgrade -r requirements.txt | grep -v 'already satisfied'
 
-echo "${bold}"
-echo ================================
-echo ensure latest npm and modules
-echo ================================
-echo "${normal}"
+heading "ensure latest npm and modules"
 rtx use -g nodejs@lts
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
 
-echo "${bold}"
-echo ================================
-echo ensure latest go modules
-echo ================================
-echo "${normal}"
+heading "ensure latest go modules"
 awk '! /^ *(#|$)/' "gorequirements.txt" | xargs go install
 
 if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
-	echo "${bold}"
-	echo =====================
-	echo installing nerd-fonts
-	echo =====================
-	echo "${normal}"
+	heading "installing nerd-fonts"
 	if [ ! -d ~/src/nerd-fonts ]; then
 		git clone https://github.com/ryanoasis/nerd-fonts.git --depth 1 ~/src/nerd-fonts/
-		echo running nerd-fonts installer
+		subheading "running nerd-fonts installer"
 		~/src/nerd-fonts/install.sh
 	else
-		echo nerd-fonts already exists
+		subheading "running nerd-fonts installer"
 	fi
 fi
 
 if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
-	echo "${bold}"
-	echo ====================
-	echo Installing/Updating AWS Cli 2
-	echo ====================
-	echo "${normal}"
+	heading "Installing/Updating AWS Cli 2"
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
 	sudo ./aws/install --update
@@ -195,26 +136,14 @@ if [[ $GUI -eq 1 ]]; then
 	fi
 fi
 
-echo "${bold}"
-echo ========================
-echo update submodules
-echo ========================
-echo "${normal}"
+heading "update submodules"
 git submodule update --init
 git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
 
-echo "${bold}"
-echo ========================
-echo updating Dot Files
-echo ========================
-echo "${normal}"
+heading "updating Dot Files"
 ./settings.py --no-dryrun
 
-echo "${bold}"
-echo ================================
-echo ensure neovim ruby gem installed
-echo ================================
-echo "${normal}"
+subheading "ensure neovim ruby gem installed"
 
 sudo mkdir -p /usr/local/opt/sqllite
 sudo mkdir -p /usr/local/opt/zlib/lib
@@ -224,18 +153,6 @@ rtx use -g ruby
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
 rtx x -- gem environment
 
-if [ ! -d ~/.fzf ]; then
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
-else
-	git -C ~/.fzf pull
-	~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
-fi
-
 . ./install_oh_my_zsh.sh
 
-echo "${bold}"
-echo ========================
-echo DONE
-echo ========================
-echo "${normal}"
+heading "DONE"

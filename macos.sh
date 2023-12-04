@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 if ! type brew >/dev/null; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
