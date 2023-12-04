@@ -73,6 +73,7 @@ plugins=(
   command-not-found
   dircycle
   ${DOCKERPLUGIN}
+  fzf
   git
   git-extras
   git-prompt

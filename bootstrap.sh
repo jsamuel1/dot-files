@@ -224,6 +224,11 @@ rtx use -g ruby
 xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
 rtx x -- gem environment
 
+if ! -d ~/.fzf; then
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
+fi
+
 . ./install_oh_my_zsh.sh
 
 echo "${bold}"
