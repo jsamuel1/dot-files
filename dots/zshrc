@@ -32,7 +32,11 @@ append_path ${KREW_ROOT:-$HOME/.krew}/bin
 append_path /snap/bin
 export PATH=$PATH:$OLDPATH
 
-fpath=(~/.zsh/completion ~/.local/lib ~/.local/lib/zsh-completions/src $fpath)
+for script in $HOME/.local/lib/*.zsh; do
+  . "$script"
+done
+
+fpath=(~/.zsh/completion ~/.local/lib/zsh-completions/src $fpath)
 if type brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
     FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
