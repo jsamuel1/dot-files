@@ -51,6 +51,10 @@ def linkfiles(files, args, relativepath):
         dotf = os.path.join(
             homedir, '.'+str(file_name.relative_to(relativepath)))
         status = getsymlinkstatus(file_name, dotf)
+        args.filesProcessed += 1
+        if status == 'same':
+           continue 
+        args.filesChanged += 1
         targ = os.path.join(thisdir, file_name)
         if args.verbose or status != 'same':
             print(targ + '->' + dotf + ' :' + status)
@@ -79,11 +83,8 @@ def symlink(target, link_name, args, overwrite=True):
     When trying to overwrite a directory, IsADirectoryError is raised.
     '''
 
-    args.filesProcessed += 1
-
     if not overwrite:
         os.symlink(target, link_name)
-        args.filesChanged += 1
         return
 
     # os.replace() may fail if files are on different filesystems
@@ -114,7 +115,6 @@ def symlink(target, link_name, args, overwrite=True):
             raise IsADirectoryError(
                 f"Cannot symlink over existing directory: '{link_name}'")
         os.replace(temp_link_name, link_name)
-        args.filesChanged += 1
     except IsADirectoryError:
         if os.path.islink(temp_link_name):
             os.remove(temp_link_name)
