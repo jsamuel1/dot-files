@@ -40,7 +40,7 @@ npm install -g neovim
 		git clone https://github.com/neovim/neovim
 	else
 		cd neovim || exit
-		git pull origin stable
+		git pull origin master
 
 		# don't build if installed nvim is same git hash
 		# shellcheck disable=SC2143
@@ -50,8 +50,8 @@ npm install -g neovim
 	fi
 
 	cd ~/src/neovim || exit
-	git checkout stable
-	make clean
+	git checkout master
+	make distclean
 	make CMAKE_BUILD_TYPE=Release
 	sudo make install
 
