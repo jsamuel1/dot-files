@@ -103,6 +103,7 @@ heading "ensure latest npm and modules"
 rtx use -g nodejs@lts
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
 
+rtx use -g go
 heading "ensure latest go modules"
 awk '! /^ *(#|$)/' "gorequirements.txt" | xargs go install
 
