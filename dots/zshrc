@@ -26,6 +26,7 @@ prepend_path $HOME/.toolbox/bin
 append_path  "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
 append_path $HOME/.cargo/bin
+append_path $HOME/go/bin
 append_path $HOME/.dotnet/tools
 append_path $HOME/.pyenv/bin
 append_path ${KREW_ROOT:-$HOME/.krew}/bin
