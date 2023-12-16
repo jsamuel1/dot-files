@@ -1,9 +1,12 @@
+atk
+atk-devel
 autoconf
 automake
 bzip2-devel
 clang
 cmake
 curl-minimal
+docker
 gcc
 gcc-c++
 gettext
