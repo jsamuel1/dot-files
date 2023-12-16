@@ -31,26 +31,17 @@ gem install neovim
 npm install -g neovim
 
 (
-	pushd . >/dev/null || exit
+	clone_or_pull https://github.com/neovim/neovim ~/src/neovim
 
-	#Get or update neovim github repo
-	mkdir -p ~/src
-	cd ~/src || exit
-	if [ ! -e ~/src/neovim ]; then
-		git clone https://github.com/neovim/neovim
-	else
-		cd neovim || exit
-		git pull origin master
-
-		# don't build if installed nvim is same git hash
-		# shellcheck disable=SC2143
-		[[ $(which nvim) &&
-		$(nvim -v | grep -q "$(git rev-parse --short HEAD)") ]] &&
-			exit
+	# don't build if installed nvim is same git hash
+	if which nvim &&
+		nvim -v | grep -q "$(git -C ~/src/neovim rev-parse --short HEAD)"; then
+		exit 0
 	fi
 
+	pushd . >/dev/null || exit
 	cd ~/src/neovim || exit
-	git checkout master
+	git checkout
 	make distclean
 	make CMAKE_BUILD_TYPE=Release
 	sudo make install

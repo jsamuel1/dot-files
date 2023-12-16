@@ -26,32 +26,24 @@ while true; do
 	kill -0 "$$" || exit
 done 2>/dev/null &
 
-if [[ "$OSTYPE" =~ darwin* ]]; then
+if is_mac; then
 	heading "prepare MacOS"
 	./macos.sh
 	MACOS=1
-elif [[ -f /etc/os-release && $(grep al2023 /etc/os-release) ]]; then
+elif is_amazonlinux2023; then
 	DNF=1
 	YUM=0
 	APT=0
 	GUI=0
 	SKIPAWSCLI=1
-elif [ "$(hostnamectl | grep 'Amazon Linux 2')" != "" ]; then
+elif is_amazonlinux2; then
 	DNF=0
 	YUM=1
 	APT=0
 elif [ "$(hostnamectl | grep Debian)" != "" ]; then
-	heading "upgrade debian to buster"
 	APT=1
 	DNF=0
 	YUM=0
-	sudo sed -i s/stretch/buster/g /etc/apt/sources.list
-	sudo sed -i s/stretch/buster/g /etc/apt/sources.list.d/cros.list
-	sudo apt update
-	sudo apt upgrade -y
-	sudo apt full-upgrade -y
-	sudo apt auto-remove -y
-
 elif [ -v SOMMELIER_VERSION ]; then
 	heading "chromebook preconfig for ubuntu"
 	./fix-cros-ui-config-pkg.sh
@@ -82,6 +74,11 @@ fi
 if [[ $DNF -ne 0 ]]; then
 	subheading "installing base dnf packages"
 	. ./dnf-install.sh
+fi
+
+if is_amazonlinux2023; then
+	subheading "installing base amazonlinux2023 tools"
+	. ./amazonlinux2023-install.sh
 fi
 
 heading "installing rust"

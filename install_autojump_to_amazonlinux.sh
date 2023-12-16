@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
+
+# shellcheck source=helpers.sh
+source helpers.sh
+
 (
-	cd "$(mktemp -d)"
-	git clone https://github.com/wting/autojump.git
-	cd autojump
-	./install.py
+
+	clone_or_pull https://github.com/wting/autojump.git ~/src/autojump shallow
+
+	pushd . >/dev/null || exit
+	cd ~/src/autojump || exit
+	sudo ./install.py
+
+	popd >/dev/null || exit
 )

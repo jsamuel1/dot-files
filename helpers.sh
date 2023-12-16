@@ -31,8 +31,33 @@ function subheading {
     echo "${normal}"
 }
 
+function clone_or_pull {
+    repo="${1}"
+    dest="${2}"
+    shift 2
+    args=("$@")
+    options=""
+    for opt in "${args[@]}"; do
+        if [ "${opt}" = "shallow" ] || [ "${opt}" = "--shallow" ]; then
+            options="${options} --depth 1 --no-tags --single-branch"
+        else
+            options="${options} ${opt}"
+        fi
+    done
+
+    if [ -d "${dest}" ]; then
+        subheading "Updating ${dest}"
+        git -C "${dest}" pull "${options}"
+        cd - || exit 1
+        return
+    else
+        subheading "Cloning ${repo} to ${dest}"
+        git clone "${repo}" "${dest}" "${options}"
+        return
+    fi
+}
 function is_amazonlinux2 {
-    # shellcheck disable=SC1091
+    # shellcheck source=/dev/null
     [ -f /etc/os-release ] && source /etc/os-release
 
     if [ "$ID" = "amzn" ] && [ "$VERSION_ID" = "2" ]; then
@@ -43,10 +68,18 @@ function is_amazonlinux2 {
 }
 
 function is_amazonlinux2023 {
-    # shellcheck disable=SC1091
+    # shellcheck source=/dev/null
     [ -f /etc/os-release ] && source /etc/os-release
 
     if [ "$ID" = "amzn" ] && [ "$VERSION_ID" = "2023" ]; then
+        return 0 # 0=true
+    fi
+
+    return 1 # 1=false
+}
+
+function is_mac {
+    if [ "$(uname)" = "Darwin" ]; then
         return 0 # 0=true
     fi
 
