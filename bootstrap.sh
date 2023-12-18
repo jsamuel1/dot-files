@@ -76,6 +76,9 @@ if [[ $DNF -ne 0 ]]; then
 	. ./dnf-install.sh
 fi
 
+heading "installing local tools with rtx"
+rtx install
+
 heading "installing latest python for user"
 rtx use -g python
 
