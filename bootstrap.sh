@@ -110,7 +110,6 @@ if is_amazonlinux2023; then
 	. ./amazonlinux2023-install.sh
 fi
 
-
 if [[ -x /usr/bin/nvim ]]; then
 	subheading "ensure nvim is our default vim editor"
 	sudo update-alternatives --set vim /usr/bin/nvim
