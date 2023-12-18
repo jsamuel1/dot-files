@@ -22,6 +22,6 @@ clone_or_pull https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CU
 
 clone_or_pull https://github.com/zsh-users/zsh-completions.git ~/.local/lib/zsh-completions
 
-sudo chsh -s "$(which zsh)" "$USER" || true
+sudo chsh -s "$(which zsh)" "$(whoami)" || true
 
 heading ""

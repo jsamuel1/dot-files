@@ -7,7 +7,7 @@ sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.re
 
 xargs -a <(awk '! /^ *(#|$)/' "dnfrequirements.txt") -r -- sudo dnf -y install
 
-sudo usermod -aG docker $USER
+sudo usermod -aG docker "$(whoami)"
 
 if [[ $GUI -eq 1 ]]; then
 	echo ${bold}

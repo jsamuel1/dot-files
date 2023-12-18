@@ -16,7 +16,7 @@ run bootstrap.sh to setup common tools, required packages and symlink dotfiles.
 #### To change zsh to Homebrew version:
 Execute from the zsh shell: 
 ```bash
-sudo dscl . -create /Users/$USER UserShell /usr/local/bin/zsh 
+sudo dscl . -create /Users/"$(whoami)" UserShell /usr/local/bin/zsh 
 ```
 
 #### To setup iterm to nice default profile:
