@@ -76,19 +76,6 @@ if [[ $DNF -ne 0 ]]; then
 	. ./dnf-install.sh
 fi
 
-if is_amazonlinux2023; then
-	subheading "installing base amazonlinux2023 tools"
-	. ./amazonlinux2023-install.sh
-fi
-
-heading "installing rust"
-. ./rust-install.sh
-
-if [[ -x /usr/bin/nvim ]]; then
-	subheading "ensure nvim is our default vim editor"
-	sudo update-alternatives --set vim /usr/bin/nvim
-fi
-
 heading "installing latest python for user"
 rtx use -g python
 
@@ -103,6 +90,31 @@ awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
 rtx use -g go
 heading "ensure latest go modules"
 awk '! /^ *(#|$)/' "gorequirements.txt" | xargs go install
+
+subheading "ensure neovim ruby gem installed"
+
+sudo mkdir -p /usr/local/opt/sqllite
+sudo mkdir -p /usr/local/opt/zlib/lib
+
+# install latest stable version and use globbaly
+rtx use -g ruby
+xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
+rtx x -- gem environment
+
+# rust must be after ruby and node
+heading "installing rust"
+. ./rust-install.sh
+
+if is_amazonlinux2023; then
+	subheading "installing base amazonlinux2023 tools"
+	. ./amazonlinux2023-install.sh
+fi
+
+
+if [[ -x /usr/bin/nvim ]]; then
+	subheading "ensure nvim is our default vim editor"
+	sudo update-alternatives --set vim /usr/bin/nvim
+fi
 
 if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
 	heading "installing nerd-fonts"
@@ -140,16 +152,6 @@ git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; gi
 
 heading "updating Dot Files"
 ./settings.py --no-dryrun
-
-subheading "ensure neovim ruby gem installed"
-
-sudo mkdir -p /usr/local/opt/sqllite
-sudo mkdir -p /usr/local/opt/zlib/lib
-
-# install latest stable version and use globbaly
-rtx use -g ruby
-xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
-rtx x -- gem environment
 
 . ./install_oh_my_zsh.sh
 

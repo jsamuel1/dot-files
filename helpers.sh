@@ -47,12 +47,14 @@ function clone_or_pull {
 
     if [ -d "${dest}" ]; then
         subheading "Updating ${dest}"
-        git -C "${dest}" pull "${options}"
+        # shellcheck disable=SC2086
+        git -C "${dest}" pull ${options}
         cd - || exit 1
         return
     else
         subheading "Cloning ${repo} to ${dest}"
-        git clone "${repo}" "${dest}" "${options}"
+        # shellcheck disable=SC2086
+        git clone "${repo}" "${dest}" ${options}
         return
     fi
 }
