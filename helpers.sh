@@ -2,21 +2,18 @@
 # source me - don't execute.
 [ -n "$HELPERSSH_SOURCES" ] && return
 HELPERSSH_SOURCES=1
-readonly HELPERSSH_SOURCES
 
 bold="$(tput bold)"
 normal="$(tput sgr0)"
-readonly bold
-readonly normal
 
 function heading {
     title="${1}"
     echo "${bold}"
-    echo "=========================================="
-    col=$(( ( 42 - ${#title} ) / 2 ))
+    echo "============================================================"
+    col=$(( ( 80 - ${#title} ) / 2 ))
     tput cuf $col
     echo "${title}"
-    echo "=========================================="
+    echo "============================================================"
     echo "${normal}"
 }
 
@@ -24,10 +21,10 @@ function subheading {
     title="${1}"
     echo "${bold}"
     echo " "
-    col=$(( ( 42 - ${#title} ) / 2 ))
+    col=$(( ( 80 - ${#title} ) / 2 ))
     tput cuf $col
     echo "${title}"
-    echo "-------------------------------------------"
+    echo "-----------------------------------------------------------"
     echo "${normal}"
 }
 

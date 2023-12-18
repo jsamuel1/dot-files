@@ -1,2 +1,4 @@
 [tools]
 python = "latest"
+node = "lts"
+ruby = "3.2.2"
