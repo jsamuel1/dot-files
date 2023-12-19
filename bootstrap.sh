@@ -19,12 +19,17 @@ UPDATE=${UPDATE:-0}
 # then run from that directory
 if [ ! -d .git ]; then
 	if [ ! -d "${HOME}/src/${GITREPO}/.git" ]; then
+		echo "cloning ${GITREMOTE}"
 		git clone "${GITREMOTE}" "${HOME}/src/${GITREPO}" --branch "${BRANCH}" --depth 1
 	fi
+	echo "cd ${HOME}/src/${GITREPO}"
 	cd "${HOME}/src/${GITREPO}" || exit 1
 fi
 
+echo "running from $(pwd)"
+
 if [ "${UPDATE}" -ne 0 ]; then
+	echo "updating"
 	git pull origin "${BRANCH}"
 	git submodule update --init --recursive
 	git submodule foreach git pull origin "${BRANCH}"
