@@ -36,7 +36,7 @@ function clone_or_pull {
     options=""
     for opt in "${args[@]}"; do
         if [ "${opt}" = "shallow" ] || [ "${opt}" = "--shallow" ]; then
-            options="${options} --depth 1 --no-tags --single-branch"
+            options="${options} --depth 1 --no-tags"
         else
             options="${options} ${opt}"
         fi
