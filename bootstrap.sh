@@ -18,7 +18,7 @@ UPDATE=${UPDATE:-0}
 # if not, we'll clone to a new directory
 # then run from that directory
 if [ ! -d .git ]; then
-	if [ ! -d "${HOME}/src/${GITREPO}.git" ]; then
+	if [ ! -d "${HOME}/src/${GITREPO}/.git" ]; then
 		git clone "${GITREMOTE}" "${HOME}/src/${GITREPO}" --branch "${BRANCH}" --depth 1
 	fi
 	cd "${HOME}/src/${GITREPO}" || exit 1
