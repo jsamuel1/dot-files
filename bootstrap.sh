@@ -17,7 +17,7 @@ BRANCH=${BRANCH:-master}
 # if not, we'll clone to a new directory
 # then run from that directory
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
-	if ! git rev-pase --git-dir -C "$HOME/src/$GITREPO" 2>&1; then
+	if ! git rev-parse --git-dir -C "$HOME/src/$GITREPO" 2>&1; then
 		git clone "$GITREMOTE" "$HOME/src/$GITREPO" --branch "$BRANCH" --depth 1
 	fi
 	cd "$HOME/src/$GITREPO" || exit 1
