@@ -5,22 +5,29 @@
 
 # Ensure USER and HOME are set -- when running first-time w/ SSM or in a container, these may not be.
 USER=${USER:-$(id -u -n)}
-HOME="${HOME:-$(eval echo ~$USER)}"
+HOME="${HOME:-$(eval echo ~${USER})}"
 
 GITREPO=${GITREPO:-dot-files}
 GITORG=${GITORG:-jsamuel1}
-GITREMOTE=${GITREMOTE:-https://github.com/$GITORG/${GITREPO}.git}
+GITREMOTE=${GITREMOTE:-https://github.com/${GITORG}/${GITREPO}.git}
 BRANCH=${BRANCH:-master}
+UPDATE=${UPDATE:-0}
 
 # if current directory is a git repo, use it.
-# Otherwise is there a git repo in $HOME/src/$GITREPO?
+# if not, is there a git repo in $HOME/src/$GITREPO?
 # if not, we'll clone to a new directory
 # then run from that directory
-if ! git rev-parse --git-dir >/dev/null 2>&1; then
-	if ! git rev-parse --git-dir -C "$HOME/src/$GITREPO" 2>&1; then
-		git clone "$GITREMOTE" "$HOME/src/$GITREPO" --branch "$BRANCH" --depth 1
+if [ ! -d .git ]; then
+	if [ ! -d "${HOME}/src/${GITREPO}.git" ]; then
+		git clone "${GITREMOTE}" "${HOME}/src/${GITREPO}" --branch "${BRANCH}" --depth 1
 	fi
-	cd "$HOME/src/$GITREPO" || exit 1
+	cd "${HOME}/src/${GITREPO}" || exit 1
+fi
+
+if [ "${UPDATE}" -ne 0 ]; then
+	git pull origin "${BRANCH}"
+	git submodule update --init --recursive
+	git submodule foreach git pull origin "${BRANCH}"
 fi
 
 # shellcheck source=helpers.sh
