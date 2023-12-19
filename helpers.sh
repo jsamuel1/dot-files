@@ -13,6 +13,9 @@ HELPERSSH_SOURCES=1
 bold="$(tput bold)"
 normal="$(tput sgr0)"
 
+command -v rtx && eval "$(rtx activate bash)"
+command -v rtx && eval "$(rtx hook-env)"
+
 function heading {
     title="${1}"
     echo "${bold}"

@@ -113,6 +113,9 @@ fi
 
 heading "installing local tools with rtx"
 rtx install
+command -v rtx && eval "$(rtx activate bash)"
+command -v rtx && eval "$(rtx hook-env)"
+
 
 heading "installing latest python for user"
 rtx use -g python
