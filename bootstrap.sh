@@ -12,11 +12,16 @@ GITORG=${GITORG:-jsamuel1}
 GITREMOTE=${GITREMOTE:-https://github.com/$GITORG/${GITREPO}.git}
 BRANCH=${BRANCH:-master}
 
-if ! git rev-parse --git-dir -C "$HOME/src/$GITREPO" > /dev/null 2>&1; then
-	git clone "$GITREMOTE" "$HOME/src/$GITREPO" --branch "$BRANCH" --depth 1
+# if current directory is a git repo, use it.
+# Otherwise is there a git repo in $HOME/src/$GITREPO?
+# if not, we'll clone to a new directory
+# then run from that directory
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+	if ! git rev-pase --git-dir -C "$HOME/src/$GITREPO" 2>&1; then
+		git clone "$GITREMOTE" "$HOME/src/$GITREPO" --branch "$BRANCH" --depth 1
+	fi
 	cd "$HOME/src/$GITREPO" || exit 1
 fi
-
 
 # shellcheck source=helpers.sh
 source helpers.sh
