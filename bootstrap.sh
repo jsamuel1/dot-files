@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # This script can either be run locally, or via curl as such:
 #  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
