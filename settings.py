@@ -8,19 +8,19 @@ from pathlib import Path
 
 def install():
     parser = argparse.ArgumentParser(
-        description='setup dotfiles in home directory based on git repo')
+        description='setup dot files in home directory based on git repo')
     parser.add_argument('--dryrun', action='store_true', default=False)
     parser.add_argument('--no-dryrun', action='store_false', dest='dryrun')
     parser.add_argument('--sync', action='store_true')
     parser.add_argument('--verbose', action='store_true')
     args = parser.parse_args()
-    args.filesProcessed = 0
-    args.filesChanged = 0
+    args.files_processed = 0
+    args.files_changed = 0
 
     print(f'dryrun: {args.dryrun} sync: {args.sync} verbose: {args.verbose} ')
 
     if args.sync:
-        gitsync()
+        git_sync()
     files = [f for f in Path('./dots').glob('*')  # Only one level for ~/.blah
              if str(f) not in [
         '.gitignore',
@@ -28,41 +28,41 @@ def install():
         'README.md',
     ]
         and os.path.isfile(f)]
-    configfiles = [f for f in Path('.').glob(
+    config_files = [f for f in Path('.').glob(
         'config/**/*') if os.path.isfile(f)]
-    localfiles = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]
-    sheldonfiles = [f for f in Path('.').glob(
+    local_files = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]
+    sheldon_files = [f for f in Path('.').glob(
         'sheldon/**/*') if os.path.isfile(f)]
-    zshfiles = [f for f in Path('.').glob('zsh/**/*') if os.path.isfile(f)]
-    linkfiles(files, args, "dots")
-    linkfiles(configfiles, args, ".")
-    linkfiles(localfiles, args, ".")
-    linkfiles(sheldonfiles, args, ".")
-    linkfiles(zshfiles, args, ".")
+    zsh_files = [f for f in Path('.').glob('zsh/**/*') if os.path.isfile(f)]
+    link_files(files, args, "dots")
+    link_files(config_files, args, ".")
+    link_files(local_files, args, ".")
+    link_files(sheldon_files, args, ".")
+    link_files(zsh_files, args, ".")
 
     print(
-        f'finished.  Processed: {args.filesProcessed} Changed: {args.filesChanged}')
+        f'finished.  Processed: {args.files_processed} Changed: {args.files_changed}')
 
 
-def linkfiles(files, args, relativepath):
-    homedir = Path.home()
-    thisdir = Path.cwd()
+def link_files(files, args, relative_path):
+    home_dir = Path.home()
+    this_dir = Path.cwd()
     for file_name in files:
-        dotf = os.path.join(
-            homedir, '.'+str(file_name.relative_to(relativepath)))
-        status = getsymlinkstatus(file_name, dotf)
-        args.filesProcessed += 1
+        dot_file = os.path.join(
+            home_dir, '.'+str(file_name.relative_to(relative_path)))
+        status = get_symlink_status(file_name, dot_file)
+        args.files_processed += 1
         if status == 'same':
            continue 
-        args.filesChanged += 1
-        targ = os.path.join(thisdir, file_name)
+        args.files_changed += 1
+        target = os.path.join(this_dir, file_name)
         if args.verbose or status != 'same':
-            print(targ + '->' + dotf + ' :' + status)
+            print(target + '->' + dot_file + ' :' + status)
         if not args.dryrun:
-            symlink(targ, dotf, args)
+            symlink(target, dot_file, args)
 
 
-def getsymlinkstatus(target, link_name):
+def get_symlink_status(target, link_name):
     if not os.path.exists(link_name):
         return 'new'
     if os.path.samefile(target, link_name):
@@ -110,7 +110,7 @@ def symlink(target, link_name, args, overwrite=True):
 
     # Replace link_name with temp_link_name
     try:
-        # Pre-empt os.replace on a directory with a nicer message
+        # Preempt os.replace on a directory with a nicer message
         if os.path.isdir(link_name):
             raise IsADirectoryError(
                 f"Cannot symlink over existing directory: '{link_name}'")
@@ -121,7 +121,7 @@ def symlink(target, link_name, args, overwrite=True):
         raise
 
 
-def gitsync():
+def git_sync():
     subprocess.run(['git', 'pull'])
 
 
