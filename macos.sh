@@ -22,12 +22,19 @@ if ! xcodebuild -checkFirstLaunchStatus; then
 fi
 ACCEPT_EULA=y brew bundle
 
-if [ ! -f "$HOME/.iterm2_shell_integration.zsh" ]; then
+if [ ! -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
 	curl -L https://iterm2.com/shell_integration/zsh \
 		-o ~/.iterm2_shell_integration.zsh
 fi
 
 ./macdefaults.sh
+
+# set /usr/local/bin/zsh as the default shell on macos using dscl, if it exists
+if [ -f "/usr/local/bin/zsh" ]; then
+	sudo dscl . -create "/Users/${USER}" UserShell /usr/local/bin/zsh
+	echo "Default shell set to /usr/local/bin/zsh"
+	echo "Restart your terminal to apply changes"
+fi
 
 if [ ! -d "/Applications/Google Chrome.app" ]; then
 	temp=$TMPDIR$(uuidgen)
