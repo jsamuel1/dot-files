@@ -12,6 +12,7 @@ GITORG=${GITORG:-jsamuel1}
 GITREMOTE=${GITREMOTE:-https://github.com/${GITORG}/${GITREPO}.git}
 BRANCH=${BRANCH:-master}
 UPDATE=${UPDATE:-0}
+GLOBAL=${GLOBAL:-0}  # for installing global tools/packages only, not user prefs
 
 # if current directory is a git repo, use it.
 # if not, is there a git repo in $HOME/src/$GITREPO?
@@ -190,9 +191,13 @@ heading "update submodules"
 git submodule update --init
 git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
 
-heading "updating Dot Files"
-./settings.py --no-dryrun
+if [[ $GLOBAL -eq 0 ]]; then
+	heading "updating Dot Files"
+	./settings.py --no-dryrun
 
-source ./install_oh_my_zsh.sh
+	source ./install_oh_my_zsh.sh
+else
+	echo "Skipping Dot Files due to \$GLOBAL=${GLOBAL}"
+fi
 
 heading "DONE"
