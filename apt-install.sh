@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# shellcheck source=helpers.sh
-source helpers.sh
+# shellcheck source=./helpers.sh
+source ./helpers.sh
 
 sudo apt install software-properties-common
 

@@ -3,8 +3,8 @@
 #from https://gist.github.com/kawaz/393c7f62fe6e857cc3d9
 #and https://gist.github.com/darcyparker/153124662b05c679c417
 
-# shellcheck source=helpers.sh
-source helpers.sh
+# shellcheck source=./helpers.sh
+source ./helpers.sh
 
 is_amazonlinux2 || is_amazonlinux2023 || exit
 

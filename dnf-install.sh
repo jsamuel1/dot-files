@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-source helpers.sh
+# shellcheck source=./helpers.sh
+source ./helpers.sh
 
 sudo dnf install -y dnf-plugins-core
 sudo dnf install 'dnf-command(config-manager)'

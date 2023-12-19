@@ -35,7 +35,7 @@ if [ "${UPDATE}" -ne 0 ]; then
 	git submodule foreach git pull origin "${BRANCH}"
 fi
 
-# shellcheck source=helpers.sh
+# shellcheck source=./helpers.sh
 source ./helpers.sh
 
 # Ask for the administrator password upfront

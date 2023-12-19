@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-source helpers.sh
+# shellcheck source=./helpers.sh
+source ./helpers.sh
 
 #
 # see https://github.com/rust-lang/rustup#other-installation-methods for options

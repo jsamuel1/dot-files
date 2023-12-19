@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # setup extra tools for AmazonLinux 2023
-# shellcheck source=helpers.sh
-source helpers.sh
+# shellcheck source=./helpers.sh
+source ./helpers.sh
 
 is_amazonlinux2 || is_amazonlinux2023 || exit
 
