@@ -36,7 +36,7 @@ if [ "${UPDATE}" -ne 0 ]; then
 fi
 
 # shellcheck source=helpers.sh
-source helpers.sh
+source ./helpers.sh
 
 # Ask for the administrator password upfront
 sudo true
