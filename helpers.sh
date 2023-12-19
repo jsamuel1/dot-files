@@ -10,6 +10,7 @@ fi
 [ -n "$HELPERSSH_SOURCES" ] && return
 HELPERSSH_SOURCES=1
 
+TERM=${TERM:-dumb} # ensure tput does sensible values if non-interactive
 bold="$(tput bold)"
 normal="$(tput sgr0)"
 
