@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# This script can either be run locally, or via curl as such:
+#  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
+
+# Ensure USER and HOME are set -- when running first-time w/ SSM or in a container, these may not be.
+USER=${USER:-$(id -u -n)}
+HOME="${HOME:-$(eval echo ~$USER)}"
+
+GITREPO=${GITREPO:-dot-files}
+GITORG=${GITORG:-jsamuel1}
+GITREMOTE=${GITREMOTE:-https://github.com/$GITORG/${GITREPO}.git}
+BRANCH=${BRANCH:-master}
+
+if ! git rev-parse --git-dir -C "$HOME/src/$GITREPO" > /dev/null 2>&1; then
+	git clone "$GITREMOTE" "$HOME/src/$GITREPO" --branch "$BRANCH" --depth 1
+	cd "$HOME/src/$GITREPO" || exit 1
+fi
+
+
 # shellcheck source=helpers.sh
 source helpers.sh
 
