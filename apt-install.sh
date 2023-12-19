@@ -1,9 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# shellcheck source=helpers.sh
+source helpers.sh
 
 sudo apt install software-properties-common
 
 # git-core PPA doesn't work with Debian Buster
-if [ "`hostnamectl | grep Debian`" == "" ]; then
+if [ "$(hostnamectl | grep Debian)" == "" ]; then
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key E1DD270288B4E6030699E45FA1715D88E1DF1F24
 sudo add-apt-repository ppa:git-core/ppa --yes 
 fi
@@ -25,11 +28,11 @@ sudo apt -y upgrade
 xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo apt -y install
 
 if [ -z "$WSL_DISTRO_NAME" ]; then
-  echo ${bold}
+  echo "${bold}"
   echo =================
   echo installing vscode
   echo =================
-  echo ${normal}
+  echo "${normal}"
   if [ ! -f /etc/apt/trusted.gpg.d/microsoft.gpg ]; then
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
   sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/

@@ -1,11 +1,11 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 # This script can either be run locally, or via curl as such:
 #  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
 
 # Ensure USER and HOME are set -- when running first-time w/ SSM or in a container, these may not be.
 USER=${USER:-$(id -u -n)}
-HOME="${HOME:-$(eval echo ~${USER})}"
+HOME="${HOME:-$(eval echo "~${USER}")}"
 
 GITREPO=${GITREPO:-dot-files}
 GITORG=${GITORG:-jsamuel1}

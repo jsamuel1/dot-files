@@ -1,5 +1,12 @@
-#!/bin/bash
-# source me - don't execute.
+#!/usr/bin/env bash
+
+# Prevent script from being executed directly.  Must be used via source
+# ref: https://tldp.org/LDP/abs/html/parameter-substitution.html -- search for "# Name of script"
+if [ "${BASH_SOURCE[0]##*/}" = "${0##*/}" ]; then
+    echo "This script must be sourced, not executed."
+    exit 1
+fi
+
 [ -n "$HELPERSSH_SOURCES" ] && return
 HELPERSSH_SOURCES=1
 

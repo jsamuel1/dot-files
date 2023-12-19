@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # setup extra tools for AmazonLinux 2023
 # shellcheck source=helpers.sh

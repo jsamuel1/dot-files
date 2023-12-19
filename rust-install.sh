@@ -1,8 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+source helpers.sh
+
 #
 # see https://github.com/rust-lang/rustup#other-installation-methods for options
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y
+
 # add rust to the path before proceeding
+# shellcheck source=/dev/null
 source ~/.cargo/env
 
 rustup component add rust-src
