@@ -96,7 +96,7 @@ fi
 if [[ $APT -ne 0 ]]; then
 	subheading "installing base apt packages"
 
-	. ./apt-install.sh
+	source ./apt-install.sh
 fi
 
 if [[ $YUM -ne 0 ]]; then
@@ -108,7 +108,7 @@ fi
 
 if [[ $DNF -ne 0 ]]; then
 	subheading "installing base dnf packages"
-	. ./dnf-install.sh
+	source ./dnf-install.sh
 fi
 
 heading "installing local tools with rtx"
@@ -141,11 +141,11 @@ rtx x -- gem environment
 
 # rust must be after ruby and node
 heading "installing rust"
-. ./rust-install.sh
+source ./rust-install.sh
 
 if is_amazonlinux2023; then
 	subheading "installing base amazonlinux2023 tools"
-	. ./amazonlinux2023-install.sh
+	source ./amazonlinux2023-install.sh
 fi
 
 if [[ -x /usr/bin/nvim ]]; then
@@ -190,6 +190,6 @@ git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; gi
 heading "updating Dot Files"
 ./settings.py --no-dryrun
 
-. ./install_oh_my_zsh.sh
+source ./install_oh_my_zsh.sh
 
 heading "DONE"
