@@ -2,13 +2,13 @@
 
 # This script can either be run locally, or via curl as such:
 #  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
-
+#
+# Or if running via ssm/remote run commands, add in nohup
+#  nohup sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)" 
 
 # Ensure USER and HOME are set -- when running first-time w/ SSM or in a container, these may not be.
 USER=${USER:-$(id -u -n)}
 HOME="${HOME:-$(eval echo "~${USER}")}"
-
-exec > >(tee "${HOME}/bootstrap.log") 2>&1
 
 GITREPO=${GITREPO:-dot-files}
 GITORG=${GITORG:-jsamuel1}
