@@ -97,7 +97,7 @@ def symlink(target, link_name, args, overwrite=True):
 
     # Create link to target with temporary filename
     while True:
-        temp_link_name = tempfile.mktemp(dir=link_dir)
+        temp_link_name = link_name + tempfile.gettempprefix()
 
         # os.* functions mimic as closely as possible system functions
         # The POSIX symlink() returns EEXIST if link_name already exists
