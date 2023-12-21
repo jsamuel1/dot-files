@@ -1,3 +1,4 @@
+at-spi2-atk
 atk
 atk-devel
 autoconf
