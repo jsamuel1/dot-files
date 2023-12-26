@@ -18,14 +18,11 @@ command -v rtx && eval "$(rtx activate bash)"
 command -v rtx && eval "$(rtx hook-env)"
 
 function heading {
-	title="${1}"
 	echo "${bold}"
 	echo "================================================================================="
-	col=$(((80 - ${#title}) / 2))
-	while [ ! -z ${1} ]; do
-		title="${1}"
-		col=$(((80 - ${#title}) / 2))
-		echo "$(printf '%*s%s' $col '' $title)"
+	while [ ! -z "${1}" ]; do
+		col=$(((80 - ${#1}) / 2))
+		echo "$(printf '%*s%s' "${col}" "" "${1}")"
 		shift 1
 	done
 	echo "================================================================================="
@@ -35,10 +32,9 @@ function heading {
 function subheading {
 	echo "${bold}"
 	echo " "
-	while [ ! -z ${1} ]; do
-		title="${1}"
-		col=$(((80 - ${#title}) / 2))
-		echo "$(printf '%*s%s' $col '' $title)"
+	while [ ! -z "${1}" ]; do
+		col=$(((80 - ${#1}) / 2))
+		echo "$(printf '%*s%s' "${col}" "" "${1}")"
 		shift 1
 	done
 	echo "---------------------------------------------------------------------------------"
