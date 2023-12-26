@@ -20,7 +20,7 @@ command -v rtx && eval "$(rtx hook-env)"
 function heading {
 	echo "${bold}"
 	echo "================================================================================="
-	while [ ! -z "${1}" ]; do
+	while [ -n "${1}" ]; do
 		col=$(((80 - ${#1}) / 2))
 		echo "$(printf '%*s%s' "${col}" "" "${1}")"
 		shift 1
@@ -32,7 +32,7 @@ function heading {
 function subheading {
 	echo "${bold}"
 	echo " "
-	while [ ! -z "${1}" ]; do
+	while [ -n "${1}" ]; do
 		col=$(((80 - ${#1}) / 2))
 		echo "$(printf '%*s%s' "${col}" "" "${1}")"
 		shift 1
