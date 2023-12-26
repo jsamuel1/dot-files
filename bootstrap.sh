@@ -4,18 +4,18 @@
 #  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
 #
 # Or if running via ssm/remote run commands, add in nohup
-#  nohup sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)" 
+#  nohup sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
 
 # Ensure USER and HOME are set -- when running first-time w/ SSM or in a container, these may not be.
-USER=${USER:-$(id -u -n)}
-HOME="${HOME:-$(eval echo "~${USER}")}"
+export USER=${USER:-$(id -u -n)}
+export HOME="${HOME:-$(eval echo "~${USER}")}"
 
 GITREPO=${GITREPO:-dot-files}
 GITORG=${GITORG:-jsamuel1}
 GITREMOTE=${GITREMOTE:-https://github.com/${GITORG}/${GITREPO}.git}
 BRANCH=${BRANCH:-master}
 UPDATE=${UPDATE:-0}
-GLOBAL=${GLOBAL:-0}  # for installing global tools/packages only, not user prefs
+GLOBAL=${GLOBAL:-0} # for installing global tools/packages only, not user prefs
 
 # if current directory is a git repo, use it.
 # if not, is there a git repo in $HOME/src/$GITREPO?
@@ -120,7 +120,6 @@ rtx install
 command -v rtx && eval "$(rtx activate bash)"
 command -v rtx && eval "$(rtx hook-env)"
 
-
 heading "installing latest python for user"
 rtx use -g python
 
@@ -155,6 +154,11 @@ if is_amazonlinux2023; then
 	source ./amazonlinux2023-install.sh
 fi
 
+if is_like_debian; then
+	subheading "installing base debian/ubuntu tools"
+	source ./debian-install.sh
+fi
+
 if [[ -x /usr/bin/nvim ]]; then
 	subheading "ensure nvim is our default vim editor"
 	sudo update-alternatives --set vim /usr/bin/nvim
@@ -174,7 +178,7 @@ fi
 if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
 	heading "Installing/Updating AWS Cli 2"
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-	unzip awscliv2.zip
+	unzip -q awscliv2.zip
 	sudo ./aws/install --update
 	rm -rf ./aws
 	rm awscliv2.zip
