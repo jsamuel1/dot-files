@@ -1,7 +1,8 @@
 [tools]
-python = "latest"
 node = "lts"
+python = "latest"
 ruby = "3.2.2"
+pdm = "latest"
 
 [env]
 npm_config_update_notifier = "false"

@@ -31,6 +31,9 @@ if [ ! -d .git ]; then
 fi
 
 echo "running from $(pwd)"
+echo "home: ${HOME}"
+echo "user: ${USER}"
+
 
 if [ "${UPDATE}" -ne 0 ]; then
 	echo "updating"
@@ -128,6 +131,13 @@ rtx x -- python3 -m pip install --upgrade pip | grep -v 'already satisfied'
 rtx x -- python3 -m pip install --upgrade -r requirements.txt | grep -v 'already satisfied'
 
 heading "ensure latest npm and modules"
+rtx env-vars npm_config_progress=false
+rtx env-vars npm_config_update_notifier=false
+rtx env-vars npm_config_update_all=true
+rtx env-vars npm_config_loglevel=warn
+rtx env-vars npm_config_unsafe_perm=true
+rtx trust
+
 rtx use -g nodejs@lts
 awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
 
@@ -198,13 +208,11 @@ heading "update submodules"
 git submodule update --init
 git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
 
-if [[ $GLOBAL -eq 0 ]]; then
-	heading "updating Dot Files"
-	./settings.py --no-dryrun
+heading "updating Dot Files"
+./settings.py --no-dryrun
 
-	source ./install_oh_my_zsh.sh
-else
-	echo "Skipping Dot Files due to \$GLOBAL=${GLOBAL}"
-fi
+rtx trust ${HOME}/.config/rtx/config.toml
+
+source ./install_oh_my_zsh.sh
 
 heading "DONE"
