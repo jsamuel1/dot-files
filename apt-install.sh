@@ -2,6 +2,7 @@
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
+scriptheader ${BASH_SOURCE:-$_}
 
 APTGET=(apt-get --option=Dpkg::Options::=--force-confold
 	--option=Dpkg::options::=--force-unsafe-io
@@ -21,6 +22,7 @@ function install_key {
 	filename="$3"
 
 	if [ ! -f /etc/apt/keyrings/${filename} ]; then
+		echo "creating /etc/apt/keyrings/${filename}"
 		if [ "$mode" == "keyserver" ]; then
 			gpg --no-default-keyring --keyring "./${filename}" --keyserver hkps://keyserver.ubuntu.com --recv-keys "$key"
 		elif [ "$mode" == "dearmor" ]; then
@@ -29,8 +31,8 @@ function install_key {
 			wget -qO- $url >$filename
 		fi
 		sudo install -D -o root -g root -m 644 $filename "/etc/apt/keyrings/${filename}"
-		rm $filename
-		rm $filename'~'
+		rm -f $filename
+		rm -f $filename'~'
 	fi
 }
 
@@ -39,8 +41,10 @@ function install_source_url {
 	listfile="$2"
 	gpgfile="$3"
 	distrover="${4:-stable}"
+	branch="${5:-main}"
 	if [ ! -f "/etc/apt/sources.list.d/${listfile}" ]; then
-		echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/${gpgfile}] ${url} ${distrover} main" |
+		echo "creating /etc/apt/sources.list.d/${listfile}"
+		echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/${gpgfile}] ${url} ${distrover} ${branch}" |
 			sudo tee /etc/apt/sources.list.d/${listfile} >/dev/null
 	fi
 }
@@ -57,6 +61,8 @@ function install_source_ppa {
 	install_source_url $url $listfile $gpgfile $VERSION_CODENAME
 }
 
+subheading "installing APT sources"
+
 # git-core PPA doesn't work with Debian Buster
 if [ "$(hostnamectl | grep Debian)" == "" ]; then
 	install_key keyserver E1DD270288B4E6030699E45FA1715D88E1DF1F24 git-core.gpg
@@ -70,6 +76,14 @@ install_source_url https://cli.github.com/packages github-cli.list githubcli-arc
 install_key dearmor https://rtx.pub/gpg-key.pub rtx-archive-keyring.gpg
 install_source_url https://rtx.pub/deb rtx.list rtx-archive-keyring.gpg
 
+install_key dearmor https://download.docker.com/linux/ubuntu/gpg docker.gpg
+install_source_url https://download.docker.com/linux/ubuntu docker.list docker.gpg $(. /etc/os-release && echo "$VERSION_CODENAME") stable
+
+if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
+	wget -q https://packages.microsoft.com/config/${ID}/${VERSION_ID}/packages-microsoft-prod.deb
+	sudo ${APTGET} install ./packages-microsoft-prod.deb
+fi
+
 if [ -z "$WSL_DISTRO_NAME" ]; then
 	subheading "installing vscode"
 	install_key dearmor https://packages.microsoft.com/keys/microsoft.asc packages.microsoft.gpg
@@ -78,21 +92,16 @@ if [ -z "$WSL_DISTRO_NAME" ]; then
 	sudo ${APTGET} install code
 fi
 
-subheading "installing powershell"
-
-if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
-	wget -q https://packages.microsoft.com/config/${ID}/${VERSION_ID}/packages-microsoft-prod.deb
-	sudo ${APTGET} install ./packages-microsoft-prod.deb
-	sudo ${APTGET} update >/dev/null
-fi
-
-if [ ! -x /usr/bin/pwsh ]; then
-	sudo ${APTGET} install powershell
-fi
-
 subheading "Updating and upgrading packages"
 
 sudo ${APTGET} update >/dev/null
 sudo ${APTGET} upgrade
 
+# docker-ce install instructions
+if [ -z "$SKIP_DOCKER"]; then
+	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	sudo usermod -aG docker "$(whoami)"
+fi
 xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo ${APTGET} install
+
+scriptfooter ${BASH_SOURCE:-$_}

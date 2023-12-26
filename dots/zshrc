@@ -128,8 +128,6 @@ fi
 
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
-export AWS_EC2_METADATA_DISABLED=true
-
 if [ -x /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi

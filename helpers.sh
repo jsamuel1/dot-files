@@ -14,8 +14,8 @@ TERM=${TERM:-dumb} # ensure tput does sensible values if non-interactive
 bold="$(tput bold)"
 normal="$(tput sgr0)"
 
-command -v rtx && eval "$(rtx activate bash)"
-command -v rtx && eval "$(rtx hook-env)"
+command -v rtx >/dev/null && eval "$(rtx activate bash)"
+command -v rtx >/dev/null && eval "$(rtx hook-env)"
 
 function heading {
 	echo "${bold}"
@@ -37,6 +37,26 @@ function subheading {
 		echo "$(printf '%*s%s' "${col}" "" "${1}")"
 		shift 1
 	done
+	echo "---------------------------------------------------------------------------------"
+	echo "${normal}"
+}
+
+function scriptheader {
+	echo "${bold}"
+	echo "---------------------------------------------------------------------------------"
+	title="Script: ${1##*/}"
+	col=$(((80 - ${#title}) / 2))
+	echo "$(printf '%*s%s' "${col}" "" "${title}")"
+	echo "---------------------------------------------------------------------------------"
+	echo "${normal}"
+}
+
+function scriptfooter {
+	echo "${bold}"
+	echo "---------------------------------------------------------------------------------"
+	title="Done: ${1##*/}"
+	col=$(((80 - ${#title}) / 2))
+	echo "$(printf '%*s%s' "${col}" "" "${title}")"
 	echo "---------------------------------------------------------------------------------"
 	echo "${normal}"
 }
