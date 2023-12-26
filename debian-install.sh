@@ -4,8 +4,6 @@
 # shellcheck source=./helpers.sh
 source ./helpers.sh
 
-is_amazonlinux2 || is_amazonlinux2023 || exit
+is_like_debian || exit
 
 source ./install_neovim_from_source.sh
-source ./install_neofetch_to_amazonlinux.sh
-source ./install_autojump_to_amazonlinux.sh

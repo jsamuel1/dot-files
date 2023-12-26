@@ -6,11 +6,8 @@
 # shellcheck source=./helpers.sh
 source ./helpers.sh
 
-is_amazonlinux2 || is_amazonlinux2023 || exit
-
-sudo yum groups install -y Development\ tools
-
 if is_amazonlinux2; then
+	sudo yum groups install -y Development\ tools
 	sudo yum install openssl11-devel wget -y
 
 	(
@@ -22,8 +19,11 @@ if is_amazonlinux2; then
 		make
 		sudo make install || exit
 	)
-else
+elif is_amazonlinux2023; then
+	sudo yum groups install -y Development\ tools
 	sudo yum install openssl-devel wget cmake python python-devel python-pip -y
+elif is_like_debian; then
+	sudo apt-get -y install ninja-build gettext cmake unzip curl
 fi
 
 pip3 install pynvim setuptools --upgrade
