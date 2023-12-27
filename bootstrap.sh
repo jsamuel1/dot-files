@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # This script can either be run locally, or via curl as such:
-#  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
+#  sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/main/bootstrap.sh)"
 #
 # Or if running via ssm/remote run commands, add in nohup
-#  nohup sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
+#  nohup sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/main/bootstrap.sh)"
 
 # Ensure USER and HOME are set -- when running first-time w/ SSM or in a container, these may not be.
 export USER=${USER:-$(id -u -n)}
@@ -13,9 +13,8 @@ export HOME="${HOME:-$(eval echo "~${USER}")}"
 GITREPO=${GITREPO:-dot-files}
 GITORG=${GITORG:-jsamuel1}
 GITREMOTE=${GITREMOTE:-https://github.com/${GITORG}/${GITREPO}.git}
-BRANCH=${BRANCH:-master}
-UPDATE=${UPDATE:-0}
-GLOBAL=${GLOBAL:-0} # for installing global tools/packages only, not user prefs
+BRANCH=${BRANCH:-main}
+UPDATE=${UPDATE:-1}
 
 # if current directory is a git repo, use it.
 # if not, is there a git repo in $HOME/src/$GITREPO?
@@ -37,9 +36,13 @@ echo "user: ${USER}"
 
 if [ "${UPDATE}" -ne 0 ]; then
 	echo "updating"
+	if [ "$(git branch)" == "master" ]; then
+		git branch -m master main
+		git fetch origin
+		git branch -u main main
+		git remote set-head origin -a
+	fi
 	git pull origin "${BRANCH}"
-	git submodule update --init --recursive
-	git submodule foreach git pull origin "${BRANCH}"
 fi
 
 # shellcheck source=./helpers.sh

@@ -12,19 +12,19 @@ Run from internet:
 git and curl must be installed.
 
 ```sh
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/master/bootstrap.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/jsamuel1/dot-files/main/bootstrap.sh)"
 ```
 
 Run from local:
 
 ```sh
-    ./bootstrap.sh
+    UPDATE=0 ./bootstrap.sh
 ```
 
 To update and run from local:
 
 ```sh
-    UPDATE=1 ./bootstrap.sh
+    ./bootstrap.sh
 ```
 
 ## Mac
