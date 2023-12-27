@@ -4,24 +4,28 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-#
-# see https://github.com/rust-lang/rustup#other-installation-methods for options
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -y
-
+if ! command -v rustup >/dev/null; then  
+  # see https://github.com/rust-lang/rustup#other-installation-methods for options
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path -q -y
+fi
 # add rust to the path before proceeding
 # shellcheck source=/dev/null
 source ~/.cargo/env
 
-rustup component add rust-src
-
-if [ ! -d ~/src/rust-analyzer ]; then
-  git clone https://github.com/rust-analyzer/rust-analyzer --depth 1 ~/src/rust-analyzer/
-  echo running rust-analyzer installer
-  ( cd ~/src/rust-analyzer && cargo xtask install )
-else
-  echo rust-analyzer already exists
+# remove any existing rust-analyzer installed via Cargo instead of rustup
+if [ -x "${HOME}/.cargo/bin/rust-analyzer" ]; then
+  rm -f "${HOME}/.cargo/bin/rust-analyzer"
 fi
 
-awk '! /^ *(#|$)/' "cargorequirements.txt"  | xargs -r -- cargo install
+rustup -q update
+rustup -q component add rust-src
+rustup -q component add rust-analyzer
+rustup -q component add rustfmt
+rustup -q component add clippy
+
+# re-source the environment
+source "$HOME/.cargo/env"
+
+awkxargs "cargorequirements.txt" cargo -q install
 
 scriptfooter "${BASH_SOURCE:-$_}"

@@ -124,8 +124,6 @@ if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then
 	source /etc/profile.d/vte.sh
 fi
 
-export GOPATH=~/go
-
 export PATH=$HOME/.toolbox/bin:$PATH
 
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"

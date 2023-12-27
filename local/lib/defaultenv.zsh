@@ -5,10 +5,8 @@ export AWS_REGIONS="ap-southeast-2 us-west-2"
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git --color=always"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--ansi"
-#export GOPATH="${HOME}/goprojects"
-#export GOROOT="${HOME}/go"
 export GREP_COLORS="mt=01;31"
-export PATH="${PATH}:${GOPATH}:${PYENV_ROOT}/bin"
+export PATH="${PATH}:${PYENV_ROOT}/bin"
 export PYENV_ROOT="${HOME}/.pyenv"
 export DEFAULT_USER=`whoami`
 export DOTNET_CLI_TELEMETRY_OPTOUT=1

@@ -128,3 +128,17 @@ function is_mac {
 
 	return 1 # 1=false
 }
+
+function awkxargs {
+	# product something like:
+	# awk '! /^ *(#|$)/' "gemrequirements.txt" | xargs "${RTXX[@]}" gem install
+	FILTER='! /^ *(#|$)/'
+	if [ "${1}" == "1" ]; then
+	  XARGOPTS=(-n 1)
+	  shift
+	fi
+
+	FILENAME=${1}
+	shift 1
+	awk "${FILTER}" "${FILENAME}" | xargs "${XARGOPTS[@]}" -- "$@"
+}

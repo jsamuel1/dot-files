@@ -102,59 +102,18 @@ fi
 
 # Install base apt packages
 if [[ $APT -ne 0 ]]; then
-	subheading "installing base apt packages"
-
 	source ./apt-install.sh
 fi
 
 if [[ $YUM -ne 0 ]]; then
-	subheading "installing base yum packages"
-	yum install -y yum-utils
-	yum-config-manager --add-repo https://rtx.pub/rpm/rtx.repo
-	xargs -a <(awk '! /^ *(#|$)/' "yumrequirements.txt") -r -- sudo yum -y install
+	source ./yum-install.sh
 fi
 
 if [[ $DNF -ne 0 ]]; then
-	subheading "installing base dnf packages"
 	source ./dnf-install.sh
 fi
 
-heading "installing local tools with rtx"
-rtx install
-command -v rtx && eval "$(rtx activate bash)"
-command -v rtx && eval "$(rtx hook-env)"
-
-heading "installing latest python for user"
-rtx use -g python
-
-subheading "installing base python3 packages"
-rtx x -- python3 -m pip install --upgrade pip | grep -v 'already satisfied'
-rtx x -- python3 -m pip install --upgrade -r requirements.txt | grep -v 'already satisfied'
-
-heading "ensure latest npm and modules"
-rtx env-vars npm_config_progress=false
-rtx env-vars npm_config_update_notifier=false
-rtx env-vars npm_config_update_all=true
-rtx env-vars npm_config_loglevel=warn
-rtx env-vars npm_config_unsafe_perm=true
-rtx trust
-
-rtx use -g nodejs@lts
-awk '! /^ *(#|$)/' "npmrequirements.txt" | xargs rtx x -- npm install -g
-
-rtx use -g go
-heading "ensure latest go modules"
-awk '! /^ *(#|$)/' "gorequirements.txt" | xargs go install
-
-subheading "ensure neovim ruby gem installed"
-
-sudo mkdir -p /usr/local/opt/sqllite
-sudo mkdir -p /usr/local/opt/zlib/lib
-
-# install latest stable version and use globbaly
-rtx use -g ruby
-xargs -a <(awk '! /^ *(#|$)/' "gemrequirements.txt") -r -- rtx x -- gem install
-rtx x -- gem environment
+source ./rtx-tools-install.sh
 
 # rust must be after ruby and node
 heading "installing rust"

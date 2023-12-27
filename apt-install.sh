@@ -102,6 +102,7 @@ if [ -z "$SKIP_DOCKER" ]; then
 	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 	sudo usermod -aG docker "$(whoami)"
 fi
-xargs -a <(awk '! /^ *(#|$)/' "aptrequirements.txt") -r -- sudo "${APTGET[@]}" install
+
+awkxargs "aptrequirements.txt" sudo "${APTGET[@]}" install
 
 scriptfooter "${BASH_SOURCE:-$_}"

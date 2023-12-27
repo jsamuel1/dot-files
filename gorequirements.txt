@@ -1,1 +1,2 @@
 github.com/jesseduffield/lazygit@latest
+github.com/magefile/mage@latest
