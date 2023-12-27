@@ -2,6 +2,7 @@
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
 
 sudo dnf install -y dnf-plugins-core
 sudo dnf install 'dnf-command(config-manager)'
@@ -25,3 +26,5 @@ if [[ $GUI -eq 1 ]]; then
 	fi
 	sudo dnf -y install code
 fi
+
+scriptfooter "${BASH_SOURCE:-$_}"

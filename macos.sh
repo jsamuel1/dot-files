@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# shellcheck source=./helpers.sh
+source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
+
+
 if ! type brew >/dev/null; then
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
@@ -45,3 +50,5 @@ if [ ! -d "/Applications/Google Chrome.app" ]; then
 	hdiutil detach "$temp/mount"
 	rm -r "$temp"
 fi
+
+scriptfooter "${BASH_SOURCE:-$_}"

@@ -2,6 +2,7 @@
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
 
 #
 # see https://github.com/rust-lang/rustup#other-installation-methods for options
@@ -22,3 +23,5 @@ else
 fi
 
 awk '! /^ *(#|$)/' "cargorequirements.txt"  | xargs -r -- cargo install
+
+scriptfooter "${BASH_SOURCE:-$_}"

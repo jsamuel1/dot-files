@@ -44,6 +44,7 @@ fi
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
 
 # Ask for the administrator password upfront
 sudo true
@@ -204,15 +205,12 @@ if [[ $GUI -eq 1 ]]; then
 	fi
 fi
 
-heading "update submodules"
-git submodule update --init
-git submodule foreach "(git checkout master; git pull; cd ..; git add \$path; git commit -m 'Submodule sync')"
-
-heading "updating Dot Files"
+scriptheader "settings.py"
 ./settings.py --no-dryrun
+scriptfooter "settings.py"
 
-rtx trust ${HOME}/.config/rtx/config.toml
+rtx trust "${HOME}/.config/rtx/config.toml"
 
 source ./install_oh_my_zsh.sh
 
-heading "DONE"
+scriptfooter "${BASH_SOURCE:-$_}"

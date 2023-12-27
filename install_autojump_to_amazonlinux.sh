@@ -2,6 +2,7 @@
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
 
 (
 
@@ -13,3 +14,5 @@ source ./helpers.sh
 
 	popd >/dev/null || exit
 )
+
+scriptfooter "${BASH_SOURCE:-$_}"

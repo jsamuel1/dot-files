@@ -5,6 +5,7 @@
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
 
 if is_amazonlinux2; then
 	sudo yum groups install -y Development\ tools
@@ -48,3 +49,5 @@ npm install -g neovim
 
 	popd >/dev/null || exit
 )
+
+scriptfooter "${BASH_SOURCE:-$_}"

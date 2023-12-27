@@ -1,5 +1,6 @@
 click
 gobject
+pip
 pygit2
 pylint
 pynvim

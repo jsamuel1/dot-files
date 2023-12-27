@@ -2,8 +2,7 @@
 
 # shellcheck source=./helpers.sh
 source ./helpers.sh
-
-heading "Setup zsh environment"
+scriptheader "${BASH_SOURCE:-$_}"
 
 clone_or_pull https://github.com/junegunn/fzf.git ~/.fzf shallow
 ~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
@@ -24,4 +23,4 @@ clone_or_pull https://github.com/zsh-users/zsh-completions.git ~/.local/lib/zsh-
 
 sudo chsh -s "$(which zsh)" "$(whoami)" || true
 
-heading ""
+scriptfooter "${BASH_SOURCE:-$_}"

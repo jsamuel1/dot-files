@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# shellcheck source=./helpers.sh
+source ./helpers.sh
+scriptheader "${BASH_SOURCE:-$_}"
+
 # Based on:
 # ~/.macos — https://mths.be/macos
 # with further tweaks inspired by https://github.com/kevinSuttle/macOS-Defaults/tree/suttle
@@ -731,3 +735,5 @@ defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault
 #  killall "${app}" &> /dev/null
 #done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
+
+scriptfooter "${BASH_SOURCE:-$_}"
