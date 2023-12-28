@@ -33,7 +33,6 @@ echo "running from $(pwd)"
 echo "home: ${HOME}"
 echo "user: ${USER}"
 
-
 if [ "${UPDATE}" -ne 0 ]; then
 	echo "updating"
 	if [ "$(git branch)" == "master" ]; then
@@ -149,12 +148,14 @@ if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
 fi
 
 if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
-	heading "Installing/Updating AWS Cli 2"
-	curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"
-	unzip -q awscliv2.zip
-	sudo ./aws/install --update
-	rm -rf ./aws
-	rm awscliv2.zip
+	if [ $UPDATE -eq 1 ] || ! command -v aws >/dev/null || [[ "$(aws --version)" != *"aws-cli/2"* ]]; then
+		heading "Installing/Updating AWS Cli 2"
+		curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"
+		unzip -q awscliv2.zip
+		sudo ./aws/install --update
+		rm -rf ./aws
+		rm awscliv2.zip
+	fi
 fi
 
 if [[ $GUI -eq 1 ]]; then
@@ -167,14 +168,16 @@ if [[ $GUI -eq 1 ]]; then
 	fi
 fi
 
-subheading "installing iterm2 integrations"
-curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | SHELL=zsh bash
-
 scriptheader "settings.py"
 ./settings.py --no-dryrun
 scriptfooter "settings.py"
 
 rtx trust "${HOME}/.config/rtx/config.toml"
+
+if [ ! -z "${HOME}/.iterm2_shell_integration.zsh"]; then
+	subheading "installing iterm2 integrations"
+	curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | SHELL=zsh bash
+fi
 
 source ./install_oh_my_zsh.sh
 

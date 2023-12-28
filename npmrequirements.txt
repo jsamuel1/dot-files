@@ -1,4 +1,5 @@
-aws-cdk
-neovim
+aws-cdk@latest
+neovim@latest
 npm@latest
-bash-language-server
+bash-language-server@latest
+prettier@latest

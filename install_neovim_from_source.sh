@@ -24,7 +24,7 @@ elif is_amazonlinux2023; then
 	sudo yum groups install -y Development\ tools
 	sudo yum install openssl-devel wget cmake python python-devel python-pip -y
 elif is_like_debian; then
-	sudo apt-get -y install ninja-build gettext cmake unzip curl
+	sudo apt-get -y install ninja-build gettext cmake unzip curl lua5.4 luarocks aspell
 fi
 
 pip3 install pynvim setuptools --upgrade
