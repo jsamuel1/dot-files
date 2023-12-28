@@ -150,7 +150,7 @@ fi
 
 if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
 	heading "Installing/Updating AWS Cli 2"
-	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"
 	unzip -q awscliv2.zip
 	sudo ./aws/install --update
 	rm -rf ./aws
@@ -166,6 +166,9 @@ if [[ $GUI -eq 1 ]]; then
 		code-insiders --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
 	fi
 fi
+
+subheading "installing iterm2 integrations"
+curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | SHELL=zsh bash
 
 scriptheader "settings.py"
 ./settings.py --no-dryrun
