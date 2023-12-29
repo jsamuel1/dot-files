@@ -11,7 +11,9 @@ brew doctor
 if ! type mas >/dev/null; then
 	brew install mas
 fi
-mas install 497799835 #xcode
+if ! type xcode-select >/dev/null; then
+	mas install 497799835 #xcode
+fi
 
 if ! type xcodebuild >/dev/null; then
 	sudo xcode-select --install
@@ -24,6 +26,8 @@ if ! xcodebuild -checkFirstLaunchStatus; then
 	sudo xcodebuild -license accept
 	sudo xcodebuild -runFirstLaunch
 fi
+
+subheading "Installing brew bundle"
 ACCEPT_EULA=y brew bundle
 
 if [ ! -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
@@ -34,22 +38,20 @@ fi
 ./macdefaults.sh
 
 # set /usr/local/bin/zsh as the default shell on macos using dscl, if it exists
-if [ -f "/usr/local/bin/zsh" ]; then
+if [ -f "/usr/local/bin/zsh" ] && [[ ! "$(dscl . -read "/Users/${USER}" UserShell)" =~ "UserShell:".*"/usr/local/bin/zsh"$ ]]; then
 	sudo dscl . -create "/Users/${USER}" UserShell /usr/local/bin/zsh
-	echo "Default shell set to /usr/local/bin/zsh"
-	echo "Restart your terminal to apply changes"
+	subheading "Default shell set to /usr/local/bin/zsh" "Restart your terminal to apply changes"
 fi
 
 if [ ! -d "/Applications/Google Chrome.app" ]; then
+	subheading "Installing Google Chrome"
 	temp=$TMPDIR$(uuidgen)
-	mkdir -p "$temp/mount"
-	curl https://dl.google.com/chrome/mac/beta/googlechrome.dmg >"$temp/1.dmg"
-	yes | hdiutil attach -noverify -nobrowse -mountpoint "$temp/mount" "$temp/1.dmg"
-	cp -r "$temp/mount/*.app" /Applications
-	hdiutil detach "$temp/mount"
+	curl https://dl.google.com/chrome/mac/stable/accept_tos%3Dhttps%253A%252F%252Fwww.google.com%252Fintl%252Fen_ph%252Fchrome%252Fterms%252F%26_and_accept_tos%3Dhttps%253A%252F%252Fpolicies.google.com%252Fterms/googlechrome.pkg >"$temp/googlechrome.pkg"
+	sudo installer -pkg "$temp/googlechrome.pkg" -target /
 	rm -r "$temp"
 fi
 
+subheading "iTerm2 config files"
 for SOURCEDIR in "${PWD}/iTerm2"/*/; do
 	TARGETDIR="${HOME}/Library/Application Support/iTerm2/$(basename "${SOURCEDIR}")"
 	if [ ! -d "${TARGETDIR}" ]; then
