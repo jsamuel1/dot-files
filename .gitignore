@@ -8,3 +8,5 @@ Brewfile.lock.json
 *.zwc
 packages-microsoft*
 .idea/
+.DS_Store
+**/.DS_Store

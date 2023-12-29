@@ -6,9 +6,13 @@ import iterm2
 import iterm2.profile
 import iterm2.rpc
 
-# This script was created with the "basic" environment which does not support adding dependencies
-# with pip.
-def mwInitPath() -> str : 
+"""
+This script was created with the "basic" environment which does
+not support adding dependencies with pip.
+"""
+
+
+def mwInitPath() -> str:
     """
     return the path to the mwinit command
     """
@@ -19,6 +23,7 @@ def mwInitPath() -> str :
         print("mwinit not found")
         return "/usr/bin/env true"
     return filePath
+
 
 def createIterm2DynamicProfile():
     """
@@ -36,8 +41,7 @@ def createIterm2DynamicProfile():
 
     dynamicProfilePath = os.path.join(dynamicProfileFolder, "mwinit.json")
     # if os.path.exists(dynamicProfilePath):
-    #     return
-
+    #    return
 
     with open(dynamicProfilePath, "w") as f:
         f.write(
@@ -46,41 +50,56 @@ def createIterm2DynamicProfile():
                     "Profiles": [
                         {
                             "Name": "mwinit",
-                            "Command": mwInitPath(),
-                            "Guid": "{dade84fa-07f2-498c-a5d5-99c4e20706b9}", # unique for mwinit 
-                            "Custom Command": "Yes",
-                            "Rows": 10,
+                            "Close Sessions On End": 1,
                             "Columns": 50,
-                            "Close Sessions On End": True,
-                            "Prompt Before Closing 2": False,
-                            "Has HotKey": True,
+                            "Command": mwInitPath(),
+                            "Custom Command": "Custom Shell",
+                            "Custom Window Title": "Authenticate with Amazon",
+                            "Disable Window Resizing": True,
+                            "Window Type": 0,
+                            "Prevent Opening in a Tab": True,
+                            "Shortcut": "A",  # Profile switch shortcut
+                            # unique Guid generated for mwinit
+                            "Guid": "DADE84FA-07F2-498C-A5D5-99C4E20706B9",
+                            "Has Hotkey": True,
                             "HotKey Activated By Modifier": False,
-                            "HotKey Characters": "a",
+                            "HotKey Alternate Shortcuts": [],
                             "HotKey Characters Ignoring Modifiers": "A",
-                            "HotKey Key Code": 0,
-                            "HotKey Modifier Activations": 0,
+                            "HotKey Characters": "a",
+                            "HotKey Key Code": 0,  # A scancode on mac
+                            "HotKey Modifier Activation": 0,
                             "HotKey Modifier Flags": 1179648,
                             "HotKey Window Animates": True,
                             "HotKey Window AutoHides": True,
+                            "HotKey Window Dock Click Action": 0,
                             "HotKey Window Floats": True,
-                            "HotKey Window Reopens On Activations": False
+                            "HotKey Window Reopens On Activation": False,
+                            "Prompt Before Closing 2": False,
+                            "Rows": 10,
+                            # Transparency settings
+                            "Initial Use Transparency": True,
+                            "Only The Default BG Color Uses Transparency": False,
+                            "Transparency": 0.25,
+                            "Blur": True,
+                            "Blur Radius": 6.3,
                         }
                     ]
-                }
+                },
+                sort_keys=True,
+                indent=4
             )
         )
 
 
 async def main(connection):
-    # Your code goes here. Here's a bit of example code that adds a tab to the current window:
-    app = await iterm2.async_get_app(connection)
+    # app = await iterm2.async_get_app(connection)
     # window = app.current_terminal_window
     mwinitProfile = None
     profileName = "Default"
 
     createIterm2DynamicProfile()
 
-    for i in [ 1,2,3 ] :
+    for i in [1, 2, 3]:
         profiles = await iterm2.Profile.async_get(connection)
         for profile in profiles:
             if profile.name == "mwinit":
@@ -89,7 +108,7 @@ async def main(connection):
                 break
         if mwinitProfile is not None:
             break
-        print(f"mwinit profile not found. Sleeping")
+        print("mwinit profile not found. Sleeping")
         await sleep(1)
 
     if mwinitProfile is None:
@@ -100,8 +119,9 @@ async def main(connection):
         mwinitProfile.set_command(mwInitPath())
         mwinitProfile.set_custom_command("Yes")
 
-
-    await iterm2.Window.async_create(connection=connection, profile=profileName, profile_customizations=mwinitProfile)
+    await iterm2.Window.async_create(connection=connection,
+                                     profile=profileName,
+                                     profile_customizations=mwinitProfile)
 
 
 iterm2.run_until_complete(main)
