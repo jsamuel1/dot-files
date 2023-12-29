@@ -1,0 +1,1 @@
+{"Profiles": [{"Name": "mwinit", "Command": "/usr/local/bin/mwinit", "Guid": "{dade84fa-07f2-498c-a5d5-99c4e20706b9}", "Custom Command": "Yes", "Rows": 10, "Columns": 50, "Close Sessions On End": true, "Prompt Before Closing 2": false}]}

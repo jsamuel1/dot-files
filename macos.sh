@@ -4,7 +4,6 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-
 if ! type brew >/dev/null; then
 	bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
@@ -50,5 +49,15 @@ if [ ! -d "/Applications/Google Chrome.app" ]; then
 	hdiutil detach "$temp/mount"
 	rm -r "$temp"
 fi
+
+for SOURCEDIR in "${PWD}/iTerm2"/*/; do
+	TARGETDIR="${HOME}/Library/Application Support/iTerm2/$(basename "${SOURCEDIR}")"
+	if [ ! -d "${TARGETDIR}" ]; then
+		mkdir -p "${TARGETDIR}"
+		for FILE in "${SOURCEDIR}"/*; do
+			ln -sf "${FILE}" "${TARGETDIR}/$(basename "${FILE}")"
+		done
+	fi
+done
 
 scriptfooter "${BASH_SOURCE:-$_}"
