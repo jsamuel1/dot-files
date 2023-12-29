@@ -52,6 +52,14 @@ if [ ! -d "/Applications/Google Chrome.app" ]; then
 fi
 
 subheading "iTerm2 config files"
+
+if [ -f "${PWD}/iTerm2/com.googlecode.iterm2.plist" ]; then
+	# Specify the preferences directory
+	defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${PWD}/iTerm2"
+	# Tell iTerm2 to use the custom preferences in the directory
+	defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+fi
+
 for SOURCEDIR in "${PWD}/iTerm2"/*/; do
 	TARGETDIR="${HOME}/Library/Application Support/iTerm2/$(basename "${SOURCEDIR}")"
 	if [ ! -d "${TARGETDIR}" ]; then
