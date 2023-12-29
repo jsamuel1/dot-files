@@ -58,8 +58,9 @@ return {
   -- It require nodejs and yarn. homebrew to install first
   {
     "iamcco/markdown-preview.nvim",
-    build = "cd app && npm install",
-    setup = function()
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
       vim.g.mkdp_filetypes = { "markdown" }
     end,
     ft = { "markdown" },
