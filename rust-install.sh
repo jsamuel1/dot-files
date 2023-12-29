@@ -26,6 +26,6 @@ rustup -q component add clippy
 # re-source the environment
 source "$HOME/.cargo/env"
 
-awkxargs "cargorequirements.txt" cargo -q install
+awkxargs "dependencies/cargorequirements.txt" cargo -q install
 
 scriptfooter "${BASH_SOURCE:-$_}"

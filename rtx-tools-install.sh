@@ -20,7 +20,7 @@ rtx use -g python
 
 subheading "installing base python3 packages"
 "${RTXX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
-"${RTXX[@]}" python3 -m pip install --upgrade -r requirements.txt | grep -v 'already satisfied'
+"${RTXX[@]}" python3 -m pip install --upgrade -r "dependencies/requirements.txt" | grep -v 'already satisfied'
 
 heading "ensure latest npm and modules"
 # rtx env-vars npm_config_progress=false
@@ -30,11 +30,11 @@ heading "ensure latest npm and modules"
 # rtx env-vars npm_config_unsafe_perm=true
 
 rtx use -g nodejs@lts
-awkxargs "npmrequirements.txt" "${RTXX[@]}" npm install -g
+awkxargs "dependencies/npmrequirements.txt" "${RTXX[@]}" npm install -g
 
 rtx use -g go@latest
 heading "ensure latest go modules"
-awkxargs 1 "gorequirements.txt" "${RTXX[@]}" go install -a
+awkxargs 1 "dependencies/gorequirements.txt" "${RTXX[@]}" go install -a
 
 subheading "ensure neovim ruby gem installed"
 
@@ -44,7 +44,7 @@ sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly
 rtx use -g ruby@latest
-awkxargs "gemrequirements.txt" "${RTXX[@]}" gem install
+awkxargs "dependencies/gemrequirements.txt" "${RTXX[@]}" gem install
 
 
 scriptfooter "${BASH_SOURCE:-$_}"

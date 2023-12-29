@@ -28,7 +28,7 @@ if ! xcodebuild -checkFirstLaunchStatus; then
 fi
 
 subheading "Installing brew bundle"
-ACCEPT_EULA=y brew bundle
+ACCEPT_EULA=y brew bundle --file="dependencies/Brewfile"
 
 if [ ! -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
 	curl -L https://iterm2.com/shell_integration/zsh \

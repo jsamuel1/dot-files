@@ -18,6 +18,6 @@ if [ ! -f /etc/yum.repos.d/vscode.repo ]; then
 fi
 sudo yum -y install code
 
-awkxargs "yumrequirements.txt" sudo yum -y install
+awkxargs "dependencies/yumrequirements.txt" sudo yum -y install
 
 scriptfooter "${BASH_SOURCE:-$_}"

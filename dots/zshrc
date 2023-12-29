@@ -55,7 +55,6 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
 
-# For OS's such as AmazonLinux that don't include autojump
 if [[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ]]; then
   source "$HOME/.autojump/etc/profile.d/autojump.sh"
   AUTOJUMPPLUGIN=autojump

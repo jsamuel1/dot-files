@@ -29,6 +29,6 @@ if [[ $GUI -eq 1 ]]; then
 fi
 
 
-arkxargs "dnfrequirements.txt" sudo dnf -y install
+awkxargs "dependencies/dnfrequirements.txt" sudo dnf -y install
 
 scriptfooter "${BASH_SOURCE:-$_}"

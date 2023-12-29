@@ -121,15 +121,8 @@ source ./rtx-tools-install.sh
 heading "installing rust"
 source ./rust-install.sh
 
-if is_amazonlinux2023; then
-	subheading "installing base amazonlinux2023 tools"
-	source ./amazonlinux2023-install.sh
-fi
-
-if is_like_debian; then
-	subheading "installing base debian/ubuntu tools"
-	source ./debian-install.sh
-fi
+subheading "installing tools from source"
+source ./tools_install_from_source.sh
 
 if [[ -x /usr/bin/nvim ]]; then
 	subheading "ensure nvim is our default vim editor"

@@ -103,6 +103,6 @@ if [ -z "$SKIP_DOCKER" ]; then
 	sudo usermod -aG docker "$(whoami)"
 fi
 
-awkxargs "aptrequirements.txt" sudo "${APTGET[@]}" install
+awkxargs "dependencies/aptrequirements.txt" sudo "${APTGET[@]}" install
 
 scriptfooter "${BASH_SOURCE:-$_}"

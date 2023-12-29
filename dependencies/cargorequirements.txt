@@ -1,3 +1,2 @@
 selene
-autojump
 fd-find

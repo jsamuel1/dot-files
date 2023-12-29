@@ -10,7 +10,7 @@ scriptheader "${BASH_SOURCE:-$_}"
 
 	pushd . >/dev/null || exit
 	cd ~/src/autojump || exit
-	sudo ./install.py
+	python3 ./install.py
 
 	popd >/dev/null || exit
 )
