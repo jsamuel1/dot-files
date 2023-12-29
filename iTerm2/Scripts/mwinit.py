@@ -52,7 +52,18 @@ def createIterm2DynamicProfile():
                             "Rows": 10,
                             "Columns": 50,
                             "Close Sessions On End": True,
-                            "Prompt Before Closing 2": False
+                            "Prompt Before Closing 2": False,
+                            "Has HotKey": True,
+                            "HotKey Activated By Modifier": False,
+                            "HotKey Characters": "a",
+                            "HotKey Characters Ignoring Modifiers": "A",
+                            "HotKey Key Code": 0,
+                            "HotKey Modifier Activations": 0,
+                            "HotKey Modifier Flags": 1179648,
+                            "HotKey Window Animates": True,
+                            "HotKey Window AutoHides": True,
+                            "HotKey Window Floats": True,
+                            "HotKey Window Reopens On Activations": False
                         }
                     ]
                 }

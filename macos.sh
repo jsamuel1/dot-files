@@ -64,10 +64,27 @@ for SOURCEDIR in "${PWD}/iTerm2"/*/; do
 	TARGETDIR="${HOME}/Library/Application Support/iTerm2/$(basename "${SOURCEDIR}")"
 	if [ ! -d "${TARGETDIR}" ]; then
 		mkdir -p "${TARGETDIR}"
-		for FILE in "${SOURCEDIR}"/*; do
-			ln -sf "${FILE}" "${TARGETDIR}/$(basename "${FILE}")"
-		done
 	fi
+	for FILE in "${SOURCEDIR}"/*; do
+		ln -sf "${FILE}" "${TARGETDIR}/$(basename "${FILE}")"
+	done
 done
+
+# Amazon Only install - won't work elsewhere.
+# authenticate with mwinit first
+# One-time only install
+if command -v /usr/local/amazon/bin/acme_amazon_enterprise_access >/dev/null; then
+	if [ ! -x /usr/local/sbin/homebrew-amazon-credential.sh ]; then
+		subheading "Installing Amazon tap"
+		# Install the Amazon tap (one time setup)
+		python3 -c "$(curl -fsS https://m.media-amazon.com/images/G/01/homebrew/bootstrap.py)"
+		brew install amzn/amzn/env-improvement
+		brew install amzn/amzn/isengard-cli
+		brew install --cask amzn/amzn/amazon-acronyms
+		brew install amzn/amzn/brazil-recursive-cmd-parallel
+		brew install amzn/amzn/amazon-ca-certs-openssl
+		brew install amzn/amzn/amassh
+	fi
+fi
 
 scriptfooter "${BASH_SOURCE:-$_}"
