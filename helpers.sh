@@ -187,7 +187,16 @@ function cleanup_broken_symlinks {
 		return
 	fi
 
+	subheading "Searching for broken symlinks" "${TARGETPATH}"
 	# remove brooken symlinks. Example from `man find``
-	FDOPTIONS=(--follow --hidden --type symlink --batch-size 10 --exclude node_modules --exclude build --exclude site-packages)
-	fd "${FDOPTIONS[@]}" . "${TARGETPATH}" --exec-batch rm --
+	FDOPTIONS=(--follow --hidden --type symlink --exclude node_modules --exclude build --exclude site-packages)
+	FILECOUNT="$(fd "${FDOPTIONS[@]}" . "${TARGETPATH}" | wc -l)"
+	echo "${FILECOUNT} files found."
+	if [ "${FILECOUNT}" -gt 0 ]; then
+		fd "${FDOPTIONS[@]}" . "${TARGETPATH}" --batch-size 10 --exec-batch rm --
+		subheading "Done cleaning broken symlinks" "${TARGETPATH}"
+		return
+	fi
+	
+
 }
