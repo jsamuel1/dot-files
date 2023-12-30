@@ -9,7 +9,7 @@ scriptheader "${BASH_SOURCE:-$_}"
 
 	pushd . >/dev/null || exit
 	cd ~/src/neofetch || exit
-	sudo make install
+	sudo make install PREFIX=/usr/local
 	popd >/dev/null || exit
 )
 

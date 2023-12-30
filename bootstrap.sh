@@ -141,7 +141,7 @@ if [[ $GUI -eq 1 && $MACOS -eq 0 ]]; then
 fi
 
 if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
-	if [ $UPDATE -eq 1 ] || ! command -v aws >/dev/null || [[ "$(aws --version)" != *"aws-cli/2"* ]]; then
+	if [ "$UPDATE" -eq 1 ] || ! command -v aws >/dev/null || [[ "$(aws --version)" != *"aws-cli/2"* ]]; then
 		heading "Installing/Updating AWS Cli 2"
 		curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"
 		unzip -q awscliv2.zip
@@ -151,13 +151,14 @@ if [[ $MACOS -eq 0 && $SKIPAWSCLI -eq 0 ]]; then
 	fi
 fi
 
-if [[ $GUI -eq 1 ]]; then
+# MacOS - we'll handle VSCode extension withs Brew
+if ! is_mac && [[ $GUI -eq 1 ]]; then
 	## get list of extensions with code --list-extensions
 	if type code >/dev/null; then
-		code --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension
+		code --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension
 	fi
 	if type code-insiders >/dev/null; then
-		code-insiders --list-extensions | grep -v -f - "vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
+		code-insiders --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
 	fi
 fi
 
@@ -165,9 +166,20 @@ scriptheader "settings.py"
 ./settings.py --no-dryrun
 scriptfooter "settings.py"
 
+subheading "Searching for broken symlinks"
+cleanup_broken_symlinks "${HOME}" true
+cleanup_broken_symlinks "${HOME}/.config" 
+cleanup_broken_symlinks "${HOME}/.local"
+cleanup_broken_symlinks "${HOME}/.zsh"
+cleanup_broken_symlinks "${HOME}/.ssh"
+cleanup_broken_symlinks "${HOME}/.pyenv"
+cleanup_broken_symlinks "${HOME}/.docker"
+
+subheading "Installing Shell integrations"
+
 rtx trust "${HOME}/.config/rtx/config.toml"
 
-if [ ! -z "${HOME}/.iterm2_shell_integration.zsh"]; then
+if [ -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
 	subheading "installing iterm2 integrations"
 	curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | SHELL=zsh bash
 fi

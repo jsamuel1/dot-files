@@ -31,6 +31,7 @@ readline-devel
 rtx
 sqlite-devel
 sudo
+tree
 unzip
 util-linux
 util-linux-user

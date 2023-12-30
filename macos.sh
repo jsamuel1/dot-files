@@ -64,6 +64,7 @@ fi
 SOURCEPATH="${PWD}/iTerm2"
 TARGETPATH="${HOME}/Library/Application Support/iTerm2"
 symlink_all "${SOURCEPATH}" "${TARGETPATH}" --exclude \*.plist
+
 cleanup_broken_symlinks "${TARGETPATH}"
 
 # Amazon Only install - won't work elsewhere.

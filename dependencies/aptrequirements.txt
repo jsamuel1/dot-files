@@ -57,6 +57,7 @@ ruby-build
 scrot
 shellcheck
 software-properties-common
+tree
 tk-dev
 wget
 xinput

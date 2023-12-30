@@ -22,7 +22,7 @@ function heading {
 	echo "=============================================================================="
 	while [ -n "${1}" ]; do
 		col=$(((78 - ${#1}) / 2))
-		echo "$(printf '%*s%s' "${col}" "" "${1}")"
+		printf '%*s%s\n' "${col}" "" "${1}"
 		shift 1
 	done
 	echo "=============================================================================="
@@ -34,10 +34,21 @@ function subheading {
 	echo " "
 	while [ -n "${1}" ]; do
 		col=$(((78 - ${#1}) / 2))
-		echo "$(printf '%*s%s' "${col}" "" "${1}")"
+		printf '%*s%s\n' "${col}" "" "${1}"
 		shift 1
 	done
 	echo "------------------------------------------------------------------------------"
+	echo "${normal}"
+}
+
+function subsubheading {
+	echo "${bold}"
+	echo " "
+	while [ -n "${1}" ]; do
+		col=$(((78 - ${#1}) / 2))
+		printf '%*s%s\n' "${col}" "" "${1}"
+		shift 1
+	done
 	echo "${normal}"
 }
 
@@ -46,7 +57,7 @@ function scriptheader {
 	echo "------------------------------------------------------------------------------"
 	title="Script: ${1##*/}"
 	col=$(((78 - ${#title}) / 2))
-	echo "$(printf '%*s%s' "${col}" "" "${title}")"
+	printf '%*s%s\n' "${col}" "" "${title}"
 	echo "------------------------------------------------------------------------------"
 	echo "${normal}"
 }
@@ -56,7 +67,7 @@ function scriptfooter {
 	echo "------------------------------------------------------------------------------"
 	title="Done: ${1##*/}"
 	col=$(((78 - ${#title}) / 2))
-	echo "$(printf '%*s%s' "${col}" "" "${title}")"
+	printf '%*s%s\n' "${col}" "" "${title}"
 	echo "------------------------------------------------------------------------------"
 	echo "${normal}"
 }
@@ -66,25 +77,22 @@ function clone_or_pull {
 	dest="${2}"
 	shift 2
 	args=("$@")
-	options=""
+	options=()
 	for opt in "${args[@]}"; do
 		if [ "${opt}" = "shallow" ] || [ "${opt}" = "--shallow" ]; then
-			options="${options} --depth 1 --no-tags"
+			options+=( --depth 1 --no-tags)
 		else
-			options="${options} ${opt}"
+			options+=("${opt}")
 		fi
 	done
 
 	if [ -d "${dest}" ]; then
-		subheading "Updating" "${dest}"
-		# shellcheck disable=SC2086
-		git -C "${dest}" pull ${options}
-		cd - || exit 1
+		subsubheading "Updating" "${dest}"
+		git -C "${dest}" pull "${options[@]}"
 		return
 	else
-		subheading "Cloning" "${repo}" "to" "${dest}"
-		# shellcheck disable=SC2086
-		git clone "${repo}" "${dest}" ${options}
+		subsubheading "Cloning" "${repo}" "to" "${dest}"
+		git clone "${repo}" "${dest}" "${options[@]}"
 		return
 	fi
 }
@@ -182,21 +190,25 @@ function symlink_all {
 
 function cleanup_broken_symlinks {
 	TARGETPATH="${1}"
+	SHALLOW="${2}"
+
 	if [ ! -d "${TARGETPATH}" ]; then
 		echo "ERROR: Targetpath ${TARGETPATH} does not exist"
 		return
 	fi
 
-	subheading "Searching for broken symlinks" "${TARGETPATH}"
-	# remove brooken symlinks. Example from `man find``
+	subsubheading "Searching for broken symlinks" "${TARGETPATH}"
+	# remove brooken symlinks. Example from "man find"
 	FDOPTIONS=(--follow --hidden --type symlink --exclude node_modules --exclude build --exclude site-packages)
+	if [ -n "${SHALLOW}" ]; then
+		FDOPTIONS+=(--max-depth=1)
+	fi
 	FILECOUNT="$(fd "${FDOPTIONS[@]}" . "${TARGETPATH}" | wc -l)"
-	echo "${FILECOUNT} files found."
+	echo -n "${TARGETPATH}: ${FILECOUNT} broken symlinks found."
 	if [ "${FILECOUNT}" -gt 0 ]; then
 		fd "${FDOPTIONS[@]}" . "${TARGETPATH}" --batch-size 10 --exec-batch rm --
-		subheading "Done cleaning broken symlinks" "${TARGETPATH}"
+		echo "Fixed."
 		return
 	fi
-	
-
+	echo " " # Newline for "broken symlinks echo with \c above"
 }

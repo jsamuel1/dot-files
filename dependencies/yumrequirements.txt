@@ -7,6 +7,7 @@ readline-devel
 rtx
 sqlite
 sqlite-devel
+tree
 openssl11
 openssl11-devel
 libffi-devel
