@@ -24,13 +24,19 @@
             "HotKey Window Floats": true,
             "HotKey Window Reopens On Activation": false,
             "Initial Use Transparency": true,
+            "Minimum Contrast": 0.3,
             "Name": "mwinit",
             "Only The Default BG Color Uses Transparency": false,
             "Prevent Opening in a Tab": true,
             "Prompt Before Closing 2": false,
             "Rows": 10,
+            "Screen": -2,
             "Shortcut": "A",
+            "Show Status Bar": false,
+            "Sync Title": false,
+            "Title Components": 1,
             "Transparency": 0.25,
+            "Use Custom Window Title": true,
             "Window Type": 0
         }
     ]

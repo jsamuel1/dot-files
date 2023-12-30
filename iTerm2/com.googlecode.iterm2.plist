@@ -2796,7 +2796,7 @@
 			<key>Load Shell Integration Automatically</key>
 			<true/>
 			<key>Minimum Contrast</key>
-			<real>0.29879357679834906</real>
+			<real>0.29999999999999999</real>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Mouse Reporting allow mouse wheel</key>
@@ -2826,7 +2826,7 @@
 			<key>Rows</key>
 			<integer>10</integer>
 			<key>Screen</key>
-			<integer>-1</integer>
+			<integer>-2</integer>
 			<key>Scrollback Lines</key>
 			<integer>5000</integer>
 			<key>Selected Text Color</key>
@@ -2884,7 +2884,7 @@
 			<key>Thin Strokes</key>
 			<integer>3</integer>
 			<key>Title Components</key>
-			<integer>6</integer>
+			<integer>1</integer>
 			<key>Transparency</key>
 			<real>0.25</real>
 			<key>Triggers</key>
@@ -2903,6 +2903,8 @@
 			<key>Use Bold Font</key>
 			<true/>
 			<key>Use Bright Bold</key>
+			<true/>
+			<key>Use Custom Window Title</key>
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
