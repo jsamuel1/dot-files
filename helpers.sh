@@ -142,3 +142,52 @@ function awkxargs {
 	shift 1
 	awk "${FILTER}" "${FILENAME}" | xargs "${XARGOPTS[@]}" -- "$@"
 }
+
+function symlink_all {
+	shopt | grep extglob >/dev/null && shopt -s extglob
+	shopt | grep globstar >/dev/null && shopt -s globstar
+	SOURCEPATH="${1%/}" # remove any trailing /
+	TARGETPATH="${2%/}" # remove any trailing /
+	shift 2
+	FDOPTIONS=("${@}")
+
+	if [ ! -d "${SOURCEPATH}" ]; then
+		echo "ERROR: Sourcepath ${SOURCEPATH} does not exist"
+		return
+	fi
+	for SOURCEFILE in $(fd "${FDOPTIONS[@]}" --type file . "${SOURCEPATH}"); do
+		if [ -d "${SOURCEFILE}" ]; then
+			echo "skipping ${SOURCEFILE}"
+			continue
+		fi
+
+		TARGETFILE="${TARGETPATH%/}/${SOURCEFILE#"${SOURCEPATH}/"}"
+		TARGETDIR="$(dirname "${TARGETFILE}")"
+
+		if [ -f "${SOURCEFILE}" ]; then
+			if [ ! -d "${TARGETDIR}" ]; then
+				echo "creating ${TARGETDIR}"
+				mkdir -p "${TARGETDIR}"
+			fi
+
+			if [[ -L "${TARGETFILE}" && "${SOURCEFILE}" == "$(realpath "${TARGETFILE}")" ]]; then
+				continue
+			fi
+
+			echo "symlinking ${SOURCEFILE} to ${TARGETFILE}"
+			ln -sf "${SOURCEFILE}" "${TARGETFILE}"
+		fi
+	done
+}
+
+function cleanup_broken_symlinks {
+	TARGETPATH="${1}"
+	if [ ! -d "${TARGETPATH}" ]; then
+		echo "ERROR: Targetpath ${TARGETPATH} does not exist"
+		return
+	fi
+
+	# remove brooken symlinks. Example from `man find``
+	FDOPTIONS=(--follow --hidden --type symlink --batch-size 10 --exclude node_modules --exclude build --exclude site-packages)
+	fd "${FDOPTIONS[@]}" . "${TARGETPATH}" --exec-batch rm --
+}

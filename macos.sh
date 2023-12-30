@@ -53,6 +53,7 @@ fi
 
 subheading "iTerm2 config files"
 
+# Redirect iTerm2 to use the plist in our dot-files project
 if [ -f "${PWD}/iTerm2/com.googlecode.iterm2.plist" ]; then
 	# Specify the preferences directory
 	defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${PWD}/iTerm2"
@@ -60,15 +61,10 @@ if [ -f "${PWD}/iTerm2/com.googlecode.iterm2.plist" ]; then
 	defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi
 
-for SOURCEDIR in "${PWD}/iTerm2"/*/; do
-	TARGETDIR="${HOME}/Library/Application Support/iTerm2/$(basename "${SOURCEDIR}")"
-	if [ ! -d "${TARGETDIR}" ]; then
-		mkdir -p "${TARGETDIR}"
-	fi
-	for FILE in "${SOURCEDIR}"/*; do
-		ln -sf "${FILE}" "${TARGETDIR}/$(basename "${FILE}")"
-	done
-done
+SOURCEPATH="${PWD}/iTerm2"
+TARGETPATH="${HOME}/Library/Application Support/iTerm2"
+symlink_all "${SOURCEPATH}" "${TARGETPATH}" --exclude \*.plist
+cleanup_broken_symlinks "${TARGETPATH}"
 
 # Amazon Only install - won't work elsewhere.
 # authenticate with mwinit first

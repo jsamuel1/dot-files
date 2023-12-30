@@ -16,21 +16,22 @@ osascript -e 'tell application "System Preferences" to quit'
 sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
 
-sed -E 's/\#auth(.*pam_tid.so)/auth\1/g' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
+if ! grep -q 'auth.*pam_tid.so' /etc/pam.d/sudo_local; then
+  sed -E 's/\#auth(.*pam_tid.so)/auth\1/g' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
+fi
+
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################
 
-# Set computer name (as done via System Preferences → Sharing)
-#sudo scutil --set ComputerName "0x6D746873"
-#sudo scutil --set HostName "0x6D746873"
-#sudo scutil --set LocalHostName "0x6D746873"
-#sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "0x6D746873"
-
 # Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
+[[ "$(nvram SystemAudioVolume)" =~ SystemAudioVolume[[:space]]+$ ]] || sudo nvram SystemAudioVolume=" "
 
 # Disable transparency in the menu bar and elsewhere on Yosemite
 sudo defaults write com.apple.universalaccess reduceTransparency -bool true
@@ -58,7 +59,6 @@ defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
 #  defaults write com.apple.systemuiserver menuExtras -array \
 #    "/System/Library/CoreServices/Menu Extras/Battery.menu" \
 #    "/System/Library/CoreServices/Menu Extras/Clock.menu"
-
 
 # Increase window resize speed for Cocoa applications
 defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
@@ -188,8 +188,7 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bo
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 # unless already set to the correct value.
-sudo systemsetup -gettimezone | grep -qv Melbourne && sudo systemsetup -settimezone "Australia/Melbourne" > /dev/null
-
+sudo systemsetup -gettimezone | grep -qv Melbourne && sudo systemsetup -settimezone "Australia/Melbourne" >/dev/null
 
 ###############################################################################
 # Energy saving                                                               #
@@ -234,7 +233,6 @@ defaults write com.apple.screensaver askForPasswordDelay -int 0
 # Save screenshots to a screenshots directory instead of Desktop
 defaults write com.apple.screencapture location -string "${HOME}/Pictures/Screenshots"
 mkdir -p ~/Pictures/Screenshots
-
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
@@ -635,7 +633,6 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 # Enable the debug menu in Disk Utility
 defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
 defaults write com.apple.DiskUtility advanced-image-options -bool true
-
 
 ###############################################################################
 # Mac App Store                                                               #
