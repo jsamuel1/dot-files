@@ -73,27 +73,32 @@ function scriptfooter {
 }
 
 function clone_or_pull {
+	# clone_or_pull <repo> <dest> <options>
+	# returns: 0=true= Already up to date, 1=false= Not up to date
+	# options:
+	# --shallow
+	
 	repo="${1}"
 	dest="${2}"
 	shift 2
 	args=("$@")
-	options=()
+	OPTIONS=()
 	for opt in "${args[@]}"; do
 		if [ "${opt}" = "shallow" ] || [ "${opt}" = "--shallow" ]; then
-			options+=( --depth 1 --no-tags)
+			OPTIONS+=( --depth 1 --no-tags)
 		else
-			options+=("${opt}")
+			OPTIONS+=("${opt}")
 		fi
 	done
 
 	if [ -d "${dest}" ]; then
 		subsubheading "Updating" "${dest}"
-		git -C "${dest}" pull "${options[@]}"
-		return
+		git -C "${dest}" pull "${OPTIONS[@]}" | grep "Already up to date"
+		return $? # 0=true= Already up to date, 1=false= Not up to date
 	else
 		subsubheading "Cloning" "${repo}" "to" "${dest}"
-		git clone "${repo}" "${dest}" "${options[@]}"
-		return
+		git clone "${repo}" "${dest}" "${OPTIONS[@]}"
+		return 1 # 1=false= Not up to date
 	fi
 }
 function is_amazonlinux2 {

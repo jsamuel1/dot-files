@@ -4,8 +4,8 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-clone_or_pull https://github.com/junegunn/fzf.git ~/.fzf shallow
-~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
+clone_or_pull https://github.com/junegunn/fzf.git ~/.fzf shallow ||
+  ~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
 
 #
 if [ ! -d ~/.oh-my-zsh ]; then
@@ -16,11 +16,14 @@ elif [ -d ~/.oh-my-zsh/tools ]; then
   ~/.oh-my-zsh/tools/upgrade.sh -vminimal
 fi
 
-
 clone_or_pull https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 
 clone_or_pull https://github.com/zsh-users/zsh-completions.git ~/.local/lib/zsh-completions
 
-sudo chsh -s "$(which zsh)" "$(whoami)" || true
+if ! is_mac && [[ "$(awk -F: -v u="${USER}" 'u==$1&&$0=$NF' /etc/passwd)" != "$(which zsh)" ]]; then
+  sudo chsh -s "$(which zsh)" "$(whoami)" || true
+elif is_mac && [[ "$(dscl . -read /Users/"$USER" UserShell | cut -d' ' -f2)" != "$(which zsh)" ]]; then
+  sudo dscl . -create "/Users/${USER}" UserShell "$(which zsh)"
+fi
 
 scriptfooter "${BASH_SOURCE:-$_}"
