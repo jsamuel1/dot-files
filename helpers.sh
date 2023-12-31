@@ -227,7 +227,8 @@ function cleanup_broken_symlinks {
 # Note - brew / sudo -K will reset this.
 function sudo_alive {
 	# Ask for the administrator password upfront
-	sudo -v
+	# note - sudo -v doesn't work when passwordless sudo
+	sudo true
 
 	# Keep-alive: update existing `sudo` time stamp until script has finished
 	# Note & on while loop for background
