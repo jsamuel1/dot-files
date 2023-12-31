@@ -18,7 +18,7 @@ if is_amazonlinux2023; then
 	sudo usermod -aG docker "$(whoami)"
 fi
 
-if [[ $GUI -eq 1 ]]; then
+if ! is_wsl; then
 	subheading "installing vscode"
 	sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 	if [ ! -f /etc/yum.repos.d/vscode.repo ]; then

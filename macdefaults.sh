@@ -11,15 +11,7 @@ scriptheader "${BASH_SOURCE:-$_}"
 # settings we’re about to change
 # osascript -e 'tell application "System Settings" to quit'
 
-# Ask for the administrator password upfront
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-while true; do
-  sudo -n true
-  sleep 60
-  kill -0 "$$" || exit
-done 2>/dev/null &
+sudo_alive
 
 if ! grep -q 'auth.*pam_tid.so' /etc/pam.d/sudo_local; then
   sed -E 's/\#auth(.*pam_tid.so)/auth\1/g' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local

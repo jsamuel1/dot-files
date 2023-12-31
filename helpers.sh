@@ -77,15 +77,15 @@ function clone_or_pull {
 	# returns: 0=true= Already up to date, 1=false= Not up to date
 	# options:
 	# --shallow
-	
+
 	repo="${1}"
 	dest="${2}"
 	shift 2
 	args=("$@")
-	OPTIONS=()
+	OPTIONS=(--no-progress)
 	for opt in "${args[@]}"; do
 		if [ "${opt}" = "shallow" ] || [ "${opt}" = "--shallow" ]; then
-			OPTIONS+=( --depth 1 --no-tags)
+			OPTIONS+=(--depth 1 --no-tags)
 		else
 			OPTIONS+=("${opt}")
 		fi
@@ -136,6 +136,14 @@ function is_like_debian {
 
 function is_mac {
 	if [ "$(uname)" = "Darwin" ]; then
+		return 0 # 0=true
+	fi
+
+	return 1 # 1=false
+}
+
+function is_wsl {
+	if [ -n "$WSL_DISTRO_NAME" ]; then
 		return 0 # 0=true
 	fi
 
@@ -202,7 +210,6 @@ function cleanup_broken_symlinks {
 		return
 	fi
 
-	subsubheading "Searching for broken symlinks" "${TARGETPATH}"
 	# remove brooken symlinks. Example from "man find"
 	FDOPTIONS=(--follow --hidden --type symlink --exclude node_modules --exclude build --exclude site-packages)
 	if [ -n "${SHALLOW}" ]; then
@@ -216,4 +223,19 @@ function cleanup_broken_symlinks {
 		return
 	fi
 	echo " " # Newline for "broken symlinks echo with \c above"
+}
+
+# top of script function to keep sudo alive.
+# Note - brew / sudo -K will reset this.
+function sudo_alive {
+	# Ask for the administrator password upfront
+	sudo -v
+
+	# Keep-alive: update existing `sudo` time stamp until script has finished
+	# Note & on while loop for background
+	while true; do
+		sleep 60
+		sudo -n true
+		kill -0 "$$" || exit
+	done 2>/dev/null &
 }
