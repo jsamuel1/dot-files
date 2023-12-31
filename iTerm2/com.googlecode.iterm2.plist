@@ -851,7 +851,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>MonaspaceKrypton-Regular 20 {"featureSettings":[{"CTFeatureSelectorIdentifier":14,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":16,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":12,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":6,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":4,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":2,"CTFeatureTypeIdentifier":35}]}</string>
+			<string>MonaspaceKrypton-Regular 20 {"featureSettings":[{"CTFeatureSelectorIdentifier":16,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":2,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":6,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":14,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":12,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":4,"CTFeatureTypeIdentifier":35}]}</string>
 			<key>Open Password Manager Automatically</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -929,8 +929,12 @@
 				<dict>
 					<key>action</key>
 					<string>iTermRPCTrigger</string>
+					<key>disabled</key>
+					<false/>
 					<key>parameter</key>
 					<string>launch_mwinit()</string>
+					<key>partial</key>
+					<false/>
 					<key>regex</key>
 					<string>Run the following command before retrying: mwinit</string>
 				</dict>
@@ -2808,7 +2812,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>MonaspaceKrypton-Regular 20 {"featureSettings":[{"CTFeatureSelectorIdentifier":14,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":16,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":12,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":6,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":4,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":2,"CTFeatureTypeIdentifier":35}]}</string>
+			<string>MonaspaceKrypton-Regular 20 {"featureSettings":[{"CTFeatureSelectorIdentifier":12,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":16,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":2,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":14,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":6,"CTFeatureTypeIdentifier":35},{"CTFeatureSelectorIdentifier":4,"CTFeatureTypeIdentifier":35}]}</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Password Manager Automatically</key>
@@ -2892,8 +2896,12 @@
 				<dict>
 					<key>action</key>
 					<string>iTermRPCTrigger</string>
+					<key>disabled</key>
+					<false/>
 					<key>parameter</key>
 					<string>launch_mwinit()</string>
+					<key>partial</key>
+					<false/>
 					<key>regex</key>
 					<string>Run the following command before retrying: mwinit</string>
 				</dict>
