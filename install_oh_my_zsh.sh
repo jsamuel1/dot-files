@@ -4,9 +4,9 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-clone_or_pull https://github.com/junegunn/fzf.git ~/.fzf shallow ||
+if ! clone_or_pull https://github.com/junegunn/fzf.git ~/.fzf shallow; then
   ~/.fzf/install --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish
-
+fi
 #
 if [ ! -d ~/.oh-my-zsh ]; then
   subheading "installing Oh-My-Zsh"

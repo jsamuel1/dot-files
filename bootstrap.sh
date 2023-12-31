@@ -51,7 +51,7 @@ source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
 # Keep-alive: update existing `sudo` time stamp until script has finished
-sudo_alive 
+sudo_alive
 
 # Ask for the administrator password upfront
 APT=0
@@ -111,10 +111,11 @@ if [[ -x /usr/bin/nvim ]]; then
 	sudo update-alternatives --set vim /usr/bin/nvim
 fi
 
-if ! is_mac && ! is_wsl ; then
+if ! is_mac && ! is_wsl; then
 	heading "installing nerd-fonts"
-	! clone_or_pull https://github.com/ryanoasis/nerd-fonts.git ~/src/nerd-fonts/ shallow ||
+	if ! clone_or_pull https://github.com/ryanoasis/nerd-fonts.git ~/src/nerd-fonts/ shallow; then
 		~/src/nerd-fonts/install.sh
+	fi
 fi
 
 if ! is_mac && [[ $SKIPAWSCLI -eq 0 ]]; then
