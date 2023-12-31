@@ -55,6 +55,29 @@ async def main(connection):
                 )
             )
 
+    async def updateDefaultTriggers(connection):
+        """
+        update the default triggers in iterm2
+        """
+        profile = await iterm2.Profile.async_get_default(connection)
+
+        await create_trigger_if_missing(profile, "Run the following command before retrying: mwinit")
+
+
+    async def create_trigger_if_missing(profile: iterm2.Profile, regex : str):
+        triggers = profile.triggers
+        if triggers is not None:
+            for encTrigger in triggers:
+                trigger = iterm2.decode_trigger(encTrigger)
+                if trigger.regex == regex:
+                    return
+
+        newTrigger = iterm2.RPCTrigger(regex, "launch_mwinit()", False, True)
+        encTrigger = [ newTrigger.encode ]
+
+        await profile.async_set_triggers(encTrigger)
+        
+
     def profileDataMwinit(mwInit):
         return {
             "Profiles": [
@@ -153,6 +176,7 @@ async def main(connection):
 
     # main
     await createIterm2DynamicProfile()
+    await updateDefaultTriggers(connection)
     await launch_mwinit.async_register(connection)
 
 
