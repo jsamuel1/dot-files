@@ -84,7 +84,7 @@ if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ]; then
 	sudo "${APTGET[@]}" install ./packages-microsoft-prod.deb
 fi
 
-if [ -z "$WSL_DISTRO_NAME" ]; then
+if ! is_wsl; then
 	subheading "installing vscode"
 	install_key dearmor https://packages.microsoft.com/keys/microsoft.asc packages.microsoft.gpg
 	install_source_url https://packages.microsoft.com/repos/code vscode.list packages.microsoft.gpg
@@ -103,6 +103,6 @@ if [ -z "$SKIP_DOCKER" ]; then
 	sudo usermod -aG docker "$(whoami)"
 fi
 
-awkxargs "aptrequirements.txt" sudo "${APTGET[@]}" install
+awkxargs "dependencies/aptrequirements.txt" sudo "${APTGET[@]}" install
 
 scriptfooter "${BASH_SOURCE:-$_}"

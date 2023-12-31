@@ -2,7 +2,6 @@ appmenu-gtk-module-common
 appmenu-gtk2-module
 appmenu-gtk3-module
 apt-transport-https
-autojump
 build-essential
 bundler
 caca-utils
@@ -42,8 +41,6 @@ libxml2-dev
 libxmlsec1-dev
 llvm
 make
-neofetch
-neovim
 ninja-build
 npm
 openssh-server
@@ -60,6 +57,7 @@ ruby-build
 scrot
 shellcheck
 software-properties-common
+tree
 tk-dev
 wget
 xinput

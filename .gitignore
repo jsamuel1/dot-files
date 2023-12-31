@@ -6,6 +6,7 @@ microsoft.gpg
 *.deb
 Brewfile.lock.json
 *.zwc
-neofetch/
 packages-microsoft*
 .idea/
+.DS_Store
+**/.DS_Store

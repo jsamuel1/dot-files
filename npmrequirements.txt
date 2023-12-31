@@ -1,4 +1,0 @@
-aws-cdk
-neovim
-npm@latest
-bash-language-server

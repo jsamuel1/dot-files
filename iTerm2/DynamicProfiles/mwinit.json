@@ -1,0 +1,43 @@
+{
+    "Profiles": [
+        {
+            "Blur": true,
+            "Blur Radius": 6.3,
+            "Close Sessions On End": 1,
+            "Columns": 50,
+            "Command": "/usr/local/bin/mwinit",
+            "Custom Command": "Custom Shell",
+            "Custom Window Title": "Authenticate with Amazon",
+            "Disable Window Resizing": true,
+            "Guid": "DADE84FA-07F2-498C-A5D5-99C4E20706B9",
+            "Has Hotkey": true,
+            "HotKey Activated By Modifier": false,
+            "HotKey Alternate Shortcuts": [],
+            "HotKey Characters": "a",
+            "HotKey Characters Ignoring Modifiers": "A",
+            "HotKey Key Code": 0,
+            "HotKey Modifier Activation": 0,
+            "HotKey Modifier Flags": 1179648,
+            "HotKey Window Animates": true,
+            "HotKey Window AutoHides": true,
+            "HotKey Window Dock Click Action": 0,
+            "HotKey Window Floats": true,
+            "HotKey Window Reopens On Activation": false,
+            "Initial Use Transparency": true,
+            "Minimum Contrast": 0.3,
+            "Name": "mwinit",
+            "Only The Default BG Color Uses Transparency": false,
+            "Prevent Opening in a Tab": true,
+            "Prompt Before Closing 2": false,
+            "Rows": 10,
+            "Screen": -2,
+            "Shortcut": "A",
+            "Show Status Bar": false,
+            "Sync Title": false,
+            "Title Components": 1,
+            "Transparency": 0.25,
+            "Use Custom Window Title": true,
+            "Window Type": 0
+        }
+    ]
+}

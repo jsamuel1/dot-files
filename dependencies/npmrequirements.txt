@@ -1,0 +1,5 @@
+aws-cdk@latest
+neovim@latest
+npm@latest
+bash-language-server@latest
+prettier@latest

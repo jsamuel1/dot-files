@@ -4,33 +4,27 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
+# Keep-alive: update existing `sudo` time stamp until script has finished
+sudo_alive 
+
 # Based on:
 # ~/.macos — https://mths.be/macos
 # with further tweaks inspired by https://github.com/kevinSuttle/macOS-Defaults/tree/suttle
-
-# Close any open System Preferences panes, to prevent them from overriding
+# Close any open System Settings panes, to prevent them from overriding
 # settings we’re about to change
-osascript -e 'tell application "System Preferences" to quit'
+# osascript -e 'tell application "System Settings" to quit'
 
-# Ask for the administrator password upfront
-sudo -v
 
-# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+if ! grep -q 'auth.*pam_tid.so' /etc/pam.d/sudo_local; then
+  sed -E 's/\#auth(.*pam_tid.so)/auth\1/g' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
+fi
 
-sed -E 's/\#auth(.*pam_tid.so)/auth\1/g' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################
 
-# Set computer name (as done via System Preferences → Sharing)
-#sudo scutil --set ComputerName "0x6D746873"
-#sudo scutil --set HostName "0x6D746873"
-#sudo scutil --set LocalHostName "0x6D746873"
-#sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "0x6D746873"
-
 # Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
+[[ "$(nvram SystemAudioVolume)" =~ SystemAudioVolume[[:space]]+$ ]] || sudo nvram SystemAudioVolume=" "
 
 # Disable transparency in the menu bar and elsewhere on Yosemite
 sudo defaults write com.apple.universalaccess reduceTransparency -bool true
@@ -58,7 +52,6 @@ defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
 #  defaults write com.apple.systemuiserver menuExtras -array \
 #    "/System/Library/CoreServices/Menu Extras/Battery.menu" \
 #    "/System/Library/CoreServices/Menu Extras/Clock.menu"
-
 
 # Increase window resize speed for Cocoa applications
 defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
@@ -90,20 +83,6 @@ defaults write NSGlobalDomain NSTextShowsControlCharacters -bool false
 # Disable Resume system-wide
 defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
 
-# Disable automatic termination of inactive apps
-#defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
-
-# Disable the crash reporter
-#defaults write com.apple.CrashReporter DialogType -string "none"
-
-# Set Help Viewer windows to non-floating mode
-defaults write com.apple.helpviewer DevMode -bool true
-
-# Fix for the ancient UTF-8 bug in QuickLook (https://mths.be/bbo)
-# Commented out, as this is known to cause problems in various Adobe apps :(
-# See https://github.com/mathiasbynens/dotfiles/issues/237
-#echo "0x08000100:0" > ~/.CFUserTextEncoding
-
 # Reveal IP address, hostname, OS version, etc. when clicking the clock
 # in the login window
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
@@ -126,12 +105,6 @@ defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-
-# Set a custom wallpaper image. `DefaultDesktop.jpg` is already a symlink, and
-# all wallpapers are in `/Library/Desktop Pictures/`. The default is `Wave.jpg`.
-#rm -rf ~/Library/Application Support/Dock/desktoppicture.db
-#sudo rm -rf /System/Library/CoreServices/DefaultDesktop.jpg
-#sudo ln -s /path/to/your/image /System/Library/CoreServices/DefaultDesktop.jpg
 
 ###############################################################################
 # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
@@ -188,8 +161,7 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bo
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 # unless already set to the correct value.
-sudo systemsetup -gettimezone | grep -qv Melbourne && sudo systemsetup -settimezone "Australia/Melbourne" > /dev/null
-
+sudo systemsetup -gettimezone | grep -qv Melbourne && sudo systemsetup -settimezone "Australia/Melbourne" >/dev/null
 
 ###############################################################################
 # Energy saving                                                               #
@@ -233,8 +205,7 @@ defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Save screenshots to a screenshots directory instead of Desktop
 defaults write com.apple.screencapture location -string "${HOME}/Pictures/Screenshots"
-mkdir -p ~/Pictures/Screenshots
-
+mkdir -p "${HOME}"/Pictures/Screenshots
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
@@ -350,10 +321,8 @@ defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 # Disable the warning before emptying the Trash
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
 
-# Show the ~/Library folder
+# Show the default-hidden folders
 chflags nohidden ~/Library
-
-# Show the /Volumes folder
 sudo chflags nohidden /Volumes
 
 # Expand the following File Info panes:
@@ -517,21 +486,6 @@ defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
 defaults write com.apple.Safari WebKitPluginsEnabled -bool false
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled -bool false
 
-# Disable Java
-defaults write com.apple.Safari WebKitJavaEnabled -bool false
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool false
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabledForLocalFiles -bool false
-
-# Block pop-up windows
-defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically -bool false
-
-# Disable auto-playing video
-#defaults write com.apple.Safari WebKitMediaPlaybackAllowsInline -bool false
-#defaults write com.apple.SafariTechnologyPreview WebKitMediaPlaybackAllowsInline -bool false
-#defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2AllowsInlineMediaPlayback -bool false
-#defaults write com.apple.SafariTechnologyPreview com.apple.Safari.ContentPageGroupIdentifier.WebKit2AllowsInlineMediaPlayback -bool false
-
 # Enable “Do Not Track”
 defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
 
@@ -557,23 +511,12 @@ defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreade
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes"
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date"
 
-# Disable inline attachments (just show the icons)
-defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
-
-# Disable automatic spell checking
-defaults write com.apple.mail SpellCheckingBehavior -string "NoSpellCheckingEnabled"
-
 ###############################################################################
-# Terminal & iTerm 2                                                          #
+# Terminal                                                        #
 ###############################################################################
 
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
-
-# Enable “focus follows mouse” for Terminal.app and all X11 apps
-# i.e. hover over a window and start typing in it without clicking first
-#defaults write com.apple.terminal FocusFollowsMouse -bool true
-#defaults write org.x.X11 wm_ffm -bool true
 
 # Enable Secure Keyboard Entry in Terminal.app
 # See: https://security.stackexchange.com/a/47786/8918
@@ -582,19 +525,12 @@ defaults write com.apple.terminal SecureKeyboardEntry -bool true
 # Disable the annoying line marks
 defaults write com.apple.Terminal ShowLineMarks -int 0
 
-# Don’t display the annoying prompt when quitting iTerm
-defaults write com.googlecode.iterm2 PromptOnQuit -bool false
-
 ###############################################################################
 # Time Machine                                                                #
 ###############################################################################
 
 # Prevent Time Machine from prompting to use new hard drives as backup volume
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-
-# Disable local Time Machine backups
-# this no longer works
-#hash tmutil &> /dev/null && sudo tmutil disablelocal
 
 ###############################################################################
 # Activity Monitor                                                            #
@@ -635,7 +571,6 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 # Enable the debug menu in Disk Utility
 defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
 defaults write com.apple.DiskUtility advanced-image-options -bool true
-
 
 ###############################################################################
 # Mac App Store                                                               #

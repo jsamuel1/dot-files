@@ -15,36 +15,31 @@ rtx -y install
 command -v rtx >/dev/null && eval "$(rtx activate bash)"
 command -v rtx >/dev/null && eval "$(rtx hook-env)"
 
-heading "installing latest python for user"
+subheading "installing latest python for user"
 rtx use -g python
 
-subheading "installing base python3 packages"
+subsubheading "installing base python3 packages"
 "${RTXX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
-"${RTXX[@]}" python3 -m pip install --upgrade -r requirements.txt | grep -v 'already satisfied'
+"${RTXX[@]}" python3 -m pip install --upgrade -r "dependencies/requirements.txt" | grep -v 'already satisfied'
 
-heading "ensure latest npm and modules"
-# rtx env-vars npm_config_progress=false
-# rtx env-vars npm_config_update_notifier=false
-# rtx env-vars npm_config_update_all=true
-# rtx env-vars npm_config_loglevel=warn
-# rtx env-vars npm_config_unsafe_perm=true
+subheading "ensure latest npm and modules"
 
 rtx use -g nodejs@lts
-awkxargs "npmrequirements.txt" "${RTXX[@]}" npm install -g
+awkxargs "dependencies/npmrequirements.txt" "${RTXX[@]}" npm install -g
 
 rtx use -g go@latest
-heading "ensure latest go modules"
-awkxargs 1 "gorequirements.txt" "${RTXX[@]}" go install -a
+subheading "ensure latest go modules"
+awkxargs 1 "dependencies/gorequirements.txt" "${RTXX[@]}" go install -a
 
 subheading "ensure neovim ruby gem installed"
 
-# workaround compile bug with ruby
-sudo mkdir -p /usr/local/opt/sqllite
-sudo mkdir -p /usr/local/opt/zlib/lib
+# Note - requires zlib and sqlite Brew cellars on Macos
+# workaround compile bug with ruby if those cellars are not yet present
+[ -d /usr/local/opt/sqllite ] || sudo mkdir -p /usr/local/opt/sqllite
+[ -d /usr/local/opt/zlib/lib ] || sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly
 rtx use -g ruby@latest
-awkxargs "gemrequirements.txt" "${RTXX[@]}" gem install
-
+awkxargs "dependencies/gemrequirements.txt" "${RTXX[@]}" gem install
 
 scriptfooter "${BASH_SOURCE:-$_}"
