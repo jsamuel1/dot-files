@@ -130,10 +130,10 @@ fi
 # All other OS will install with code --install-extension
 if ! is_mac && ! is_wsl; then
 	## get list of extensions with code --list-extensions
-	if type code >/dev/null; then
+	if command -v code >/dev/null; then
 		code --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension
 	fi
-	if type code-insiders >/dev/null; then
+	if command -v code-insiders >/dev/null; then
 		code-insiders --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code-insiders --force --install-extension
 	fi
 fi

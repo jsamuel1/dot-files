@@ -2,7 +2,6 @@
 ajshort.include-autocomplete
 alefragnani.project-manager
 amazonwebservices.aws-toolkit-vscode
-amazonwebservices.codewhisperer-for-command-line-companion
 AndrsDC.base16-themes
 Anjali.clipboard-history
 antfu.iconify
@@ -37,9 +36,7 @@ lextudio.restructuredtext
 lharri73.dbc
 llvm-vs-code-extensions.vscode-clangd
 lokalise.i18n-ally
-lukapetrovic.image-resizer
 mads-hartmann.bash-ide-vscode
-marklel.vscode-brazil
 matepek.vscode-catch2-test-adapter
 mikestead.dotenv
 mindaro-dev.file-downloader
