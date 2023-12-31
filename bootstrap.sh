@@ -27,6 +27,7 @@ if [ ! -d .git ]; then
 	fi
 	echo "cd ${HOME}/src/${GITREPO}"
 	cd "${HOME}/src/${GITREPO}" || exit 1
+	exec bash -c "UPDATE=0 ./bootstrap.sh" "${@}"
 fi
 
 echo "running from $(pwd)"
@@ -42,6 +43,7 @@ if [ "${UPDATE}" -ne 0 ]; then
 		git remote set-head origin -a
 	fi
 	git pull origin "${BRANCH}"
+	exec bash -c "UPDATE=0 ./bootstrap.sh" "${@}"
 fi
 
 # shellcheck source=./helpers.sh
