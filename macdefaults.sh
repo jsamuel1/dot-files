@@ -4,6 +4,9 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
+# Keep-alive: update existing `sudo` time stamp until script has finished
+sudo_alive 
+
 # Based on:
 # ~/.macos — https://mths.be/macos
 # with further tweaks inspired by https://github.com/kevinSuttle/macOS-Defaults/tree/suttle
@@ -11,7 +14,6 @@ scriptheader "${BASH_SOURCE:-$_}"
 # settings we’re about to change
 # osascript -e 'tell application "System Settings" to quit'
 
-sudo_alive
 
 if ! grep -q 'auth.*pam_tid.so' /etc/pam.d/sudo_local; then
   sed -E 's/\#auth(.*pam_tid.so)/auth\1/g' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local

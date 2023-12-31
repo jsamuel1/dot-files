@@ -48,38 +48,36 @@ fi
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
+# Keep-alive: update existing `sudo` time stamp until script has finished
+sudo_alive 
+
 # Ask for the administrator password upfront
-sudo true
 APT=0
 DNF=0
 YUM=0
 SKIPAWSCLI=0
 
 if is_wsl; then
-	subsubheading "Windows Subsystem for Linux (WSL) detection"
+	subsubheading "Windows Subsystem for Linux (WSL) detected"
 fi
 
-# Keep-alive: update existing `sudo` time stamp until script has finished
-while true; do
-	sudo -n true
-	sleep 60
-	kill -0 "$$" || exit
-done 2>/dev/null &
-
 if is_mac; then
-	heading "prepare MacOS"
+	subsubheading "MacOS detected"
 	./macos.sh
 elif is_amazonlinux2023; then
+	subsubheading "Amazon Linux 2023 detected"
 	DNF=1
 	YUM=0
 	APT=0
 	SKIPAWSCLI=1
 elif is_amazonlinux2; then
+	subsubheading "Amazon Linux 2 detected"
 	DNF=0
 	YUM=1
 	APT=0
 elif [ -v SOMMELIER_VERSION ]; then
-	subheading "chromebook preconfig for ubuntu"
+	subsubheading "Linux on chromebook detected"
+	# run to fix some ubuntu issues
 	./fix-cros-ui-config-pkg.sh
 	APT=1
 	DNF=0
@@ -111,7 +109,7 @@ if [[ -x /usr/bin/nvim ]]; then
 	sudo update-alternatives --set vim /usr/bin/nvim
 fi
 
-if ! ( is_mac || is_wsl ); then
+if ! is_mac && ! is_wsl ; then
 	heading "installing nerd-fonts"
 	! clone_or_pull https://github.com/ryanoasis/nerd-fonts.git ~/src/nerd-fonts/ shallow ||
 		~/src/nerd-fonts/install.sh
@@ -130,7 +128,7 @@ fi
 
 # MacOS will handle VSCode extension withs Brew
 # All other OS will install with code --install-extension
-if ! ( is_mac || is_wsl ); then
+if ! is_mac && ! is_wsl; then
 	## get list of extensions with code --list-extensions
 	if type code >/dev/null; then
 		code --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '! /^ *(#|$)/' - | xargs -L1 code --force --install-extension

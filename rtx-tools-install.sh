@@ -33,9 +33,10 @@ awkxargs 1 "dependencies/gorequirements.txt" "${RTXX[@]}" go install -a
 
 subheading "ensure neovim ruby gem installed"
 
-# workaround compile bug with ruby
-sudo mkdir -p /usr/local/opt/sqllite
-sudo mkdir -p /usr/local/opt/zlib/lib
+# Note - requires zlib and sqlite Brew cellars on Macos
+# workaround compile bug with ruby if those cellars are not yet present
+[ -d /usr/local/opt/sqllite ] || sudo mkdir -p /usr/local/opt/sqllite
+[ -d /usr/local/opt/zlib/lib ] || sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly
 rtx use -g ruby@latest

@@ -31,7 +31,6 @@ function heading {
 
 function subheading {
 	echo "${bold}"
-	echo " "
 	while [ -n "${1}" ]; do
 		col=$(((78 - ${#1}) / 2))
 		printf '%*s%s\n' "${col}" "" "${1}"
@@ -43,7 +42,6 @@ function subheading {
 
 function subsubheading {
 	echo "${bold}"
-	echo " "
 	while [ -n "${1}" ]; do
 		col=$(((78 - ${#1}) / 2))
 		printf '%*s%s\n' "${col}" "" "${1}"
@@ -53,23 +51,23 @@ function subsubheading {
 }
 
 function scriptheader {
-	echo "${bold}"
+	echo -n "${bold}"
 	echo "------------------------------------------------------------------------------"
 	title="Script: ${1##*/}"
 	col=$(((78 - ${#title}) / 2))
 	printf '%*s%s\n' "${col}" "" "${title}"
 	echo "------------------------------------------------------------------------------"
-	echo "${normal}"
+	echo -n "${normal}"
 }
 
 function scriptfooter {
-	echo "${bold}"
+	echo -n "${bold}"
 	echo "------------------------------------------------------------------------------"
 	title="Done: ${1##*/}"
 	col=$(((78 - ${#title}) / 2))
 	printf '%*s%s\n' "${col}" "" "${title}"
 	echo "------------------------------------------------------------------------------"
-	echo "${normal}"
+	echo -n "${normal}"
 }
 
 function clone_or_pull {
