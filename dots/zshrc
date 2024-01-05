@@ -55,6 +55,10 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 ZSH_TMUX_AUTOSTART=true
 
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/local/bin/lesspipe ] && export LESSOPEN="|/usr/local/bin/lesspipe.sh %s"
+
+
 if [[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ]]; then
   source "$HOME/.autojump/etc/profile.d/autojump.sh"
   AUTOJUMPPLUGIN=autojump

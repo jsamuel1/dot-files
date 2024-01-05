@@ -3,9 +3,11 @@
 
 # CodeWhisperer pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/bashrc.pre.bash"
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+
+# Mise shims 
+if [[ -d "$HOME/.local/share/mise/shims" ]]; then
+    export PATH="$HOME/.local/share/mise/shims:$PATH"
+fi
 
 # If not running interactively, don't do anything
 case $- in
@@ -33,7 +35,7 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/local/bin/lesspipe ] && export LESSOPEN="|/usr/local/bin/lesspipe.sh %s"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
