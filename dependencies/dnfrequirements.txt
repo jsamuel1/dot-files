@@ -28,7 +28,7 @@ patch
 pkgconfig
 readline
 readline-devel
-rtx
+mise
 sqlite-devel
 sudo
 tree

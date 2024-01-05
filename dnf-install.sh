@@ -8,7 +8,7 @@ subheading "installing base dnf packages"
 
 sudo dnf -y install dnf-plugins-core
 sudo dnf -y install 'dnf-command(config-manager)'
-sudo dnf config-manager --add-repo https://rtx.pub/rpm/rtx.repo
+sudo dnf config-manager --add-repo https://mise.jdx.dev/rpm/mise.repo
 sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
 
 if is_amazonlinux2023; then

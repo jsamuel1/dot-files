@@ -14,8 +14,8 @@ TERM=${TERM:-dumb} # ensure tput does sensible values if non-interactive
 bold="$(tput bold)"
 normal="$(tput sgr0)"
 
-command -v rtx >/dev/null && eval "$(rtx activate bash)"
-command -v rtx >/dev/null && eval "$(rtx hook-env)"
+command -v mise >/dev/null && eval "$(mise activate bash)"
+command -v mise >/dev/null && eval "$(mise hook-env)"
 
 function heading {
 	echo "${bold}"
@@ -150,7 +150,7 @@ function is_wsl {
 
 function awkxargs {
 	# product something like:
-	# awk '! /^ *(#|$)/' "gemrequirements.txt" | xargs "${RTXX[@]}" gem install
+	# awk '! /^ *(#|$)/' "gemrequirements.txt" | xargs "${MISEX[@]}" gem install
 	FILTER='! /^ *(#|$)/'
 	if [ "${1}" == "1" ]; then
 		XARGOPTS=(-n 1)

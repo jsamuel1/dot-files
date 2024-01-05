@@ -99,7 +99,7 @@ fi
 [[ $YUM -ne 0 ]] && source ./yum-install.sh
 [[ $DNF -ne 0 ]] && source ./dnf-install.sh
 
-source ./rtx-tools-install.sh
+source ./mise-tools-install.sh
 
 # rust must be after ruby and node
 source ./rust-install.sh
@@ -156,7 +156,7 @@ cleanup_broken_symlinks "${HOME}/.docker"
 
 subheading "Installing Shell integrations"
 
-rtx trust "${HOME}/.config/rtx/config.toml"
+mise trust "${HOME}/.config/mise/config.toml"
 
 if [ -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
 	subheading "installing iterm2 integrations"

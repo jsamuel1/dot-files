@@ -91,7 +91,7 @@ plugins=(
   kubectx
   magic-enter
   ${OSXPLUGIN}
-  rtx
+  mise 
   screen
   sudo
   yarn

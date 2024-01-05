@@ -3,7 +3,7 @@
 Run bootstrap.sh to setup common tools, required packages and symlink dot-files to your home directory.
 This script is designed to run on Mac OSX, Linux (Amazon Linux 2/2023, Debian, Ubuntu) and Windows (WSL and Powershell setup)
 
-The scripts will install operating system packages, along with [neovim](https://github.com/neovim/neovim), [oh-my-zsh](https://ohmyz.sh/), [rtx](https://github.com/jdx/rtx) and default languages via rtx.
+The scripts will install operating system packages, along with [neovim](https://github.com/neovim/neovim), [oh-my-zsh](https://ohmyz.sh/), [mise](https://github.com/jdx/mise) and default languages via mise.
 
 ## Installation
 

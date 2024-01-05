@@ -73,8 +73,8 @@ fi
 install_key download https://cli.github.com/packages/githubcli-archive-keyring.gpg githubcli-archive-keyring.gpg
 install_source_url https://cli.github.com/packages github-cli.list githubcli-archive-keyring.gpg
 
-install_key dearmor https://rtx.pub/gpg-key.pub rtx-archive-keyring.gpg
-install_source_url https://rtx.pub/deb rtx.list rtx-archive-keyring.gpg
+install_key dearmor https://mise.jdx.dev/gpg-key.pub mise-archive-keyring.gpg
+install_source_url https://mise.jdx.dev/deb mise.list mise-archive-keyring.gpg
 
 install_key dearmor https://download.docker.com/linux/ubuntu/gpg docker.gpg
 install_source_url https://download.docker.com/linux/ubuntu docker.list docker.gpg "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable

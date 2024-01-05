@@ -8,7 +8,7 @@ subheading "installing base yum packages"
 
 
 sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://rtx.pub/rpm/rtx.repo
+sudo yum-config-manager --add-repo https://mise.jdx.dev/rpm/mise.repo
 sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
 
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc

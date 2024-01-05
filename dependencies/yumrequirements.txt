@@ -4,7 +4,7 @@ bzip2
 bzip2-devel
 readline
 readline-devel
-rtx
+mise
 sqlite
 sqlite-devel
 tree
