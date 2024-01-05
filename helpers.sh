@@ -162,6 +162,34 @@ function awkxargs {
 	awk "${FILTER}" "${FILENAME}" | xargs "${XARGOPTS[@]}" -- "$@"
 }
 
+function symlink_file {
+	shopt | grep extglob >/dev/null && shopt -s extglob
+	shopt | grep globstar >/dev/null && shopt -s globstar
+	SOURCEFILE="${1%/}" # remove any trailing /
+	TARGETFILE="${2%/}" # remove any trailing /
+
+	if [ ! -f "${SOURCEFILE}" ]; then
+		echo "ERROR: Sourcepath ${SOURCEFILE} does not exist"
+		return
+	fi
+
+	SOURCEFILE="$(realpath "${SOURCEFILE}")"
+	TARGETFILE="$(realpath "${TARGETFILE}")"
+	TARGETDIR="$(dirname "${TARGETFILE}")"
+
+	if [ ! -d "${TARGETDIR}" ]; then
+		echo "creating ${TARGETDIR}"
+		mkdir -p "${TARGETDIR}"
+	fi
+
+	if [[ -L "${TARGETFILE}" && "${SOURCEFILE}" == "$(realpath "${TARGETFILE}")" ]]; then
+		return
+	fi
+
+	echo "symlinking ${SOURCEFILE} to ${TARGETFILE}"
+	ln -sf "${SOURCEFILE}" "${TARGETFILE}"
+}
+
 function symlink_all {
 	shopt | grep extglob >/dev/null && shopt -s extglob
 	shopt | grep globstar >/dev/null && shopt -s globstar
