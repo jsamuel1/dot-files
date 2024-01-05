@@ -62,6 +62,7 @@ async def main(connection):
         profile = await iterm2.Profile.async_get_default(connection)
 
         await create_trigger_if_missing(profile, "Run the following command before retrying: mwinit")
+        await create_trigger_if_missing(profile, "Try running 'mwinit -s'")
 
 
     async def create_trigger_if_missing(profile: iterm2.Profile, regex : str):
@@ -73,7 +74,11 @@ async def main(connection):
                     return
 
         newTrigger = iterm2.RPCTrigger(regex, "launch_mwinit()", False, True)
-        encTrigger = [ newTrigger.encode ]
+        if triggers is not None:
+            encTrigger = triggers
+            encTrigger.extend([ newTrigger.encode ])
+        else:
+            encTrigger = [ newTrigger.encode ]
 
         await profile.async_set_triggers(encTrigger)
         
