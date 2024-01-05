@@ -8,14 +8,19 @@ return {
   --     the default search path for `require` is ~/.config/nvim/lua
   --     a `.` as a path seperator
   --     the suffix `.lua` is not needed
-  { "hrsh7th/nvim-cmp", config = [[require('config.nvim-cmp')]] },
+  { "hrsh7th/nvim-cmp", config = [[require('config.nvim-cmp')]], dependencies = { "hrsh7th/cmp-emoji" } },
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-buffer" }, -- buffer auto-completion
   { "hrsh7th/cmp-path" }, -- path auto-completion
   { "hrsh7th/cmp-cmdline" }, -- cmdline auto-completion
 
   -- Code snippet engine
-  "L3MON4D3/LuaSnip",
+  { -- allow tab/ <s-tab> to be used by supertab
+    "L3MON4D3/LuaSnip",
+    keys = function()
+      return {}
+    end,
+  },
   { "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp", "LuaSnip" } },
 
   -- Colorschemes

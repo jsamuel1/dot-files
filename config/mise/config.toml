@@ -4,6 +4,16 @@ python = "latest"
 ruby = "latest"
 pdm = "latest"
 go = "latest"
+poetry = "latest"
+pipenv = "latest"
+terraform = "latest"
+terraform-ls = "latest"
+tree-sitter = "latest"
+pre-commit = "latest"
+
+[settings]
+trusted_config_paths = ['~/.config/mise', '~/src/jsamuel1']
+experimental = true
 
 [env]
 npm_config_update_notifier = "false"
@@ -11,3 +21,4 @@ npm_config_progress = "false"
 npm_config_update_all = "true"
 npm_config_loglevel = "warn"
 npm_config_unsafe_perm = "true"
+MISE_ENV_FILE = ".env"

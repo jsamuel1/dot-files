@@ -5,6 +5,7 @@ source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
 MISEX=( mise x -- )
+MISEUSE= (mise use -g -y )
 
 heading "installing local tools with mise"
 
@@ -17,16 +18,18 @@ command -v mise >/dev/null && eval "$(mise hook-env)"
 
 subheading "installing latest python for user"
 symlink_file "dependencies/default-python-packages" "$HOME/.default-python-packages"
-mise use -g python
+"${MISEUSE[@]}" python
 
 "${MISEX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
 "${MISEX[@]}" python3 -m pip install --upgrade -r "dependencies/requirements.txt" | grep -v 'already satisfied'
+
+"${MISEUSE[@]}" poetry
 
 subheading "ensure latest npm and modules"
 
 symlink_file "dependencies/default-npm-packages" "$HOME/.default-npm-packages"
 
-mise use -g node@lts
+"${MISEUSE[@]}" node@lts
 awkxargs "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g
 
 # symlink default go packages to ~/.default-go-package.  
@@ -34,7 +37,7 @@ awkxargs "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g
 # see: https://mise.jdx.dev/lang/go.html#default-packages
 symlink_file "dependencies/default-go-packages" "$HOME/.default-go-packages"
 
-mise use -g go@latest
+"${MISEUSE[@]}" go@latest
 subheading "ensure latest go modules"
 awkxargs 1 "dependencies/default-go-packages" "${MISEX[@]}" go install -a
 
@@ -48,7 +51,13 @@ subheading "ensure neovim ruby gem installed"
 # install latest stable version and use globbaly
 symlink_file "dependencies/default-gems" "$HOME/.default-gems"
 
-mise use -g ruby@latest
+"${MISEUSE[@]}" ruby@latest
 awkxargs "dependencies/default-gems" "${MISEX[@]}" gem install
+
+"${MISEUSE[@]}" terraform@latest
+"${MISEUSE[@]}" terraform-ls@latest
+"${MISEUSE[@]}" tree-sitter@latest
+"${MISEUSE[@]}" pre-commit@latest
+
 
 scriptfooter "${BASH_SOURCE:-$_}"
