@@ -4,32 +4,32 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-RTXX=( rtx x -- )
+MISEX=( mise x -- )
 
-heading "installing local tools with rtx"
+heading "installing local tools with mise"
 
 # first ensure config.toml is in place 
-ln -sf "$(pwd)/config/rtx/config.toml" "${HOME}/.config/rtx/config.toml" 
-rtx -q -y trust 1> /dev/null 2>&1
-rtx -y install
-command -v rtx >/dev/null && eval "$(rtx activate bash)"
-command -v rtx >/dev/null && eval "$(rtx hook-env)"
+ln -sf "$(pwd)/config/mise/config.toml" "${HOME}/.config/mise/config.toml" 
+mise -q -y trust 1> /dev/null 2>&1
+mise -y install
+command -v mise >/dev/null && eval "$(mise activate bash)"
+command -v mise >/dev/null && eval "$(mise hook-env)"
 
 subheading "installing latest python for user"
-rtx use -g python
+mise use -g python
 
 subsubheading "installing base python3 packages"
-"${RTXX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
-"${RTXX[@]}" python3 -m pip install --upgrade -r "dependencies/requirements.txt" | grep -v 'already satisfied'
+"${MISEX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
+"${MISEX[@]}" python3 -m pip install --upgrade -r "dependencies/requirements.txt" | grep -v 'already satisfied'
 
 subheading "ensure latest npm and modules"
 
-rtx use -g nodejs@lts
-awkxargs "dependencies/npmrequirements.txt" "${RTXX[@]}" npm install -g
+mise use -g nodejs@lts
+awkxargs "dependencies/npmrequirements.txt" "${MISEX[@]}" npm install -g
 
-rtx use -g go@latest
+mise use -g go@latest
 subheading "ensure latest go modules"
-awkxargs 1 "dependencies/gorequirements.txt" "${RTXX[@]}" go install -a
+awkxargs 1 "dependencies/gorequirements.txt" "${MISEX[@]}" go install -a
 
 subheading "ensure neovim ruby gem installed"
 
@@ -39,7 +39,7 @@ subheading "ensure neovim ruby gem installed"
 [ -d /usr/local/opt/zlib/lib ] || sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly
-rtx use -g ruby@latest
-awkxargs "dependencies/gemrequirements.txt" "${RTXX[@]}" gem install
+mise use -g ruby@latest
+awkxargs "dependencies/gemrequirements.txt" "${MISEX[@]}" gem install
 
 scriptfooter "${BASH_SOURCE:-$_}"
