@@ -59,5 +59,4 @@ awkxargs "dependencies/default-gems" "${MISEX[@]}" gem install
 "${MISEUSE[@]}" tree-sitter@latest
 "${MISEUSE[@]}" pre-commit@latest
 
-
 scriptfooter "${BASH_SOURCE:-$_}"
