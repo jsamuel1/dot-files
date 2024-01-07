@@ -89,6 +89,7 @@ brew "podman"
 brew "pylint"
 brew "qt"
 brew "gnu-sed", args: ["--with-default-names"]
+brew "ripgrep"
 brew "selene"
 brew "shc"
 brew "shellcheck"

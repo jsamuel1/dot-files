@@ -29,6 +29,7 @@ pkgconfig
 readline
 readline-devel
 mise
+ripgrep
 sqlite-devel
 sudo
 tree

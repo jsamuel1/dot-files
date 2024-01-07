@@ -1,7 +1,6 @@
 return {
-
   -- Vscode-like pictograms
-  { "onsails/lspkind.nvim", event = "VimEnter" },
+  { "onsails/lspkind.nvim", event = "VimEnter", vscode = true },
 
   -- Auto-completion engine
   -- Note:
@@ -36,14 +35,52 @@ return {
     config = function()
       require("config.gitsigns")
     end,
+    vscode = true,
   },
 
   -- Treesitter-integration
   {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function()
-      require("config.nvim-treesitter")
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
+        "bash",
+        "c",
+        "comment", -- for tags like TODO:, FIXME(user)
+        "diff", -- git diff
+        "dockerfile",
+        "git_rebase",
+        "gitattributes",
+        "gitcommit",
+        "gitignore",
+        "go",
+        "gomod",
+        "html",
+        "javascript",
+        "json",
+        "jsonc",
+        "llvm",
+        "lua",
+        "make",
+        "markdown",
+        "markdown_inline",
+        "ocaml",
+        "python",
+        "regex",
+        "rust",
+        "scala",
+        "scheme",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+      })
+      -- ensure_installed = { 'all' },
+      -- Install parsers synchronously (only applied to `ensure_installed`)
+      opts.sync_install = false
+      -- Automatically install missing parsers when entering buffer
+      -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+      opts.auto_install = true
     end,
   },
 
@@ -74,23 +111,49 @@ return {
   -- Smart indentation for Python
   { "Vimjas/vim-python-pep8-indent", ft = { "python" } },
 
-  -- File explorer
-  {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons", -- optional, for file icons
-    },
-    config = function()
-      require("config.nvim-tree")
-    end,
-  },
-
   -- Better terminal integration
   {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = function()
       require("config.toggleterm")
+    end,
+  },
+
+  {
+    "williamboman/mason.nvim",
+    vscode = true,
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
+        "autopep8",
+        "autotools-language-server",
+        "beautysh",
+        "black",
+        "flake8",
+        "jq",
+        "jq-lsp",
+        "luacheck",
+        "luau-lsp",
+        "luaformatter",
+        "markdown-toc",
+        "markdownlint-cli2",
+        "mdformat",
+        "prettier",
+        "prettierd",
+        "ruff-lsp",
+        "rust-analyzer",
+        "shellcheck",
+        "shfmt",
+        "stylua",
+        "taplo",
+        "tflint",
+        "tree-sitter-cli",
+        "ts-standard",
+        "yamlfix",
+        "yamlfmt",
+        "yamllint",
+      })
+      opts.automatic_installation = { exclude = "rust-analyzer" }
     end,
   },
 }
