@@ -11,10 +11,6 @@ terraform-ls = "latest"
 tree-sitter = "latest"
 pre-commit = "latest"
 
-[settings]
-trusted_config_paths = ['~/.config/mise', '~/src/jsamuel1']
-experimental = true
-
 [env]
 npm_config_update_notifier = "false"
 npm_config_progress = "false"

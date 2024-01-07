@@ -1,0 +1,3 @@
+trusted_config_paths = ["~/.config/mise/", "~/src/jsamuel1/"]
+not_found_auto_install = true
+experimental = true

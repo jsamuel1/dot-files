@@ -7,7 +7,6 @@ Anjali.clipboard-history
 antfu.iconify
 apollographql.vscode-apollo
 aws-scripting-guy.cform
-bradlc.vscode-tailwindcss
 cheshirekow.cmake-format
 chrisbreiding.test-utils
 codezombiech.gitignore
@@ -59,7 +58,6 @@ ms-vscode.powershell
 ms-vscode.remote-explorer
 ms-vscode.test-adapter-converter
 nhoizey.gremlins
-pomdtr.excalidraw-editor
 pstreule.codebucket
 RandomChance.logstash
 redhat.vscode-yaml
