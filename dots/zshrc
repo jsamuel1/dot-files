@@ -95,6 +95,7 @@ plugins=(
   kubectx
   magic-enter
   ${OSXPLUGIN}
+  python
   mise 
   screen
   sudo
