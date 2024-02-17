@@ -9,8 +9,25 @@ if [ "$_ZSH_PROFILE" ]; then
   zmodload zsh/zprof
 fi
 
-((INTERACTIVE)) || INTERACTIVE=1
-((INTELLIJ_ENVIRONMENT_READER)) || INTERACTIVE=0
+
+# If INTELLIJ_ENVIRONMENT_READER is not empty 
+# or INTERACTIVE is already set to Zero, 
+# then INTERACTIVE should be 0
+# otherwise INTERACTIVE should be 1
+#
+# VALUE | INTELLIJ | INTERACTIVE 
+# ----  | -------- | -----------
+#  0    | not empty |  "1"
+#  0    | not empty |  empty
+#  0    | not empty |  "0"
+#  1    | empty     |   "1"
+#  1    | empty     |   empty 
+#  0    | empty     |   "0"
+if [[ -n "$INTELLIJ_ENVIRONMENT_READER" || "$INTERACTIVE" == "0" ]]; then
+  INTERACTIVE=0
+else
+  INTERACTIVE=1
+fi
 
 #ensure path arrays do not contain duplicates
 typeset -gU cdpath fpath mailpath path PATH
@@ -120,7 +137,7 @@ fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-command -v nvim >/dev/null 2>&1 && export EDITOR='nvim'
+command -v nvim >/dev/null 2>&1 && export EDITOR='nvim' && bindkey -v
 
 if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then
   source /etc/profile.d/vte.sh
