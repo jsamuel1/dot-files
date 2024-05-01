@@ -1,14 +1,11 @@
-# shellcheck disable=SC2034,SC1091,SC1090
-# CodeWhisperer pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
-
-# when profiling, uncomment this line
+# shellcheck disable=SC2034,SC1091,SC1090# when profiling, uncomment this line
+# Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 # _ZSH_PROFILE=1
 
 if [ "$_ZSH_PROFILE" ]; then
   zmodload zsh/zprof
 fi
-
 
 # If INTELLIJ_ENVIRONMENT_READER is not empty 
 # or INTERACTIVE is already set to Zero, 
@@ -157,5 +154,5 @@ if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
 
-# CodeWhisperer post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+# Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
