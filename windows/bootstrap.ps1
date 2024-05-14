@@ -50,7 +50,7 @@ Write-Host "Install Scoop and Scoop modules"
 # install scoop
 if (-not (Test-Path "~\scoop\apps\scoop\current\bin\scoop.ps1"))
 {
-        iex(new-object net.webclient).downloadstring('https://get.scoop.sh')
+        Invoke-Expression(new-object net.webclient).downloadstring('https://get.scoop.sh')
 }
 else
 {

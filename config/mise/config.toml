@@ -9,6 +9,7 @@ terraform = "latest"
 terraform-ls = "latest"
 tree-sitter = "latest"
 pre-commit = "latest"
+usage = "latest"
 
 [env]
 npm_config_update_notifier = "false"
