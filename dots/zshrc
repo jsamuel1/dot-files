@@ -58,6 +58,10 @@ if type brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
 fi
 
+if [[ -s "$HOME/.brazil_completion/zsh_completion" ]]; then
+  source "$HOME/.brazil_completion/zsh_completion"
+fi
+
 # This must be before sheldon/ohmhyzsh, otherwise we get warnings
 #eval "$(pyenv init -)"
 
@@ -146,7 +150,9 @@ fi
 
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
-if [ -x /usr/local/bin/brew ]; then
+if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
