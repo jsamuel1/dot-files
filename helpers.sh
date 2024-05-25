@@ -187,7 +187,7 @@ function symlink_file {
 	fi
 
 	echo "symlinking ${SOURCEFILE} to ${TARGETFILE}"
-	ln -sf "${SOURCEFILE}" "${TARGETFILE}"
+	ln -sfn "${SOURCEFILE}" "${TARGETFILE}"
 }
 
 function symlink_all {
@@ -222,7 +222,7 @@ function symlink_all {
 			fi
 
 			echo "symlinking ${SOURCEFILE} to ${TARGETFILE}"
-			ln -sf "${SOURCEFILE}" "${TARGETFILE}"
+			ln -sfn "${SOURCEFILE}" "${TARGETFILE}"
 		fi
 	done
 }

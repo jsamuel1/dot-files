@@ -4,14 +4,14 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-MISEX=( mise x -- )
-MISEUSE= (mise use -g -y )
+MISEX=(mise x --)
+MISEUSE=(mise use -g -y)
 
 heading "installing local tools with mise"
 
-# first ensure config.toml is in place 
-symlink_file "config/mise/config.toml" "${HOME}/.config/mise/config.toml" 
-mise -q -y trust 1> /dev/null 2>&1
+# first ensure config.toml is in place
+symlink_file "config/mise/config.toml" "${HOME}/.config/mise/config.toml"
+mise -q -y trust 1>/dev/null 2>&1
 mise -y install
 command -v mise >/dev/null && eval "$(mise activate bash)"
 command -v mise >/dev/null && eval "$(mise hook-env)"
@@ -32,7 +32,7 @@ symlink_file "dependencies/default-npm-packages" "$HOME/.default-npm-packages"
 "${MISEUSE[@]}" node@lts
 awkxargs "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g
 
-# symlink default go packages to ~/.default-go-package.  
+# symlink default go packages to ~/.default-go-package.
 # Mise will use this to install them on new version of go
 # see: https://mise.jdx.dev/lang/go.html#default-packages
 symlink_file "dependencies/default-go-packages" "$HOME/.default-go-packages"
