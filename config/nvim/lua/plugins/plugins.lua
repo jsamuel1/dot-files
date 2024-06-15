@@ -13,32 +13,25 @@ return {
   { "hrsh7th/cmp-path" }, -- path auto-completion
   { "hrsh7th/cmp-cmdline" }, -- cmdline auto-completion
 
-  -- Code snippet engine
-  { -- allow tab/ <s-tab> to be used by supertab
-    "L3MON4D3/LuaSnip",
-    keys = function()
-      return {}
-    end,
-  },
-  { "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp", "LuaSnip" } },
-
-  -- Colorschemes
-  { "tanvirtin/monokai.nvim", lazy = true },
-  { "navarasu/onedark.nvim", lazy = true },
-
-  -- Git integration
-  "tpope/vim-fugitive",
-
-  -- Git decorations
   {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require("config.gitsigns")
+    "neovim/nvim-lspconfig",
+    cmd = function ()
+        local lspconfig = require 'lspconfig'
+        local configs = require 'lspconfig.configs'
+        if not configs.codewhisperer then
+            configs.codewhisperer = {
+                default_config = {
+                    -- Add the codewhisperer to our PATH or BIN folder
+                    cmd = { "cwls" },
+                    root_dir = lspconfig.util.root_pattern("packageInfo", "package.json", "tsconfig.json", "jsconfig.json", ".git"),
+                    filetypes = { 'java', 'python', 'typescript', 'javascript', 'csharp', 'ruby', 'kotlin', 'shell', 'sql', 'c', 'cpp', 'go', 'rust', 'lua' },
+                },
+            }
+        end
+        lspconfig.codewhisperer.setup {}
     end,
-    vscode = true,
   },
-
-  -- Treesitter-integration
+    -- Treesitter-integration
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
