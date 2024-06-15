@@ -1,12 +1,11 @@
 [tools]
 node = "lts"
-python = "latest"
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 ruby = "latest"
 pdm = "latest"
 go = "latest"
 poetry = "latest"
 terraform = "latest"
-terraform-ls = "latest"
 tree-sitter = "latest"
 pre-commit = "latest"
 usage = "latest"

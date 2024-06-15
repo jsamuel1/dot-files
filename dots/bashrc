@@ -1,8 +1,8 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/bashrc.pre.bash"
 #!/usr/bin/env bash
 # shellcheck disable=SC1090,SC1091# Mise shims
 # Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/bashrc.pre.bash"
-
 if [[ -d "$HOME/.local/share/mise/shims" ]]; then
 	export PATH="$HOME/.local/share/mise/shims:$PATH"
 fi
@@ -132,5 +132,9 @@ if [ -x /usr/local/bin/brew ]; then
 	eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# Q post block. Keep at the bottom of this file.
+[[ -f "$HOME/.brazil_completion/bash_completion" ]] && builtin source /Users/sauhsoj/.brazil_completion/bash_completion
+[[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+[[ -f "$HOME/.cargo/env" ]] && builtin source "$HOME/.cargo/env"
+
+# Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/bashrc.post.bash"
