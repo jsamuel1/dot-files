@@ -30,4 +30,14 @@ prepend_manpath()
       *) MANPATH=$1:$MANPATH ;;
     esac
 }
+# source file if exists
+source_ifexists()
+{
+  local -r file="$1"
+  shift
+  if ! [ -s "$file" ]; then return; fi
+
+  builtin source "$file" "$@"
+  return true
+}
 

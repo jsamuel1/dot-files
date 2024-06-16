@@ -15,23 +15,44 @@ return {
 
   {
     "neovim/nvim-lspconfig",
-    cmd = function ()
-        local lspconfig = require 'lspconfig'
-        local configs = require 'lspconfig.configs'
-        if not configs.codewhisperer then
-            configs.codewhisperer = {
-                default_config = {
-                    -- Add the codewhisperer to our PATH or BIN folder
-                    cmd = { "cwls" },
-                    root_dir = lspconfig.util.root_pattern("packageInfo", "package.json", "tsconfig.json", "jsconfig.json", ".git"),
-                    filetypes = { 'java', 'python', 'typescript', 'javascript', 'csharp', 'ruby', 'kotlin', 'shell', 'sql', 'c', 'cpp', 'go', 'rust', 'lua' },
-                },
-            }
-        end
-        lspconfig.codewhisperer.setup {}
+    cmd = function()
+      local lspconfig = require("lspconfig")
+      local configs = require("lspconfig.configs")
+      if not configs.codewhisperer then
+        configs.codewhisperer = {
+          default_config = {
+            -- Add the codewhisperer to our PATH or BIN folder
+            cmd = { "cwls" },
+            root_dir = lspconfig.util.root_pattern(
+              "packageInfo",
+              "package.json",
+              "tsconfig.json",
+              "jsconfig.json",
+              ".git"
+            ),
+            filetypes = {
+              "java",
+              "python",
+              "typescript",
+              "javascript",
+              "csharp",
+              "ruby",
+              "kotlin",
+              "shell",
+              "sql",
+              "c",
+              "cpp",
+              "go",
+              "rust",
+              "lua",
+            },
+          },
+        }
+      end
+      lspconfig.codewhisperer.setup({})
     end,
   },
-    -- Treesitter-integration
+  -- Treesitter-integration
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
@@ -84,21 +105,6 @@ return {
     config = function()
       require("config.indent-blankline")
     end,
-  },
-
-  -- Markdown support
-  { "preservim/vim-markdown", ft = { "markdown" } },
-
-  -- Markdown previewer
-  -- It require nodejs and yarn. homebrew to install first
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    build = "cd app && yarn install",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
-    ft = { "markdown" },
   },
 
   -- Smart indentation for Python

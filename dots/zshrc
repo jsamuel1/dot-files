@@ -1,7 +1,8 @@
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-# shellcheck disable=SC2034,SC1091,SC1090# when profiling, uncomment this line
-# Q pre block. Keep at the top of this file.
+# shellcheck disable=SC2034,SC1091,SC1090
+
+# when profiling, uncomment this line
 # _ZSH_PROFILE=1
 
 if [ "$_ZSH_PROFILE" ]; then
@@ -60,9 +61,7 @@ if type brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
 fi
 
-if [[ -s "$HOME/.brazil_completion/zsh_completion" ]]; then
-  source "$HOME/.brazil_completion/zsh_completion"
-fi
+source_ifexists "$HOME/.brazil_completion/zsh_completion"
 
 # This must be before sheldon/ohmhyzsh, otherwise we get warnings
 #eval "$(pyenv init -)"
@@ -79,10 +78,7 @@ ZSH_TMUX_AUTOSTART=true
 [ -x /usr/local/bin/lesspipe ] && export LESSOPEN="|/usr/local/bin/lesspipe.sh %s"
 
 
-if [[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ]]; then
-  source "$HOME/.autojump/etc/profile.d/autojump.sh"
-  AUTOJUMPPLUGIN=autojump
-fi
+source_ifexists "$HOME/.autojump/etc/profile.d/autojump.sh" && AUTOJUMPPLUGIN=autojump
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   OSXPLUGIN=macos
@@ -132,22 +128,18 @@ else
   return
 fi
 
-if [ -x sheldon ]; then
-   eval "$(sheldon source)"
- else
-   source "$ZSH/oh-my-zsh.sh"
-fi
+source "$ZSH/oh-my-zsh.sh"
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+source_ifexists "${HOME}/.iterm2_shell_integration.zsh"
 
 command -v nvim >/dev/null 2>&1 && export EDITOR='nvim' && bindkey -v
 
 if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then
-  source /etc/profile.d/vte.sh
+  source_ifexists /etc/profile.d/vte.sh
 fi
 
 if [ "$INTERACTIVE" -gt 0 ]; then
-command -v neofetch >/dev/null 2>&1 && neofetch
+  command -v neofetch >/dev/null 2>&1 && neofetch
 fi
 
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
@@ -161,9 +153,6 @@ fi
 if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
-
-# Q post block. Keep at the bottom of this file.
-source /Users/sauhsoj/.brazil_completion/zsh_completion
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
