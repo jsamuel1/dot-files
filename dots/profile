@@ -1,3 +1,5 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/.local/share/amazon-q/shell/profile.pre.bash" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/profile.pre.bash"
 # Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/profile.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/profile.pre.bash"
 export PYENV_ROOT="$HOME/.pyenv"
@@ -8,3 +10,6 @@ export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
 # Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/profile.post.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/profile.post.bash"
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/.local/share/amazon-q/shell/profile.post.bash" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/profile.post.bash"

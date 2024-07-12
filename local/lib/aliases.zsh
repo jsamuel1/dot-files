@@ -6,7 +6,7 @@ alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
-if bat -V>/dev/null; then
+if bat -V >/dev/null 2>&1; then
         alias cat='bat --style=plain'
 elif pygmentize -V ; then
         alias cat="pygmentize -g -O style=monokai"
