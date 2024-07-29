@@ -21,7 +21,7 @@ symlink_file "dependencies/default-python-packages" "$HOME/.default-python-packa
 "${MISEUSE[@]}" python
 
 "${MISEX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
-"${MISEX[@]}" python3 -m pip install --upgrade -r "dependencies/requirements.txt" | grep -v 'already satisfied'
+"${MISEX[@]}" python3 -m pip install --upgrade -r "dependencies/default-python-packages" | grep -v 'already satisfied'
 
 "${MISEUSE[@]}" poetry
 

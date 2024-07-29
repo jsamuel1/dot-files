@@ -1,6 +1,6 @@
 [tools]
 node = "lts"
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = "latest"
 ruby = "latest"
 pdm = "latest"
 go = "latest"
@@ -9,6 +9,7 @@ terraform = "latest"
 tree-sitter = "latest"
 pre-commit = "latest"
 usage = "latest"
+terraform-ls = "latest"
 
 [env]
 npm_config_update_notifier = "false"
