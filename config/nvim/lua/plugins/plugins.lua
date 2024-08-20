@@ -1,17 +1,17 @@
 return {
   -- Vscode-like pictograms
-  { "onsails/lspkind.nvim", event = "VimEnter", vscode = true },
+  -- { "onsails/lspkind.nvim", event = "VimEnter", vscode = true },
 
   -- Auto-completion engine
   -- Note:
   --     the default search path for `require` is ~/.config/nvim/lua
   --     a `.` as a path seperator
   --     the suffix `.lua` is not needed
-  { "hrsh7th/nvim-cmp", config = [[require('config.nvim-cmp')]], dependencies = { "hrsh7th/cmp-emoji" } },
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/cmp-buffer" }, -- buffer auto-completion
-  { "hrsh7th/cmp-path" }, -- path auto-completion
-  { "hrsh7th/cmp-cmdline" }, -- cmdline auto-completion
+  -- { "hrsh7th/nvim-cmp", config = [[require('config.nvim-cmp')]], dependencies = { "hrsh7th/cmp-emoji" } },
+  -- { "hrsh7th/cmp-nvim-lsp" },
+  -- { "hrsh7th/cmp-buffer" }, -- buffer auto-completion
+  -- { "hrsh7th/cmp-path" }, -- path auto-completion
+  -- { "hrsh7th/cmp-cmdline" }, -- cmdline auto-completion
 
   {
     "neovim/nvim-lspconfig",
@@ -56,40 +56,13 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
-        "bash",
-        "c",
-        "comment", -- for tags like TODO:, FIXME(user)
-        "diff", -- git diff
-        "dockerfile",
-        "git_rebase",
-        "gitattributes",
-        "gitcommit",
-        "gitignore",
-        "go",
-        "gomod",
-        "html",
-        "javascript",
-        "json",
-        "jsonc",
-        "llvm",
-        "lua",
-        "make",
-        "markdown",
-        "markdown_inline",
-        "ocaml",
-        "python",
-        "regex",
-        "rust",
-        "scala",
-        "scheme",
-        "toml",
-        "tsx",
-        "typescript",
-        "vim",
-        "yaml",
-      })
-      -- ensure_installed = { 'all' },
+       vim.list_extend(opts.ensure_installed, {
+         "comment", -- for tags like TODO:, FIXME(user)
+         "dockerfile",
+         "gitattributes",
+         "gitcommit",
+         "gitignore",
+       })
       -- Install parsers synchronously (only applied to `ensure_installed`)
       opts.sync_install = false
       -- Automatically install missing parsers when entering buffer
@@ -121,39 +94,6 @@ return {
 
   {
     "williamboman/mason.nvim",
-    vscode = true,
-    opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
-        "autopep8",
-        "autotools-language-server",
-        "beautysh",
-        "black",
-        "flake8",
-        "jq",
-        "jq-lsp",
-        "luacheck",
-        "luau-lsp",
-        "luaformatter",
-        "markdown-toc",
-        "markdownlint-cli2",
-        "mdformat",
-        "prettier",
-        "prettierd",
-        "rubyfmt",
-        "rust-analyzer",
-        "semgrep",
-        "shellcheck",
-        "shfmt",
-        "stylua",
-        "taplo",
-        "tflint",
-        "tree-sitter-cli",
-        "ts-standard",
-        "yamlfix",
-        "yamlfmt",
-        "yamllint",
-      })
-      opts.automatic_installation = { exclude = "rust-analyzer" }
-    end,
+    vscode = true 
   },
 }

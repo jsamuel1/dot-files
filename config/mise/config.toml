@@ -1,6 +1,6 @@
 [tools]
 node = "lts"
-python = "latest"
+python = ["3.10", "3.11", "3.12", "latest"]
 ruby = "latest"
 pdm = "latest"
 go = "latest"

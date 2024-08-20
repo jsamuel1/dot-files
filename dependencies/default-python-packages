@@ -1,10 +1,12 @@
 click
 gobject
+html5-parser
 pip
 pygit2
 pylint
 pynvim
 python-language-server
+requests
 sqlparse
 youtube-dl
 virtualenvwrapper
