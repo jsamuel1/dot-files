@@ -31,7 +31,7 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
         alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
         # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; brew upgrade; brew cleanup; npm update -g npm; npm update -g; gem update;'
+        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; npm update -g npm; npm update -g; gem update;'
 
         if command -v finch &>/dev/null; then
                 alias docker=finch
