@@ -1,8 +1,7 @@
+# shellcheck disable=SC2034,SC1091,SC1090
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh"
-# Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-# shellcheck disable=SC2034,SC1091,SC1090
 
 # when profiling, uncomment this line
 # _ZSH_PROFILE=1
@@ -50,6 +49,7 @@ append_path "$HOME/.dotnet/tools"
 append_path "$HOME/.pyenv/bin"
 append_path "${KREW_ROOT:-$HOME/.krew}/bin"
 append_path /snap/bin
+append_path "$HOME/.local/share/mise/shims"
 export PATH=$PATH:$OLDPATH
 
 for script in "$HOME"/.local/lib/*.zsh; do
@@ -156,12 +156,9 @@ if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
 
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
-
 # if you wish to use IMDS set AWS_EC2_METADATA_DISABLED=false
-
 export AWS_EC2_METADATA_DISABLED=true
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
