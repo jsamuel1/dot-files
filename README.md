@@ -1,9 +1,18 @@
 # dot-files
 
-Run bootstrap.sh to setup common tools, required packages and symlink dot-files to your home directory.
-This script is designed to run on Mac OSX, Linux (Amazon Linux 2/2023, Debian, Ubuntu) and Windows (WSL and Powershell setup)
+Run bootstrap.sh to setup the common tools and packages and then
+symlink dot-files to your home directory.
+This script has worked at various points in time on my machine, running one of:
 
-The scripts will install operating system packages, along with [neovim](https://github.com/neovim/neovim), [oh-my-zsh](https://ohmyz.sh/), [mise](https://github.com/jdx/mise) and default languages via mise.
+- Mac OS
+- Linux (Amazon Linux 2/2023, Debian, Ubuntu)
+- Windows (WSL and Powershell setup)
+
+The scripts will install operating system packages, along with:
+
+- [neovim](https://github.com/neovim/neovim)
+- [oh-my-zsh](https://ohmyz.sh/)
+- [mise](https://github.com/jdx/mise) and default languages via mise.
 
 ## Installation
 
@@ -29,10 +38,11 @@ To update and run from local:
 
 ## Mac
 
-- AppStore must be logged in before running `bootstrap.sh`, otherwise xcode won't install correctly
-- Installs [Homebrew](https://brew.sh/), along with AppStore packages via `brew mas`.  
-*BrewFile* defines the packages to install.
-- Installs default settings for macos, defined in *macdefaults.sh*
+- AppStore must be logged in before running `bootstrap.sh`
+- xcode must be installable
+- Installs [Homebrew](https://brew.sh/), along with AppStore packages via brew  
+  _BrewFile_ defines the packages to install.
+- Installs default settings for macos, defined in _macdefaults.sh_
 - Sets up **magnet** tiled window manager.
 - Will change the Mac default shell to the Homebrew zsh version at /usr/local/bin/zsh
 
