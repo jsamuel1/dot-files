@@ -8,7 +8,7 @@ alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
 if bat -V >/dev/null 2>&1; then
         alias cat='bat --style=plain'
-elif pygmentize -V ; then
+elif pygmentize -V >/dev/null 2>&1; then
         alias cat="pygmentize -g -O style=monokai"
 fi
 
