@@ -19,4 +19,5 @@ export LESS="-EFiMQR~ --tabs=4"
 export AWS_PAGER="less"
 if [ -x brew ]; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
+  export HOMEBREW_NO_ENV_HINTS=1
 fi
