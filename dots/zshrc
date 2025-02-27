@@ -1,8 +1,7 @@
 # shellcheck disable=SC2034,SC1091,SC1090
 # Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh"
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
+[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh"
 # when profiling, uncomment this line
 # _ZSH_PROFILE=1
 
@@ -80,8 +79,6 @@ ZSH_TMUX_AUTOSTART=true
 [ -x /usr/local/bin/lesspipe ] && export LESSOPEN="|/usr/local/bin/lesspipe.sh %s"
 
 
-source_ifexists "$HOME/.autojump/etc/profile.d/autojump.sh" && AUTOJUMPPLUGIN=autojump
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
   OSXPLUGIN=macos
 fi
@@ -94,7 +91,6 @@ fi
 
 # shellcheck disable=SC2034 disable=SC2206
 plugins=(
-  ${AUTOJUMPPLUGIN}
   aws
   bgnotify
   command-not-found

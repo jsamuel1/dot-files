@@ -56,13 +56,13 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-       vim.list_extend(opts.ensure_installed, {
-         "comment", -- for tags like TODO:, FIXME(user)
-         "dockerfile",
-         "gitattributes",
-         "gitcommit",
-         "gitignore",
-       })
+      vim.list_extend(opts.ensure_installed, {
+        "comment", -- for tags like TODO:, FIXME(user)
+        "dockerfile",
+        "gitattributes",
+        "gitcommit",
+        "gitignore",
+      })
       -- Install parsers synchronously (only applied to `ensure_installed`)
       opts.sync_install = false
       -- Automatically install missing parsers when entering buffer
@@ -91,9 +91,17 @@ return {
       require("config.toggleterm")
     end,
   },
-
   {
-    "williamboman/mason.nvim",
-    vscode = true 
+    name = "amazonq",
+    url = "ssh://git.amazon.com/pkg/AmazonQNVim",
+    opts = {
+      ssoStartUrl = "https://amzn.awsapps.com/start",
+      -- Note: It's normally not necessary to change default `lsp_server_cmd`.
+      -- lsp_server_cmd = {
+      --   'node',
+      --   vim.fn.stdpath('data') .. '/lazy/AmazonQNVim/language-server/build/aws-lsp-codewhisperer-token-binary.js',
+      --   '--stdio',
+      -- },
+    },
   },
 }

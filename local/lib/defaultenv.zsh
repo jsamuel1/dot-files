@@ -1,7 +1,7 @@
 #!/bin/sh
 # to be sourced from bash or zsh
-export AWS_DEFAULT_REGION="ap-southeast-2"
-export AWS_REGIONS="ap-southeast-2 us-west-2"
+#export AWS_DEFAULT_REGION="ap-southeast-2"
+#export AWS_REGIONS="ap-southeast-2 us-west-2"
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git --color=always"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--ansi"
