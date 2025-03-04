@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# git-qcommit: Git plugin to generate commit messages using Amazon Q
+# Usage: git qcommit [prompt]
+# If no prompt is provided, a random one will be selected from ~/.commitprompts.txt
+
+set -e
+
+PROMPTS_FILE="$HOME/src/.commitprompts.txt"
+
+# Check if there are staged changes
+if ! git diff --cached --quiet; then
+    # Get the diff of staged changes
+    DIFF=$(git diff --cached)
+    
+    # If prompt is provided as argument, use it
+    if [ $# -gt 0 ]; then
+        PROMPT="$*"
+    else
+        # Check if prompts file exists
+        if [ -f "$PROMPTS_FILE" ]; then
+            # Get a random line from the prompts file
+            PROMPT=$(shuf -n 1 "$PROMPTS_FILE")
+        else
+            echo "Error: No prompt provided and $PROMPTS_FILE does not exist."
+            echo "Please provide a prompt as an argument or create the prompts file."
+            exit 1
+        fi
+    fi
+    
+    echo "Generating commit message using prompt: '$PROMPT'"
+    
+    # Generate commit message using Amazon Q
+    COMMIT_MSG=$(echo -e "Based on these staged changes, generate a concise git commit message.\n\nDiff:\n$DIFF\n\nPrompt: $PROMPT" | q chat)
+    
+    # Clean up the commit message (remove any prefixes like "Here's a commit message:" etc.)
+    COMMIT_MSG=$(echo "$COMMIT_MSG" | sed -n '/```/,/```/p' | grep -v '```' || echo "$COMMIT_MSG")
+    COMMIT_MSG=$(echo "$COMMIT_MSG" | sed 's/^Commit message: //i' | sed 's/^Here.*: //')
+    
+    # Show the generated message and ask for confirmation
+    echo -e "\nGenerated commit message:"
+    echo -e "$COMMIT_MSG\n"
+    
+    read -p "Do you want to commit with this message? (y/n): " confirm
+    if [[ $confirm =~ ^[Yy]$ ]]; then
+        git commit -m "$COMMIT_MSG"
+        echo "Changes committed successfully!"
+    else
+        echo "Commit aborted."
+    fi
+else
+    echo "No staged changes found. Please stage your changes first with 'git add'."
+    exit 1
+fi
