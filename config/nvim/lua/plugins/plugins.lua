@@ -93,9 +93,12 @@ return {
   },
   {
     name = "amazonq",
-    url = "ssh://git.amazon.com/pkg/AmazonQNVim",
+    --url = "ssh://git.amazon.com/pkg/AmazonQNVim",
+    dir = "~/src/AmazonQNVim/src/AmazonQNVim/",
     opts = {
       ssoStartUrl = "https://amzn.awsapps.com/start",
+      q_chat = true,
+      debug = true,
       -- Note: It's normally not necessary to change default `lsp_server_cmd`.
       -- lsp_server_cmd = {
       --   'node',
