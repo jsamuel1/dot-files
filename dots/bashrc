@@ -140,3 +140,6 @@ fi
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/amazon-q/shell/bashrc.post.bash" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/bashrc.post.bash"
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/bashrc.post.bash"
+. "/Users/sauhsoj/src/aws/amazon-q-developer-cli/../.cargo/env"
+
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(kiro --locate-shell-integration-path bash)"
