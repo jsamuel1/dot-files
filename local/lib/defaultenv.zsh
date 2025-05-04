@@ -15,8 +15,8 @@ if [ -x /usr/libexec/java_home ]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 export PAGER="less"
-export LESS="-EFiMQR~ --tabs=4"
-export AWS_PAGER="less"
+export LESS="-EFiMQR~X --tabs=4"
+#export AWS_PAGER="less"
 if [ -x brew ]; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
   export HOMEBREW_NO_ENV_HINTS=1

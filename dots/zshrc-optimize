@@ -1,0 +1,138 @@
+# zshrc-optimize
+# Source this file from your zshrc to optimize shell startup time
+
+# Cache zsh completions - only rebuild once per day with security checks skipped
+zsh_optimize_completions() {
+  # Get zsh version for version-specific caching
+  local zsh_version=$(zsh --version | cut -d' ' -f2)
+  
+  # Create a version-specific cache directory for completions
+  mkdir -p ~/.zsh/cache/$zsh_version
+  
+  # Configure completion caching with version-specific path
+  zstyle ':completion:*' use-cache on
+  zstyle ':completion:*' cache-path ~/.zsh/cache/$zsh_version
+  
+  # Skip all the checks for insecure directories and files
+  autoload -Uz compinit
+  if [[ -n ~/.zcompdump-$zsh_version(#qN.mh+24) ]]; then
+    compinit -i -d ~/.zcompdump-$zsh_version
+  else
+    compinit -C -i -d ~/.zcompdump-$zsh_version
+  fi
+  
+  # Compile the completion dump to increase speed
+  { zcompile ~/.zcompdump-$zsh_version &>/dev/null } &!
+}
+
+# Lazy-load FZF
+zsh_optimize_fzf() {
+  if [[ -f "${HOME}/.fzf.zsh" ]]; then
+    fzf-load() {
+      unfunction fzf-load
+      source "${HOME}/.fzf.zsh"
+    }
+    alias fzf="fzf-load && fzf"
+    
+    # Also lazy-load fzf-related functions
+    fzf-history-widget() {
+      fzf-load
+      fzf-history-widget "$@"
+    }
+    
+    fzf-file-widget() {
+      fzf-load
+      fzf-file-widget "$@"
+    }
+    
+    fzf-cd-widget() {
+      fzf-load
+      fzf-cd-widget "$@"
+    }
+    
+    # Bind keys to the lazy-loaded functions
+    bindkey '^R' fzf-history-widget
+    bindkey '^T' fzf-file-widget
+    bindkey '\ec' fzf-cd-widget
+  fi
+}
+
+# Optimize neofetch to run less frequently
+zsh_optimize_neofetch() {
+  # Only run neofetch once per day or when FORCE_NEOFETCH=1
+  if [[ "$FORCE_NEOFETCH" == "1" ]] || [[ ! -f ~/.neofetch_today || $(date +%Y%m%d) != $(cat ~/.neofetch_today 2>/dev/null) ]]; then
+    command -v neofetch >/dev/null 2>&1 && neofetch
+    date +%Y%m%d > ~/.neofetch_today
+  fi
+}
+
+# Optimize iTerm2 integration
+zsh_optimize_iterm2() {
+  # Only source iTerm2 integration if we're actually in iTerm2
+  if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+    source_ifexists "${HOME}/.iterm2_shell_integration.zsh"
+  fi
+}
+
+# Apply all optimizations
+zsh_apply_all_optimizations() {
+  zsh_optimize_completions
+  zsh_optimize_fzf
+  zsh_optimize_neofetch
+  zsh_optimize_iterm2
+  zsh_compile_all
+}
+
+# Compile zsh files for faster loading
+zsh_compile_all() {
+  # Get zsh version for version-specific compilation
+  local zsh_version=$(zsh --version | cut -d' ' -f2)
+  
+  # Compile zshrc and related files if they've changed
+  for file in ~/.zshrc ~/.zshrc-*; do
+    if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
+      echo "Compiling $file"
+      zcompile $file
+    fi
+  done
+  
+  # Check if ~/.zsh directory exists and has .zsh files before trying to compile them
+  if [[ -d ~/.zsh ]]; then
+    for file in ~/.zsh/**/*.zsh(N); do
+      if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
+        echo "Compiling $file"
+        zcompile $file
+      fi
+    done
+  fi
+  
+  # Compile oh-my-zsh files if they exist
+  if [[ -d $ZSH ]]; then
+    for file in $ZSH/lib/*.zsh(N); do
+      if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
+        echo "Compiling $file"
+        zcompile $file
+      fi
+    done
+    
+    # Also compile active plugin files
+    for plugin in ${plugins[@]}; do
+      plugin_dir="$ZSH/plugins/$plugin"
+      if [[ -d $plugin_dir ]]; then
+        for file in $plugin_dir/*.zsh(N); do
+          if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
+            echo "Compiling plugin file $file"
+            zcompile $file
+          fi
+        done
+      fi
+    done
+  fi
+  
+  # Clean up old version caches periodically (keep last 3 versions)
+  if [[ -d ~/.zsh/cache ]]; then
+    # List directories, sort by modification time (newest first), skip first 3, remove the rest
+    find ~/.zsh/cache -mindepth 1 -maxdepth 1 -type d | sort -r | tail -n +4 | xargs rm -rf 2>/dev/null
+  fi
+}
+
