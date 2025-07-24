@@ -14,7 +14,20 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 if [ -x /usr/libexec/java_home ]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
 fi
-export PAGER="less"
+
+if [ -x moar ]; then
+  export PAGER="moar"
+  alias more="moar"
+  export AWS_PAGER="moar"
+elif [ -x bat ]; then
+  alias more="bat"
+  export PAGER="bat"
+  export AWS_PAGER="bat"
+else
+  alias more="less"
+  export PAGER="less"
+  export AWS_PAGER="less"
+fi
 export LESS="-EFiMQR~X --tabs=4"
 #export AWS_PAGER="less"
 if [ -x brew ]; then

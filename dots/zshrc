@@ -5,9 +5,9 @@
 if [ "$_ZSH_PROFILE" ]; then
   zmodload zsh/zprof
 fi
+
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh"
 
 # Set INTERACTIVE=0 in non-interactive environments:
 # - IntelliJ (INTELLIJ_ENVIRONMENT_READER is set)
@@ -125,6 +125,7 @@ plugins=(
   zsh-interactive-cd
 )
 
+export DISABLE_LS_COLORS=true
 export SHOW_AWS_PROMPT=false
 
 if [ -d "$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh" ]; then
@@ -174,45 +175,26 @@ elif [ -x /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-
 # if you wish to use IMDS set AWS_EC2_METADATA_DISABLED=false
 export AWS_EC2_METADATA_DISABLED=true
 
+# bun completions
+[ -s "/Users/sauhsoj/.bun/_bun" ] && source "/Users/sauhsoj/.bun/_bun"
 
-export PATH="${PATH}:${PHOENIX_HOME}/bin"
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/usr/local/texlive/2025/bin/universal-darwin:$PATH"
+
+# Amazon Q shared rules path
+export AMAZONQ_RULES_PATH="$HOME/.aws/amazonq/rules"
+
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
 
 if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
-
-# Amazon Q Developer Docker alias
-alias q-dev='docker run -it --rm \
-  -v "$(pwd):/home/dev/src" \
-  -v "${HOME}/.aws/credentials:/home/dev/.aws/credentials:ro" \
-  -v "${HOME}/.aws/config:/home/dev/.aws/config:ro" \
-  -v "${HOME}/.aws/amazonq:/home/dev/.aws/amazonq:rw" \
-  -v "${HOME}/Library/Application Support/amazon-q:/home/dev/.local/share/amazon-q:rw" \
-  -v "${HOME}/Library/Caches/amazon-q:/home/dev/.cache/amazon-q:rw" \
-  -v "${HOME}/.gitconfig:/home/dev/.gitconfig:ro" \
-  -v "${HOME}/.ssh:/home/dev/.ssh:ro" \
-  -e AWS_PROFILE \
-  -e AWS_REGION \
-  -e TZ=$(date +%Z) \
-  amazon-q-dev'
-
-# bun completions
-[ -s "/Users/sauhsoj/.bun/_bun" ] && source "/Users/sauhsoj/.bun/_bun"
-
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Amazon Q shared rules path
-export AMAZONQ_RULES_PATH="$HOME/.aws/amazonq/rules"
-
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(kiro --locate-shell-integration-path zsh)"

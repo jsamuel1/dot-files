@@ -91,7 +91,6 @@ zsh_compile_all() {
   # Compile zshrc and related files if they've changed
   for file in ~/.zshrc ~/.zshrc-*; do
     if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
-      echo "Compiling $file"
       zcompile $file
     fi
   done
@@ -100,7 +99,6 @@ zsh_compile_all() {
   if [[ -d ~/.zsh ]]; then
     for file in ~/.zsh/**/*.zsh(N); do
       if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
-        echo "Compiling $file"
         zcompile $file
       fi
     done
@@ -110,7 +108,6 @@ zsh_compile_all() {
   if [[ -d $ZSH ]]; then
     for file in $ZSH/lib/*.zsh(N); do
       if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
-        echo "Compiling $file"
         zcompile $file
       fi
     done
@@ -121,7 +118,6 @@ zsh_compile_all() {
       if [[ -d $plugin_dir ]]; then
         for file in $plugin_dir/*.zsh(N); do
           if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
-            echo "Compiling plugin file $file"
             zcompile $file
           fi
         done

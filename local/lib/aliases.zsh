@@ -7,7 +7,7 @@ alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
 if bat -V >/dev/null 2>&1; then
-        alias cat='bat --style=plain'
+        alias cat='bat --style=plain -P --strip-ansi=always'
 elif pygmentize -V >/dev/null 2>&1; then
         alias cat="pygmentize -g -O style=monokai"
 fi
@@ -21,17 +21,26 @@ else # macOS `ls`
         export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 fi
 
-# Always use color output for `ls`
-alias ls="command ls ${colorflag}"
+# eza configuration for dark terminal theme
+if command -v eza >/dev/null 2>&1; then
+        # Set eza colors for dark terminal theme
+        export EZA_COLORS="di=1;36:ln=35;3:pi=33:so=1;35:bd=1;33:cd=1;33:ex=1;32:mp=36;4:sp=1;34:or=1;31;4:uu=37;2:ur=32;2:uw=32;2:ux=32;2:ue=32;2:gr=33;2:gw=33;2:gx=33;2:tr=31;2:tw=31;2:tx=31;2:su=1;35:sf=35:xa=36:sn=32:sb=32:df=31:ds=31:uu=37;2:un=37:uR=1;31:gu=37:gn=37:gR=31:lc=36:lm=1;36:ga=1;32:gm=1;33:gd=1;31:gv=1;34:gt=1;36:gi=37;2:gc=1;31;4:Gm=1;32:Go=1;36:Gc=32:Gd=1;33:xx=37;2:da=37;2:in=37;2:bl=37;2:hd=1;37:lp=36:cc=1;31:bO=31;4:mp=36;4:im=1;35:vi=1;35;4:mu=1;34:lo=34:cr=1;32:do=33:co=31:tm=37;2:cm=33;2:bu=33;4:sc=1;33:ic=33:Sn=37:Su=32:Sr=33:St=34:Sl=35:ff=33"
+        
+        # Replace ls with eza
+        alias ls='eza --git --icons=auto --all -lh'
+else
+        # Always use color output for `ls`
+        alias ls="command ls ${colorflag}"
+fi
 
 if [[ "$OSTYPE" =~ darwin* ]]; then
         # Empty the Trash on all mounted volumes and the main HDD.
-        # Also, clear Apple’s System Logs to improve shell startup speed.
+        # Also, clear Apple's System Logs to improve shell startup speed.
         # Finally, clear download history from quarantine. https://mths.be/bum
         alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
         # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; npm update -g npm; npm update -g; gem update;'
+        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; npm update -g npm; npm update -g; gem update; uv tool upgrade --all; uv cache prune;'
 
         if command -v finch &>/dev/null; then
                 alias docker=finch
@@ -60,4 +69,12 @@ fi
 
 if command -v isengardcli &>/dev/null; then
         eval "$(isengardcli shell-profile)"
+fi
+
+if command -v figlet &>/dev/null && command -v lolcat &>/dev/null ; then
+  function lolbanner() {
+      echo
+      figlet -c -f ~/.local/share/fonts/figlet-fonts/3d.flf "$@" | lolcat
+      echo
+  }
 fi
