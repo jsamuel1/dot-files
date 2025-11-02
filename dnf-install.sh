@@ -16,6 +16,7 @@ if is_amazonlinux2023; then
 	sudo systemctl enable docker
 	sudo systemctl start docker
 	sudo usermod -aG docker "$(whoami)"
+	sudo dnf enable copr faramirza/al2023 
 fi
 
 if ! is_wsl; then
