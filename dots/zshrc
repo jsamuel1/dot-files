@@ -161,7 +161,7 @@ fi
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
 # Run zsh_compile_all periodically (weekly) to optimize zsh files
-if [[ ! -f ~/.zsh_compiled_date || $(( $(date +%s) - $(stat -f %m ~/.zsh_compiled_date) )) -gt 604800 ]]; then
+if [[ ! -f ~/.zsh_compiled_date || $(( $(date +%s) - $(stat -c %Y ~/.zsh_compiled_date 2>/dev/null || stat -f %m ~/.zsh_compiled_date) )) -gt 604800 ]]; then
   # Run in background to avoid slowing down startup
   {
     zsh_compile_all

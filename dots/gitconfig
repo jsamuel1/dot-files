@@ -17,6 +17,7 @@
         visual = nvim
         autocrlf = input
         filemode = false
+	pager = 
 [diff]
 	tool = nvimdiff
   guitool = bc4
