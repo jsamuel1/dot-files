@@ -1,56 +1,39 @@
 return {
-  -- Vscode-like pictograms
-  -- { "onsails/lspkind.nvim", event = "VimEnter", vscode = true },
-
-  -- Auto-completion engine
-  -- Note:
-  --     the default search path for `require` is ~/.config/nvim/lua
-  --     a `.` as a path seperator
-  --     the suffix `.lua` is not needed
-  -- { "hrsh7th/nvim-cmp", config = [[require('config.nvim-cmp')]], dependencies = { "hrsh7th/cmp-emoji" } },
-  -- { "hrsh7th/cmp-nvim-lsp" },
-  -- { "hrsh7th/cmp-buffer" }, -- buffer auto-completion
-  -- { "hrsh7th/cmp-path" }, -- path auto-completion
-  -- { "hrsh7th/cmp-cmdline" }, -- cmdline auto-completion
+  -- Enable Snacks picker
+  {
+    "folke/snacks.nvim",
+    opts = {
+      picker = { enabled = true },
+    },
+  },
 
   {
     "neovim/nvim-lspconfig",
-    cmd = function()
-      local lspconfig = require("lspconfig")
-      local configs = require("lspconfig.configs")
-      if not configs.codewhisperer then
-        configs.codewhisperer = {
-          default_config = {
-            -- Add the codewhisperer to our PATH or BIN folder
-            cmd = { "cwls" },
-            root_dir = lspconfig.util.root_pattern(
-              "packageInfo",
-              "package.json",
-              "tsconfig.json",
-              "jsconfig.json",
-              ".git"
-            ),
-            filetypes = {
-              "java",
-              "python",
-              "typescript",
-              "javascript",
-              "csharp",
-              "ruby",
-              "kotlin",
-              "shell",
-              "sql",
-              "c",
-              "cpp",
-              "go",
-              "rust",
-              "lua",
+    opts = {
+        inlay_hints = { enabled = false },
+        servers = {
+          basedpyright = {
+            settings = {
+              basedpyright = {
+                analysis = {
+                  ignorePatterns = { "*.pyi" },
+                  diagnosticSeverityOverrides = {
+                    reportCallIssue = "warning",
+                    reportUnreachable = "warning",
+                    reportUnusedImport = "none",
+                    reportUnusedCoroutine = "warning",
+                  },
+                  -- diagnosticMode = "workspace",
+                  diagnosticMode = "openFilesOnly",
+                  typeCheckingMode = "basic",
+                  reportCallIssue = "none",
+                  disableOrganizeImports = true,
+                },
+              },
             },
           },
-        }
-      end
-      lspconfig.codewhisperer.setup({})
-    end,
+        },
+    }
   },
   -- Treesitter-integration
   {
@@ -71,41 +54,17 @@ return {
     end,
   },
 
-  -- Show indentation and blankline
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    config = function()
-      require("config.indent-blankline")
-    end,
-  },
-
   -- Smart indentation for Python
   { "Vimjas/vim-python-pep8-indent", ft = { "python" } },
 
-  -- Better terminal integration
-  {
-    "akinsho/toggleterm.nvim",
-    version = "*",
-    config = function()
-      require("config.toggleterm")
-    end,
-  },
   {
     name = "amazonq",
-    url = "https://github.com/awslabs/amazonq.nvim",
-    --url = "ssh://git.amazon.com/pkg/AmazonQNVim",
-    --dir = "~/src/AmazonQNVim/src/AmazonQNVim/",
+    url = 'https://github.com/awslabs/amazonq.nvim.git',
+    -- url = "ssh://git.amazon.com/pkg/AmazonQNVim",
+    -- dir = "~/src/AmazonQNVim/src/aws/AmazonQNVim/",
     opts = {
       ssoStartUrl = "https://amzn.awsapps.com/start",
-      q_chat = true,
       -- debug = true,
-      -- Note: It's normally not necessary to change default `lsp_server_cmd`.
-      -- lsp_server_cmd = {
-      --   'node',
-      --   vim.fn.stdpath('data') .. '/lazy/AmazonQNVim/language-server/build/aws-lsp-codewhisperer-token-binary.js',
-      --   '--stdio',
-      -- },
     },
   },
 }

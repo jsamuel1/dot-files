@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Wrapper to use pnpm dlx instead of npx
+exec pnpm dlx "$@"

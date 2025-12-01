@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/sauhsoj/.zsh/completions:"* ]]; then export FPATH="/Users/sauhsoj/.zsh/completions:$FPATH"; fi
 # shellcheck disable=SC2034,SC1091,SC1090
 # when profiling, uncomment this line
 #_ZSH_PROFILE=1
@@ -5,9 +7,6 @@
 if [ "$_ZSH_PROFILE" ]; then
   zmodload zsh/zprof
 fi
-
-# Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 
 # Set INTERACTIVE=0 in non-interactive environments:
 # - IntelliJ (INTELLIJ_ENVIRONMENT_READER is set)
@@ -21,7 +20,7 @@ fi
 #  0    | detected            |  any value
 #  1    | not detected        |  "1" or empty
 #  0    | not detected        |  "0"
-if [[ -n "$INTELLIJ_ENVIRONMENT_READER" || "$TERM_PROGRAM" == "vscode" || -n "$TMUX" || "$INTERACTIVE" == "0" ]]; then
+if [[ -n "$INTELLIJ_ENVIRONMENT_READER" || "$TERM_PROGRAM" == "vscode" || "$TERM_PROGRAM" == "kiro" || -n "$TMUX" || "$INTERACTIVE" == "0" ]]; then
   INTERACTIVE=0
 else
   INTERACTIVE=1
@@ -192,9 +191,35 @@ export AMAZONQ_RULES_PATH="$HOME/.aws/amazonq/rules"
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
-
 if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
+
+# PHOENIX Environment
+export PHOENIX_HOME=/Users/sauhsoj/src/strands-agents/Phoenix
+
+# AppWeaver Environment Variables
+export APPWEAVER_MODEL_ID='us.anthropic.claude-3-7-sonnet-20250219-v1:0'
+export AWS_REGION='us-west-2'
+export APPWEAVER_ARCH_PATHS='/Users/sauhsoj'
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/sauhsoj/.lmstudio/bin"
+# End of LM Studio CLI section
+
+. "/Users/sauhsoj/.deno/env"
+# pnpm
+export PNPM_HOME="/Users/sauhsoj/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+alias claude="/Users/sauhsoj/.claude/local/claude"
+
+# Added by AIM CLI
+export PATH="/Users/sauhsoj/.aim/mcp-servers:$PATH"

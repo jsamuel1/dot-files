@@ -30,6 +30,7 @@ zsh_optimize_fzf() {
   if [[ -f "${HOME}/.fzf.zsh" ]]; then
     fzf-load() {
       unfunction fzf-load
+      unalias fzf
       source "${HOME}/.fzf.zsh"
     }
     alias fzf="fzf-load && fzf"

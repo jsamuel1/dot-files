@@ -6,6 +6,7 @@ alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
+alias npx='pnpm dlx' # use pnpm instead of npm for package execution
 if bat -V >/dev/null 2>&1; then
         alias cat='bat --style=plain -P --strip-ansi=always'
 elif pygmentize -V >/dev/null 2>&1; then
