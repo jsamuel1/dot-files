@@ -34,6 +34,7 @@
   tool = nfugitive
 	guitool = bc4
 	keepbackup = false
+	commit = no-edit
 [mergetool "nvimdiff4"]
 	cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [mergetool "nfugitive"]
