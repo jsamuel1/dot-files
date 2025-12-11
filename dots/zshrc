@@ -141,7 +141,7 @@ source "$ZSH/oh-my-zsh.sh"
 # Use optimized iTerm2 integration
 zsh_optimize_iterm2
 
-command -v nvim >/dev/null 2>&1 && export EDITOR='nvim' && bindkey -v
+command -v nvim >/dev/null 2>&1 && export EDITOR='nvim'
 
 if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then
   source_ifexists /etc/profile.d/vte.sh

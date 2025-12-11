@@ -27,6 +27,8 @@ zsh_optimize_completions() {
 
 # Lazy-load FZF
 zsh_optimize_fzf() {
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  export FZF_DEFAULT_OPTS='-i -e'
   if [[ -f "${HOME}/.fzf.zsh" ]]; then
     fzf-load() {
       unfunction fzf-load
@@ -51,10 +53,19 @@ zsh_optimize_fzf() {
       fzf-cd-widget "$@"
     }
     
+    # Find file and CD to its directory
+    fzf-cd-to-file-widget() {
+      fzf-load
+      local file=$(fd --type f | fzf --preview 'bat --color=always --style=numbers --line-range=:500 {} 2>/dev/null || cat {}')
+      [[ -n "$file" ]] && cd "$(dirname "$file")" && zle reset-prompt
+    }
+    zle -N fzf-cd-to-file-widget
+
     # Bind keys to the lazy-loaded functions
     bindkey '^R' fzf-history-widget
     bindkey '^T' fzf-file-widget
     bindkey '\ec' fzf-cd-widget
+    bindkey '^F' fzf-cd-to-file-widget
   fi
 }
 
