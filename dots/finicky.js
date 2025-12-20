@@ -2,9 +2,7 @@ export default {
   defaultBrowser: "Arc",
 
   options: {
-    // Check for updates automatically
     checkForUpdates: true,
-    // Log requests for debugging (set to false in production)
     logRequests: false,
   },
 
@@ -12,95 +10,64 @@ export default {
     {
       // Rewrite http[s]://chime.aws/<meetingID> to chime://meeting?pin=meetingId>
       match: ["chime.aws"],
-      url: ({ url }) => ({
-        ...url,
-        host: "",
-        search: "pin=" + url.pathname.substring(1),
-        pathname: "meeting",
+      url: (url) => ({
         protocol: "chime",
+        host: "",
+        pathname: "meeting",
+        search: "pin=" + url.pathname.substring(1),
       }),
     },
-    /*{
-                        // Rewrite http[s]://quip.com/<documentID>/* to quip://<documentID>
-                        match: matchHostnames(["quip-amazon.com"]),
-                        url: ({ url }) => ({
-                                ...url,
-                                host: "",
-                                search: "",
-                                pathname: url.pathname.split('/')[1] === "email" 
-                                        ? decodeURIComponent(url.search).split('/')[2].split('&')[0] 
-                                        : url.pathname.split('/')[1],
-                                protocol: "quip"
-                        })
-                },*/
     {
       // Force HTTPS for all HTTP URLs (security best practice)
-      match: ({ url }) => {
+      match: (url) => {
         const localDomains = ["localhost", "127.0.0.1"];
         return (
-          url.protocol === "http" &&
+          url.protocol === "http:" &&
           !localDomains.some((domain) => url.host.includes(domain))
         );
       },
-      url: ({ url }) => {
-        url.protocol = "https";
+      url: (url) => {
+        url.protocol = "https:";
         return url;
       },
     },
     {
       // Remove tracking parameters for privacy
-      match: () => true, // Apply to all URLs
-      url: ({ url }) => {
-        const removeKeysStartingWith = ["utm_", "uta_", "mc_", "pk_"]; // Remove parameters starting with these
+      match: () => true,
+      url: (url) => {
+        const removeKeysStartingWith = ["utm_", "uta_", "mc_", "pk_"];
         const removeKeys = [
-          "fbclid",
-          "gclid",
-          "msclkid",
-          "twclid", // Click IDs
-          "ref",
-          "ref_",
-          "referrer", // Referrer tracking
-          "campaign",
-          "source",
-          "medium", // Campaign tracking
-          "hsCtaTracking",
-          "hsa_", // HubSpot tracking
-          "_ga",
-          "_gl", // Google Analytics
-          "igshid",
-          "igsh", // Instagram
-          "si", // YouTube/Google
+          "fbclid", "gclid", "msclkid", "twclid",
+          "ref", "ref_", "referrer",
+          "campaign", "source", "medium",
+          "hsCtaTracking", "hsa_",
+          "_ga", "_gl",
+          "igshid", "igsh",
+          "si",
         ];
 
-        if (!url.search) return url;
-
-        const cleanedParams = url.search
-          .split("&")
-          .map((param) => param.split("="))
-          .filter(([key]) => {
-            // Remove if key starts with any of the prefixes
-            if (
-              removeKeysStartingWith.some((prefix) => key.startsWith(prefix))
-            ) {
-              return false;
-            }
-            // Remove if key matches any of the exact keys
-            if (removeKeys.includes(key)) {
-              return false;
-            }
-            return true;
-          })
-          .map((param) => param.join("="));
-
-        return {
-          ...url,
-          search: cleanedParams.join("&"),
-        };
+        for (const key of [...url.searchParams.keys()]) {
+          if (removeKeysStartingWith.some((prefix) => key.startsWith(prefix)) ||
+              removeKeys.includes(key)) {
+            url.searchParams.delete(key);
+          }
+        }
+        return url;
       },
     },
   ],
 
   handlers: [
+    {
+      // Mobile app OAuth flows - use Safari for proper Universal Links callback
+      match: (url, { opener }) =>
+        opener.bundleId &&
+        (url.href.toLowerCase().includes("forcemobileapp") ||
+          url.href.includes("/mobile/auth") ||
+          url.href.includes("/mobile/callback") ||
+          url.href.includes("redirect_uri=") && url.href.includes("/mobile/")),
+      browser: "Safari",
+    },
     {
       // Apple domains work best with Safari
       match: ["apple.com/*", "*.apple.com/*"],
@@ -113,11 +80,11 @@ export default {
     },
     {
       // Firefox extensions
-      match: ({ url }) => url.pathname.endsWith(".xpi"),
+      match: (url) => url.pathname.endsWith(".xpi"),
       browser: "Firefox",
     },
     {
-      match: ({ url }) => url.protocol === "quip",
+      match: (url) => url.protocol === "quip:",
       browser: "/Applications/Quip.app",
     },
     {
@@ -126,7 +93,7 @@ export default {
       browser: "Spotify",
     },
     {
-      // Zoom meetings - improved pattern matching
+      // Zoom meetings
       match: [/zoom\.us\/j\//, /zoom\.us\/join/, "*.zoom.us/j/*"],
       browser: "us.zoom.xos",
     },
