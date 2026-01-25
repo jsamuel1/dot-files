@@ -3,7 +3,7 @@
 if [ "$_ZSH_PROFILE" ]; then
   zmodload zsh/zprof
 fi
-if [[ -d "$HOME/.pyenv" ]]; then
+if [[ -x "$HOME/.pyenv/bin/pyenv" ]]; then
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path 2> /dev/null)"
@@ -20,5 +20,3 @@ if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
 
-# Created by `userpath` on 2025-06-30 03:58:21
-export PATH="$PATH:/Users/sauhsoj/Library/Application Support/hatch/pythons/3.13/python/bin"

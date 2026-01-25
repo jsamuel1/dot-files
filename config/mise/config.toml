@@ -9,7 +9,6 @@ tree-sitter = "0.25.10"
 pre-commit = "4.3"
 usage = "latest"
 uv = "latest"
-poetry = "latest"
 terraform-ls = "latest"
 
 [env]

@@ -7,7 +7,7 @@ append_path()
 
   case ":$PATH:" in
       *":$1:"*) :;;
-      *) PATH=$1:$PATH ;;
+      *) PATH=$PATH:$1 ;;
     esac
 }
 # add to front of path

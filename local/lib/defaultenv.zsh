@@ -38,3 +38,6 @@ if [ -x /opt/homebrew/bin/brew ]; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(${HOMEBREW_PREFIX}/bin/brew --prefix openssl)"
   export HOMEBREW_NO_ENV_HINTS=1
 fi
+
+# Google Application Default Credentials
+export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"

@@ -6,7 +6,8 @@ alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
-alias npx='pnpm dlx' # use pnpm instead of npm for package execution
+alias npx='bunx' # use bun instead of npm for package execution
+alias npm='bun'  # use bun instead of npm
 if bat -V >/dev/null 2>&1; then
         alias cat='bat --style=plain -P --strip-ansi=always'
 elif pygmentize -V >/dev/null 2>&1; then
@@ -40,8 +41,11 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
         # Finally, clear download history from quarantine. https://mths.be/bum
         alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
-        # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; npm update -g npm; npm update -g; gem update; uv tool upgrade --all; uv cache prune;'
+        # Get macOS Software Updates, and update installed Ruby gems, Homebrew, bun, and their installed packages
+        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; bun upgrade; gem update; uv tool upgrade --all; uv cache prune || true;'
+
+        # List and update bunx cached packages
+        alias bunx-list='ls ~/.bun/install/cache/ 2>/dev/null | head -20'
 
         if command -v finch &>/dev/null; then
                 alias docker=finch
