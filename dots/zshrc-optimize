@@ -97,45 +97,25 @@ zsh_compile_all() {
   local zsh_version=$ZSH_VERSION
   
   # Compile zshrc and related files if they've changed
-  for file in ~/.zshrc ~/.zshrc-*; do
+  for file in ~/.zshrc ~/.zshrc-*(N); do
+    [[ $file == *.zwc ]] && continue
     if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
       zcompile $file
     fi
   done
   
-  # Check if ~/.zsh directory exists and has .zsh files before trying to compile them
-  if [[ -d ~/.zsh ]]; then
-    for file in ~/.zsh/**/*.zsh(N); do
+  # Compile .zsh files in ~/.zsh and ~/.local/lib
+  for dir in ~/.zsh ~/.local/lib; do
+    [[ -d $dir ]] || continue
+    for file in $dir/**/*.zsh(N); do
       if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
         zcompile $file
       fi
     done
-  fi
+  done
   
-  # Compile oh-my-zsh files if they exist
-  if [[ -d $ZSH ]]; then
-    for file in $ZSH/lib/*.zsh(N); do
-      if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
-        zcompile $file
-      fi
-    done
-    
-    # Also compile active plugin files
-    for plugin in ${plugins[@]}; do
-      plugin_dir="$ZSH/plugins/$plugin"
-      if [[ -d $plugin_dir ]]; then
-        for file in $plugin_dir/*.zsh(N); do
-          if [[ -f $file && (! -f $file.zwc || $file -nt $file.zwc) ]]; then
-            zcompile $file
-          fi
-        done
-      fi
-    done
-  fi
-  
-  # Clean up old version caches periodically (keep last 3 versions)
+  # Clean up old version caches (keep last 3 versions)
   if [[ -d ~/.zsh/cache ]]; then
-    # List directories, sort by modification time (newest first), skip first 3, remove the rest
     find ~/.zsh/cache -mindepth 1 -maxdepth 1 -type d | sort -r | tail -n +4 | xargs rm -rf 2>/dev/null
   fi
 }
