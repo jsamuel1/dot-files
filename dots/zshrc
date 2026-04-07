@@ -1,6 +1,12 @@
 # shellcheck disable=SC2034,SC1091,SC1090
 
-# --- Powerlevel10k instant prompt (must be first) ---
+# Fast exit for env-probe shells (QuickWork shell_env, IDE env readers).
+# These only need PATH/HOME which are already set by .zshenv.
+if [[ ! -t 0 && ! -t 1 && -z "$TERM_PROGRAM" ]]; then
+  return 0
+fi
+
+# --- Powerlevel10k instant prompt (must be near top) ---
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -38,11 +44,6 @@ if [[ -n "$INTELLIJ_ENVIRONMENT_READER" || "$TERM_PROGRAM" == "vscode" || "$TERM
   INTERACTIVE=0
 else
   INTERACTIVE=1
-fi
-
-# Fast exit for env-probe shells (QuickWork, IDE env readers)
-if [[ ! -t 0 && ! -t 1 && -z "$TERM_PROGRAM" ]]; then
-  return 0
 fi
 
 _zt "init"
