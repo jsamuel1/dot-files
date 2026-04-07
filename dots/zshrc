@@ -2,7 +2,9 @@
 
 # Fast exit for env-probe shells (QuickWork shell_env, IDE env readers).
 # These only need PATH/HOME which are already set by .zshenv.
-if [[ ! -t 0 && ! -t 1 && -z "$TERM_PROGRAM" ]]; then
+# If stdin+stdout are not ttys, this is a probe shell — bail out.
+# The TERM_PROGRAM check is skipped because tmux inherits it to child shells.
+if [[ ! -t 0 && ! -t 1 ]]; then
   return 0
 fi
 
