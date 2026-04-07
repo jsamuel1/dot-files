@@ -1,15 +1,16 @@
 [tools]
-node = "lts"
+node = "24"
 python = "latest"
 ruby = "latest"
 pdm = "latest"
 go = "latest"
 terraform = "latest"
 tree-sitter = "0.25.10"
-pre-commit = "4.3"
+pre-commit = "latest"
 usage = "latest"
 uv = "latest"
 terraform-ls = "latest"
+direnv = "latest"
 
 [env]
 npm_config_update_notifier = "false"

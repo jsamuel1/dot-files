@@ -1,6 +1,15 @@
-# Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/sauhsoj/.zsh/completions:"* ]]; then export FPATH="/Users/sauhsoj/.zsh/completions:$FPATH"; fi
 # shellcheck disable=SC2034,SC1091,SC1090
+
+# --- Powerlevel10k instant prompt (must be first) ---
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Deno completions
+if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then
+  export FPATH="$HOME/.zsh/completions:$FPATH"
+fi
+
 # when profiling, uncomment this line
 #_ZSH_PROFILE=1
 
@@ -8,207 +17,205 @@ if [ "$_ZSH_PROFILE" ]; then
   zmodload zsh/zprof
 fi
 
-# Set INTERACTIVE=0 in non-interactive environments:
-# - IntelliJ (INTELLIJ_ENVIRONMENT_READER is set)
-# - VSCode (TERM_PROGRAM=vscode)
-# - tmux sessions
-# - When INTERACTIVE is already set to 0
-# Otherwise, set INTERACTIVE=1
-#
-# VALUE | INTELLIJ/VSCODE/TMUX | INTERACTIVE 
-# ----  | ------------------- | -----------
-#  0    | detected            |  any value
-#  1    | not detected        |  "1" or empty
-#  0    | not detected        |  "0"
+# Section timing: set _ZSH_TRACE=1 to see per-section startup times
+if [ "$_ZSH_TRACE" ]; then
+  zmodload zsh/datetime
+  _zsh_trace_start=$EPOCHREALTIME
+  _zsh_trace_last=$EPOCHREALTIME
+  _zt() {
+    local now=$EPOCHREALTIME
+    local delta=$(( (now - _zsh_trace_last) * 1000 ))
+    local total=$(( (now - _zsh_trace_start) * 1000 ))
+    printf "%7.1fms  %7.1fms  %s\n" $delta $total "$1"
+    _zsh_trace_last=$now
+  }
+else
+  _zt() { : }
+fi
+
+# Set INTERACTIVE=0 in non-interactive environments
 if [[ -n "$INTELLIJ_ENVIRONMENT_READER" || "$TERM_PROGRAM" == "vscode" || "$TERM_PROGRAM" == "kiro" || -n "$TMUX" || "$INTERACTIVE" == "0" ]]; then
   INTERACTIVE=0
 else
   INTERACTIVE=1
 fi
 
-#ensure path arrays do not contain duplicates
-typeset -gU cdpath fpath mailpath path PATH
+# Fast exit for env-probe shells (QuickWork, IDE env readers)
+if [[ ! -t 0 && ! -t 1 && -z "$TERM_PROGRAM" ]]; then
+  return 0
+fi
 
-OLDPATH=$PATH
-export PATH=$HOME/.local/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin
+_zt "init"
 
 source "$HOME/.zshrc-helpers"
 source "$HOME/.zshrc-optimize"
+_zt "helpers + optimize"
 
-prepend_path "$HOME/bin"
-
-append_path /home/linuxbrew/.linuxbrew/bin
-append_path /opt/homebrew/bin
-prepend_path /usr/local/opt/coreutils/libexec/gnubin
-prepend_path "$HOME/.toolbox/bin"
-append_path  "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
-append_path "$HOME/.cargo/bin"
-append_path "$HOME/go/bin"
-append_path "$HOME/.dotnet/tools"
-append_path "$HOME/.pyenv/bin"
-append_path "${KREW_ROOT:-$HOME/.krew}/bin"
-append_path /snap/bin
-#append_path "$HOME/.local/share/mise/shims"
-export PATH=$PATH:$OLDPATH
-
 
 for script in "$HOME"/.local/lib/*.zsh; do
   . "$script"
+  _zt "  $(basename $script)"
 done
+_zt "local lib scripts (total)"
 
-# shellcheck disable=SC2206
+# --- Completions fpath ---
 fpath=(~/.zsh/completion ~/.local/lib/zsh-completions/src $fpath)
-if type brew &>/dev/null; then
-    FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
-    FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+    FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+    FPATH="/opt/homebrew/share/zsh-completions:$FPATH"
 fi
+_zt "fpath"
 
-# Apply completion optimizations
 zsh_optimize_completions
+_zt "compinit"
 
 source_ifexists "$HOME/.brazil_completion/zsh_completion"
 
-# Apply FZF optimizations
 zsh_optimize_fzf
+_zt "fzf"
 
-ZSH_THEME="agnoster" # set by `omz`
-HYPHEN_INSENSITIVE="true"
-export UPDATE_ZSH_DAYS=5
-DISABLE_UPDATE_PROMPT="true"
-COMPLETION_WAITING_DOTS="true"
+# --- History (replaces omz lib/history.zsh) ---
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt extended_history       # record timestamp
+setopt hist_expire_dups_first # expire duplicates first
+setopt hist_ignore_dups       # ignore consecutive duplicates
+setopt hist_ignore_space      # ignore commands starting with space
+setopt hist_verify            # show before executing history expansion
+setopt share_history          # share history across sessions
 HIST_STAMPS="yyyy-mm-dd"
-ZSH_TMUX_AUTOSTART=true
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/local/bin/lesspipe ] && export LESSOPEN="|/usr/local/bin/lesspipe.sh %s"
+# --- Key bindings (replaces omz lib/key-bindings.zsh) ---
+bindkey -e                           # emacs mode
+bindkey '^[[A'  up-line-or-search    # up arrow
+bindkey '^[[B'  down-line-or-search  # down arrow
+bindkey '^[[H'  beginning-of-line    # Home
+bindkey '^[[F'  end-of-line          # End
+bindkey '^[[3~' delete-char          # Delete
+bindkey '^[[1;5C' forward-word       # Ctrl+Right
+bindkey '^[[1;5D' backward-word      # Ctrl+Left
 
+# --- Directory options (replaces omz lib/directories.zsh) ---
+setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_silent
+alias ..='cd ..'
+alias ...='cd ../..'
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  OSXPLUGIN=macos
+# --- Misc (replaces omz lib/misc.zsh + completion.zsh) ---
+setopt interactive_comments
+setopt long_list_jobs
+setopt no_beep
+# Completion behavior (replaces omz lib/completion.zsh)
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # case-insensitive matching
+zstyle ':completion:*' menu select                  # arrow-key menu for ambiguous completions
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"  # colorize file completions
+unsetopt menu_complete   # don't auto-insert first match — lets fzf/interactive-cd show its list
+unsetopt auto_cd         # don't cd into dirs by just typing the name — interferes with interactive-cd
+setopt auto_menu         # show completion menu on second tab press
+setopt complete_in_word  # complete from both ends of the cursor, not just the end
+setopt always_to_end     # move cursor to end of word after completing
+
+# --- Terminal title (replaces omz lib/termsupport.zsh) ---
+function _set_terminal_title() {
+  print -Pn "\e]2;%~\a"
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _set_terminal_title
+
+_zt "shell config"
+
+# --- Plugins (vendored in dot-files, symlinked to ~/.zsh/plugins/) ---
+for plugin in "$HOME"/.zsh/plugins/*.plugin.zsh(N); do
+  source "$plugin"
+done
+
+# AWS completion
+if (( $+commands[aws_completer] )); then
+  autoload -Uz bashcompinit && bashcompinit
+  complete -C aws_completer aws
 fi
 
-# now that docker isn't free anymore,
-# I can't have it on all my machines :(
-if [[ $(command -v docker >/dev/null 2>&1) ]]; then
-  DOCKERPLUGIN=docker
-fi
+_zt "plugins"
 
-# shellcheck disable=SC2034 disable=SC2206
-plugins=(
-  aws
-  dircycle
-  ${DOCKERPLUGIN}
-  fzf
-  git
-  github
-  gpg-agent
-  kubectl
-  kubectx
-  magic-enter
-  ${OSXPLUGIN}
-  mise
-  sudo
-  zsh-interactive-cd
-)
+# --- Theme: Powerlevel10k ---
+source "$HOME/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme"
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+_zt "p10k"
 
-export DISABLE_LS_COLORS=true
-export SHOW_AWS_PROMPT=false
+# --- Mise auto-switching ---
+eval "$(mise activate zsh)"
+_zt "mise activate"
 
-if [ -d "$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh" ]; then
-  export ZSH="$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh"
-elif [ -d "$HOME/.oh-my-zsh" ]; then
-  export ZSH="$HOME/.oh-my-zsh"
-else
-  echo "ZSH dir not found"
-  return
-fi
-
-source "$ZSH/oh-my-zsh.sh"
-
-# Use optimized iTerm2 integration
+# iTerm2 integration
 zsh_optimize_iterm2
+_zt "iterm2"
 
-command -v nvim >/dev/null 2>&1 && export EDITOR='nvim'
+(( $+commands[nvim] )) && export EDITOR='nvim'
 
 if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then
   source_ifexists /etc/profile.d/vte.sh
 fi
 
 if [ "$INTERACTIVE" -gt 0 ]; then
-  # Use optimized neofetch
   zsh_optimize_neofetch
-  
-  # Call show_smart_tip function if it exists
+  _zt "neofetch"
+
   if typeset -f show_smart_tip > /dev/null; then
     show_smart_tip
   fi
+  _zt "smart_tip"
 fi
 
+# --- Environment variables ---
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
-
-# Run zsh_compile_all periodically (weekly) to optimize zsh files
-if [[ ! -f ~/.zsh_compiled_date || $(( $(date +%s) - $(stat -c %Y ~/.zsh_compiled_date 2>/dev/null || stat -f %m ~/.zsh_compiled_date) )) -gt 604800 ]]; then
-  # Run in background to avoid slowing down startup
-  {
-    zsh_compile_all
-    touch ~/.zsh_compiled_date
-  } &!
-fi
-
-if [ -x /opt/homebrew/bin/brew ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ -x /usr/local/bin/brew ]; then
-  eval "$(/usr/local/bin/brew shellenv)"
-fi
-
-# if you wish to use IMDS set AWS_EC2_METADATA_DISABLED=false
 export AWS_EC2_METADATA_DISABLED=true
-
-# bun completions
-[ -s "/Users/sauhsoj/.bun/_bun" ] && source "/Users/sauhsoj/.bun/_bun"
-
-# bun
 export BUN_INSTALL="$HOME/.bun"
-append_path "$BUN_INSTALL/bin"
-append_path "/usr/local/texlive/2025/bin/universal-darwin"
-
-# Amazon Q shared rules path
+export PNPM_HOME="$HOME/Library/pnpm"
+export npm_config_loglevel=error
 export AMAZONQ_RULES_PATH="$HOME/.aws/amazonq/rules"
+export MCP_WORKSPACE=~/src/kirocli/workspace/src
+export PHOENIX_HOME="$HOME/src/strands-agents/Phoenix"
+export APPWEAVER_MODEL_ID='us.anthropic.claude-3-7-sonnet-20250219-v1:0'
+export AWS_REGION='us-west-2'
+export APPWEAVER_ARCH_PATHS="$HOME"
 
+# WeasyPrint system libraries
+[[ ":${DYLD_FALLBACK_LIBRARY_PATH}:" != *":/opt/homebrew/lib:"* ]] && \
+  export DYLD_FALLBACK_LIBRARY_PATH="/opt/homebrew/lib${DYLD_FALLBACK_LIBRARY_PATH:+:$DYLD_FALLBACK_LIBRARY_PATH}"
+
+# Compile zsh files periodically (weekly)
+if [[ ! -f ~/.zsh_compiled_date || $(( $(date +%s) - $(stat -c %Y ~/.zsh_compiled_date 2>/dev/null || stat -f %m ~/.zsh_compiled_date) )) -gt 604800 ]]; then
+  { zsh_compile_all; touch ~/.zsh_compiled_date } &!
+fi
+
+# Homebrew env — PATH already set in .zshenv, just set metadata vars
+if [[ -d /opt/homebrew ]]; then
+    export HOMEBREW_PREFIX="/opt/homebrew"
+    export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+    export HOMEBREW_REPOSITORY="/opt/homebrew"
+    [ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}"
+    export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+fi
+_zt "brew shellenv"
+
+# Shell integrations
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+_zt "shell integrations"
+
+source_ifexists ~/.local/lib/devduck_env
+_zt "devduck_env"
 
 if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
 
-# PHOENIX Environment
-export PHOENIX_HOME=/Users/sauhsoj/src/strands-agents/Phoenix
-
-# AppWeaver Environment Variables
-export APPWEAVER_MODEL_ID='us.anthropic.claude-3-7-sonnet-20250219-v1:0'
-export AWS_REGION='us-west-2'
-export APPWEAVER_ARCH_PATHS='/Users/sauhsoj'
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/sauhsoj/.lmstudio/bin"
-# End of LM Studio CLI section
-
-. "/Users/sauhsoj/.deno/env"
-# pnpm
-export PNPM_HOME="/Users/sauhsoj/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-alias claude="/Users/sauhsoj/.claude/local/claude"
-
-# Added by AIM CLI
-export PATH="/Users/sauhsoj/.aim/mcp-servers:$PATH"
-export npm_config_loglevel=error
+_zt "DONE"
+if [ "$_ZSH_TRACE" ]; then
+  printf "\n  TOTAL: %.0fms\n" $(( (EPOCHREALTIME - _zsh_trace_start) * 1000 ))
+  unfunction _zt
+fi

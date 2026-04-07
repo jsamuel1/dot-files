@@ -13,7 +13,7 @@
         old = red
         new = green
 [core]
-        editor = nvim
+	editor = true
         visual = nvim
         autocrlf = input
         filemode = false
@@ -36,6 +36,7 @@
 	keepbackup = false
 	commit = no-edit
 	conflictStyle = zdiff3
+	edit = no
 [mergetool "nvimdiff4"]
 	cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [mergetool "nfugitive"]
@@ -107,3 +108,12 @@
 	navigate = true
 	dark = true
 	features = zenburn
+	hunk-header-style = omit
+	line-numbers = true
+	hyperlinks = true
+[lfs "https://git.amazon.com/"]
+	locksverify = false
+[rebase]
+	autosquash = true
+[tag]
+	forceSignAnnotated = false

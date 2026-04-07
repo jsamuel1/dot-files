@@ -163,6 +163,14 @@ if [ -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
 	curl -sL https://iterm2.com/shell_integration/install_shell_integration.sh | SHELL=zsh bash >/dev/null
 fi
 
-source ./install_oh_my_zsh.sh
+subheading "Installing zsh plugins and theme"
+"${HOME}/.local/bin/update-zsh-plugins.sh"
+
+# Set zsh as default shell
+if ! is_mac && [[ "$(awk -F: -v u="${USER}" 'u==$1&&$0=$NF' /etc/passwd)" != "$(which zsh)" ]]; then
+  sudo chsh -s "$(which zsh)" "$(whoami)" || true
+elif is_mac && [[ "$(dscl . -read /Users/"$USER" UserShell | cut -d' ' -f2)" != "$(which zsh)" ]]; then
+  sudo dscl . -create "/Users/${USER}" UserShell "$(which zsh)"
+fi
 
 scriptfooter "${BASH_SOURCE:-$_}"

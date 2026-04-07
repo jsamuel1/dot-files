@@ -1,0 +1,45 @@
+# zshenv - runs for ALL shells (interactive, non-interactive, login, non-login)
+# Keep this minimal: PATH setup and essential env vars only.
+
+# --- Helper functions (define first, use everywhere) ---
+append_path() {
+  [[ -d "$1" ]] || return
+  case ":$PATH:" in *":$1:"*) ;; *) PATH=$PATH:$1 ;; esac
+}
+prepend_path() {
+  [[ -d "$1" ]] || return
+  case ":$PATH:" in *":$1:"*) ;; *) PATH=$1:$PATH ;; esac
+}
+
+# Deduplicate path arrays
+typeset -gU cdpath fpath mailpath path PATH
+
+# --- Core PATH ---
+prepend_path "$HOME/.local/bin"
+prepend_path "$HOME/bin"
+prepend_path /usr/local/opt/coreutils/libexec/gnubin
+
+# --- Package managers ---
+prepend_path /opt/homebrew/bin
+append_path /home/linuxbrew/.linuxbrew/bin
+prepend_path "$HOME/.cargo/bin"
+
+# --- Dev tools ---
+prepend_path "$HOME/.toolbox/bin"
+export BUILDER_TOOLBOX_HOME="$HOME/.toolbox"
+
+prepend_path "$HOME/.local/share/mise/shims"
+append_path "$HOME/.fzf/bin"
+append_path "$HOME/go/bin"
+append_path "$HOME/.pyenv/bin"
+append_path "$HOME/.dotnet/tools"
+append_path "${KREW_ROOT:-$HOME/.krew}/bin"
+append_path "$HOME/.lmstudio/bin"
+append_path "$HOME/.bun/bin"
+append_path "$HOME/.deno/bin"
+prepend_path "$HOME/Library/pnpm"
+prepend_path "$HOME/.aim/mcp-servers"
+append_path "/usr/local/texlive/2025/bin/universal-darwin"
+
+# --- Apps ---
+append_path /snap/bin

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.pre.bash"
+
 # shellcheck disable=SC1090,SC1091# Mise shims
 if [[ -d "$HOME/.local/share/mise/shims" ]]; then
 	export PATH="$HOME/.local/share/mise/shims:$PATH"
@@ -139,3 +143,9 @@ export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/sauhsoj/.lmstudio/bin"
 # End of LM Studio CLI section
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash"
+source ~/.local/lib/devduck_env
+. "/Users/sauhsoj/src/kirocli/kiro-cli/../.cargo/env"

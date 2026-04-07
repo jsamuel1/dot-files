@@ -67,6 +67,18 @@ symlink_all "${SOURCEPATH}" "${TARGETPATH}" --exclude \*.plist
 
 cleanup_broken_symlinks "${TARGETPATH}"
 
+subheading "LaunchAgents"
+mkdir -p "${HOME}/Library/LaunchAgents"
+for plist in "${PWD}"/LaunchAgents/*.plist; do
+	target="${HOME}/Library/LaunchAgents/$(basename "$plist")"
+	if [[ -L "$target" && "$(realpath "$target")" == "$(realpath "$plist")" ]]; then
+		continue
+	fi
+	symlink_file "$plist" "$target"
+	launchctl unload "$target" 2>/dev/null || true
+	launchctl load "$target"
+done
+
 # Amazon Only install - won't work elsewhere.
 # authenticate with mwinit first
 # One-time only install

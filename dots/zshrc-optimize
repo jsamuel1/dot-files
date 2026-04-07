@@ -3,8 +3,7 @@
 
 # Cache zsh completions - only rebuild once per day with security checks skipped
 zsh_optimize_completions() {
-  # Get zsh version for version-specific caching
-  local zsh_version=$(zsh --version | cut -d' ' -f2)
+  local zsh_version=$ZSH_VERSION
   
   # Create a version-specific cache directory for completions
   mkdir -p ~/.zsh/cache/$zsh_version
@@ -32,12 +31,10 @@ zsh_optimize_fzf() {
   if [[ -f "${HOME}/.fzf.zsh" ]]; then
     fzf-load() {
       unfunction fzf-load
-      unalias fzf
       source "${HOME}/.fzf.zsh"
     }
-    alias fzf="fzf-load && fzf"
     
-    # Also lazy-load fzf-related functions
+    # Lazy-load fzf keybindings on first use
     fzf-history-widget() {
       fzf-load
       fzf-history-widget "$@"
@@ -97,8 +94,7 @@ zsh_apply_all_optimizations() {
 
 # Compile zsh files for faster loading
 zsh_compile_all() {
-  # Get zsh version for version-specific compilation
-  local zsh_version=$(zsh --version | cut -d' ' -f2)
+  local zsh_version=$ZSH_VERSION
   
   # Compile zshrc and related files if they've changed
   for file in ~/.zshrc ~/.zshrc-*; do
