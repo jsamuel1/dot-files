@@ -117,3 +117,11 @@
 	autosquash = true
 [tag]
 	forceSignAnnotated = false
+[credential "https://git-codecommit.us-west-2.amazonaws.com"]
+	helper = !aws --profile quebec codecommit credential-helper $@
+	UseHttpPath = true
+[ai "cadence"]
+	org-id = aaec35b2-29ea-4f8b-a7b2-67ec9b27acde
+	org = jsamuel1
+[includeIf "gitdir:~/src/"]
+	path = ~/.gitconfig-src
