@@ -174,11 +174,7 @@ function symlink_file {
 	fi
 
 	SOURCEFILE="$(realpath "${SOURCEFILE}")"
-	# Do NOT realpath TARGETFILE. When the target is already a correct
-	# symlink to the source, realpath follows the link and returns the
-	# source path itself — assigning that back to TARGETFILE makes the
-	# `ln -sfn SOURCE TARGET` below write a self-pointing symlink at the
-	# source location, silently corrupting the tracked source file.
+	# Do NOT realpath TARGETFILE — would resolve a correct symlink back to SOURCEFILE and ln -sfn would self-loop.
 	TARGETDIR="$(dirname "${TARGETFILE}")"
 
 	if [ ! -d "${TARGETDIR}" ]; then
@@ -207,12 +203,17 @@ function symlink_all {
 		echo "ERROR: Sourcepath ${SOURCEPATH} does not exist"
 		return
 	fi
+
+	# Canonicalize so prefix-strip is stable and created symlinks use absolute targets.
+	SOURCEPATH="$(realpath "${SOURCEPATH}")"
+
 	for SOURCEFILE in $(fd "${FDOPTIONS[@]}" --type file . "${SOURCEPATH}"); do
 		if [ -d "${SOURCEFILE}" ]; then
 			echo "skipping ${SOURCEFILE}"
 			continue
 		fi
 
+		SOURCEFILE="$(realpath "${SOURCEFILE}")"
 		TARGETFILE="${TARGETPATH%/}/${SOURCEFILE#"${SOURCEPATH}/"}"
 		TARGETDIR="$(dirname "${TARGETFILE}")"
 
@@ -222,7 +223,8 @@ function symlink_all {
 				mkdir -p "${TARGETDIR}"
 			fi
 
-			if [[ -L "${TARGETFILE}" && "${SOURCEFILE}" == "$(realpath "${TARGETFILE}")" ]]; then
+			# Already symlinked to our source? Nothing to do. Use readlink not realpath — see symlink_file.
+			if [[ -L "${TARGETFILE}" && "${SOURCEFILE}" == "$(readlink "${TARGETFILE}")" ]]; then
 				continue
 			fi
 
