@@ -184,6 +184,7 @@ export PHOENIX_HOME="$HOME/src/strands-agents/Phoenix"
 export APPWEAVER_MODEL_ID='us.anthropic.claude-3-7-sonnet-20250219-v1:0'
 export AWS_REGION='us-west-2'
 export APPWEAVER_ARCH_PATHS="$HOME"
+export HOMEBREW_NO_ENV_HINTS=1
 
 # WeasyPrint system libraries
 [[ ":${DYLD_FALLBACK_LIBRARY_PATH}:" != *":/opt/homebrew/lib:"* ]] && \
