@@ -1,7 +1,7 @@
 #!/bin/zsh
 #
 # to be sourced from zshrc or bashrc
-alias grep='grep --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
+alias grep="$(command -v ggrep >/dev/null 2>&1 && echo ggrep || echo grep)"' --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
 alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vi='nvim'  # some things just like vi
@@ -31,7 +31,7 @@ if (( $+commands[eza] )); then
         export EZA_COLORS="di=1;36:ln=35;3:pi=33:so=1;35:bd=1;33:cd=1;33:ex=1;32:mp=36;4:sp=1;34:or=1;31;4:uu=37;2:ur=32;2:uw=32;2:ux=32;2:ue=32;2:gr=33;2:gw=33;2:gx=33;2:tr=31;2:tw=31;2:tx=31;2:su=1;35:sf=35:xa=36:sn=32:sb=32:df=31:ds=31:uu=37;2:un=37:uR=1;31:gu=37:gn=37:gR=31:lc=36:lm=1;36:ga=1;32:gm=1;33:gd=1;31:gv=1;34:gt=1;36:gi=37;2:gc=1;31;4:Gm=1;32:Go=1;36:Gc=32:Gd=1;33:xx=37;2:da=37;2:in=37;2:bl=37;2:hd=1;37:lp=36:cc=1;31:bO=31;4:mp=36;4:im=1;35:vi=1;35;4:mu=1;34:lo=34:cr=1;32:do=33:co=31:tm=37;2:cm=33;2:bu=33;4:sc=1;33:ic=33:Sn=37:Su=32:Sr=33:St=34:Sl=35:ff=33"
         
         # Replace ls with eza
-        alias ls='eza --git --icons=auto --all -lh'
+        alias ls='eza --git --icons=auto --all -lh -s newest'
 else
         # Always use color output for `ls`
         alias ls="command ls ${colorflag}"
