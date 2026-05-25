@@ -210,6 +210,10 @@ _zt "brew shellenv"
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 _zt "shell integrations"
 
+# bun completions
+[[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+_zt "bun completions"
+
 source_ifexists ~/.local/lib/devduck_env
 _zt "devduck_env"
 
@@ -222,3 +226,6 @@ if [ "$_ZSH_TRACE" ]; then
   printf "\n  TOTAL: %.0fms\n" $(( (EPOCHREALTIME - _zsh_trace_start) * 1000 ))
   unfunction _zt
 fi
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+

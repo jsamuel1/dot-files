@@ -2,13 +2,23 @@
 # Keep this minimal: PATH setup and essential env vars only.
 
 # --- Helper functions (define first, use everywhere) ---
+# Both helpers remove any existing occurrence of $1 before re-adding it.
+# This matters on macOS: /etc/zprofile runs path_helper which moves system
+# paths to the front of PATH. Re-sourcing .zshenv from .zprofile only restores
+# our intended order if these helpers actually move existing entries.
 append_path() {
   [[ -d "$1" ]] || return
-  case ":$PATH:" in *":$1:"*) ;; *) PATH=$PATH:$1 ;; esac
+  PATH=":$PATH:"
+  PATH="${PATH//:$1:/:}"
+  PATH="${PATH#:}"; PATH="${PATH%:}"
+  PATH="$PATH:$1"
 }
 prepend_path() {
   [[ -d "$1" ]] || return
-  case ":$PATH:" in *":$1:"*) ;; *) PATH=$1:$PATH ;; esac
+  PATH=":$PATH:"
+  PATH="${PATH//:$1:/:}"
+  PATH="${PATH#:}"; PATH="${PATH%:}"
+  PATH="$1:$PATH"
 }
 
 # Deduplicate path arrays
