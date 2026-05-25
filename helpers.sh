@@ -207,7 +207,7 @@ function symlink_all {
 	# Canonicalize so prefix-strip is stable and created symlinks use absolute targets.
 	SOURCEPATH="$(realpath "${SOURCEPATH}")"
 
-	for SOURCEFILE in $(fd "${FDOPTIONS[@]}" --type file . "${SOURCEPATH}"); do
+	while IFS= read -r -d '' SOURCEFILE; do
 		if [ -d "${SOURCEFILE}" ]; then
 			echo "skipping ${SOURCEFILE}"
 			continue
@@ -231,7 +231,7 @@ function symlink_all {
 			echo "symlinking ${SOURCEFILE} to ${TARGETFILE}"
 			ln -sfn "${SOURCEFILE}" "${TARGETFILE}"
 		fi
-	done
+	done < <(fd -0 "${FDOPTIONS[@]}" --type file . "${SOURCEPATH}")
 }
 
 function cleanup_broken_symlinks {
