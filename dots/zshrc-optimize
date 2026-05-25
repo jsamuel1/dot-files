@@ -54,7 +54,17 @@ zsh_optimize_fzf() {
     fzf-cd-to-file-widget() {
       fzf-load
       local file=$(fd --type f | fzf --preview 'bat --color=always --style=numbers --line-range=:500 {} 2>/dev/null || cat {}')
-      [[ -n "$file" ]] && cd "$(dirname "$file")" && zle reset-prompt
+      if [[ -z "$file" ]]; then
+        zle redisplay
+        return 0
+      fi
+      local dir="$(dirname "$file")"
+      zle push-line # Clear buffer. Auto-restored on next prompt.
+      BUFFER="builtin cd -- ${(q)dir}"
+      zle accept-line
+      local ret=$?
+      zle reset-prompt
+      return $ret
     }
     zle -N fzf-cd-to-file-widget
 
