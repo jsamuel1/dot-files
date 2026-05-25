@@ -131,21 +131,21 @@ export PATH=$HOME/.toolbox/bin:$PATH
 
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 
-[[ -f "$HOME/.brazil_completion/bash_completion" ]] && builtin source /Users/sauhsoj/.brazil_completion/bash_completion
+[[ -f "$HOME/.brazil_completion/bash_completion" ]] && builtin source "$HOME/.brazil_completion/bash_completion"
 [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [[ -f "$HOME/.cargo/env" ]] && builtin source "$HOME/.cargo/env"
 
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(kiro --locate-shell-integration-path bash)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path bash)"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/sauhsoj/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash"
 source ~/.local/lib/devduck_env
-. "/Users/sauhsoj/src/kirocli/kiro-cli/../.cargo/env"
+

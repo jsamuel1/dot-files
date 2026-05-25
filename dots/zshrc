@@ -101,7 +101,6 @@ bindkey '^[[1;5C' forward-word       # Ctrl+Right
 bindkey '^[[1;5D' backward-word      # Ctrl+Left
 
 # --- Directory options (replaces omz lib/directories.zsh) ---
-setopt auto_cd
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt pushd_silent
