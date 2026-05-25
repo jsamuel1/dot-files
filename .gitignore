@@ -10,3 +10,5 @@ packages-microsoft*
 .idea/
 .DS_Store
 **/.DS_Store
+.sisyphus/
+**/.sisyphus/
