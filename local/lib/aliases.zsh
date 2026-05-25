@@ -44,7 +44,7 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
         alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
         # Get macOS Software Updates, and update installed Ruby gems, Homebrew, bun, and their installed packages
-        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; bun upgrade; gem update; uv tool upgrade --all; uv cache prune || true; update-zsh-plugins.sh'
+        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y HOMEBREW_NO_ENV_HINTS=Y brew upgrade; brew cleanup; bun upgrade; gem update; uv tool upgrade --all; uv cache prune || true; mise prune || true; update-zsh-plugins.sh'
 
         # List and update bunx cached packages
         alias bunx-list='ls ~/.bun/install/cache/ 2>/dev/null | head -20'
