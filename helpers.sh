@@ -174,7 +174,11 @@ function symlink_file {
 	fi
 
 	SOURCEFILE="$(realpath "${SOURCEFILE}")"
-	TARGETFILE="$(realpath "${TARGETFILE}")"
+	# Do NOT realpath TARGETFILE. When the target is already a correct
+	# symlink to the source, realpath follows the link and returns the
+	# source path itself — assigning that back to TARGETFILE makes the
+	# `ln -sfn SOURCE TARGET` below write a self-pointing symlink at the
+	# source location, silently corrupting the tracked source file.
 	TARGETDIR="$(dirname "${TARGETFILE}")"
 
 	if [ ! -d "${TARGETDIR}" ]; then
@@ -182,7 +186,8 @@ function symlink_file {
 		mkdir -p "${TARGETDIR}"
 	fi
 
-	if [[ -L "${TARGETFILE}" && "${SOURCEFILE}" == "$(realpath "${TARGETFILE}")" ]]; then
+	# Already symlinked to our source? Nothing to do.
+	if [[ -L "${TARGETFILE}" && "${SOURCEFILE}" == "$(readlink "${TARGETFILE}")" ]]; then
 		return
 	fi
 
