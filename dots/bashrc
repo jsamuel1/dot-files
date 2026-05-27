@@ -141,9 +141,6 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
 
 
 # Kiro CLI post block. Keep at the bottom of this file.

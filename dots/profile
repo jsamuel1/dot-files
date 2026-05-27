@@ -10,9 +10,6 @@ fi
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 [[ -f "$HOME/.cargo/env" ]] && builtin source "$HOME/.cargo/env"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
 
 
 # Kiro CLI post block. Keep at the bottom of this file.
