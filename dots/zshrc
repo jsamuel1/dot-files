@@ -148,6 +148,30 @@ source "$HOME/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme"
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 _zt "p10k"
 
+# --- Terminal input mode hygiene ---
+# Runs at the start of every line edit, so the prompt always begins from a
+# known-good input state even if a TUI app (nvim, fzf, less, ssh...) exited
+# without restoring terminal modes. Registered via add-zle-hook-widget so it
+# composes with p10k's own zle-line-init instead of clobbering it.
+# NOTE: deliberately does NOT touch bracketed paste (?2004) — zsh manages that.
+autoload -Uz add-zle-hook-widget
+_zle_term_input_init() {
+  # Application keypad mode so $terminfo key sequences are valid while editing.
+  (( ${+terminfo[smkx]} )) && echoti smkx
+  # Scrub modes TUI apps commonly leave enabled after an unclean exit.
+  printf '\e[?1004l'                            # focus reporting off
+  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l' # mouse reporting off
+  printf '\e[>4;0m'                             # xterm modifyOtherKeys off
+  printf '\e[<u'                                # pop kitty keyboard protocol
+}
+_zle_term_input_finish() {
+  # Restore normal keypad mode before the command runs.
+  (( ${+terminfo[rmkx]} )) && echoti rmkx
+}
+add-zle-hook-widget line-init   _zle_term_input_init
+add-zle-hook-widget line-finish _zle_term_input_finish
+_zt "term input hygiene"
+
 # --- Mise auto-switching ---
 eval "$(mise activate zsh)"
 _zt "mise activate"
