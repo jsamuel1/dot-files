@@ -1,0 +1,16 @@
+{
+  "app": {
+    "confirmQuit": "dirty-only",
+    "forkConversationDefaultDestination": "right"
+  },
+  "terminal": {
+    "agentHibernation": {
+      "enabled": true,
+      "idleSeconds": 30,
+      "maxLiveTerminals": 12
+    }
+  },
+  "diffViewer": {
+    "defaultLayout": "split"
+  }
+}
