@@ -1,16 +1,68 @@
 {
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+
+  // cmux app behavior. Terminal rendering (font/colors/cursor/transparency)
+  // lives in ~/.config/ghostty/config. Apply changes with: cmux reload-config
+
   "app": {
-    "confirmQuit": "dirty-only",
-    "forkConversationDefaultDestination": "right"
+    "appearance": "system",
+    "openMarkdownInCmuxViewer": true,
+    "openSupportedFilesInCmux": true,
+    "workspaceInheritWorkingDirectory": true,
+    "warnBeforeClosingTab": true,
+    "reorderOnNotification": true
   },
+
   "terminal": {
+    // Matches iTerm "Copy to pasteboard on selection"
+    "copyOnSelect": true,
+    "showScrollBar": true,
+    // Resume Claude/Codex/Kiro/etc. agent sessions after restart
+    "autoResumeAgentSessions": true,
+    // Hibernate idle background agents to reclaim RAM/CPU; resumes on focus.
+    // Off by default; only kicks in above maxLiveTerminals (here 8).
     "agentHibernation": {
       "enabled": true,
-      "idleSeconds": 30,
-      "maxLiveTerminals": 12
+      "idleSeconds": 120,
+      "maxLiveTerminals": 8
     }
   },
-  "diffViewer": {
-    "defaultLayout": "split"
+
+  "automation": {
+    // Claude Code is wrapped automatically when you run `claude` in a cmux pane
+    "claudeCodeIntegration": true,
+    // Kiro hooks (Feed approvals + notifications + session restore)
+    "kiroIntegration": true,
+    // minimal = approval cards only | standard = + mutating tools | verbose = all
+    "kiroNotificationLevel": "standard",
+    // Quiet the per-subagent spam when an agent fans out to sub-agents
+    "suppressSubagentNotifications": true
+  },
+
+  "notifications": {
+    // Visual + dock cues when a background pane/agent needs attention
+    "paneFlash": true,
+    "unreadPaneRing": true,
+    "dockBadge": true,
+    "showInMenuBar": true,
+    "sound": "default"
+  },
+
+  "sidebar": {
+    // Git-aware sidebar features
+    "watchGitStatus": true,
+    "showPullRequests": true,
+    "makePullRequestsClickable": true,
+    "showPorts": true,
+    "showSSH": true,
+    "showLog": true,
+    "showProgress": true
+  },
+
+  "browser": {
+    "defaultSearchEngine": "google",
+    "openTerminalLinksInCmuxBrowser": true,
+    "showSearchSuggestions": true
   }
 }

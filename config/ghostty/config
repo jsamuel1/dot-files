@@ -1,0 +1,45 @@
+# Ghostty config for cmux — mirrors iTerm2 "Default" profile.
+# cmux reads this for terminal rendering. Apply with: cmux reload-config
+
+# --- Font (iTerm: MonaspiceKrNFM-Regular 14, bold+italic on) ---
+font-family = MonaspiceKr Nerd Font Mono
+font-size = 14
+# Monaspace texture healing + coding ligatures (the features you had enabled in iTerm).
+# Add stylistic sets if you want specific glyph variants, e.g. font-feature = ss01
+font-feature = calt
+font-feature = liga
+
+# --- Cursor (iTerm: vertical bar, non-blinking) ---
+cursor-style = bar
+cursor-style-blink = false
+
+# --- Window transparency (iTerm: Transparency 0, Blur off) ---
+background-opacity = 1
+background-blur = false
+
+# --- Colors (iTerm Default profile) ---
+background = 000000
+foreground = bbbbbb
+bold-color = ffffff
+cursor-color = bbbbbb
+cursor-text = ffffff
+selection-background = b5d5ff
+selection-foreground = 000000
+
+# ANSI palette (iTerm Ansi 0-15)
+palette = 0=#000000
+palette = 1=#bb0000
+palette = 2=#00bb00
+palette = 3=#bbbb00
+palette = 4=#2d46bc
+palette = 5=#bb00bb
+palette = 6=#00bbbb
+palette = 7=#bbbbbb
+palette = 8=#555555
+palette = 9=#ff5555
+palette = 10=#55ff55
+palette = 11=#ffff55
+palette = 12=#5555ff
+palette = 13=#ff55ff
+palette = 14=#55ffff
+palette = 15=#ffffff
