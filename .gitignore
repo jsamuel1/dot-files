@@ -12,3 +12,4 @@ packages-microsoft*
 **/.DS_Store
 .sisyphus/
 **/.sisyphus/
+__pycache__/
