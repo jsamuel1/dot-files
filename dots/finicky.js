@@ -8,16 +8,6 @@ export default {
 
   rewrite: [
     {
-      // Rewrite http[s]://chime.aws/<meetingID> to chime://meeting?pin=meetingId>
-      match: ["chime.aws"],
-      url: (url) => ({
-        protocol: "chime",
-        host: "",
-        pathname: "meeting",
-        search: "pin=" + url.pathname.substring(1),
-      }),
-    },
-    {
       // Force HTTPS for all HTTP URLs (security best practice)
       match: (url) => {
         const localDomains = ["localhost", "127.0.0.1"];

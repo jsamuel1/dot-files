@@ -154,6 +154,27 @@ cleanup_broken_symlinks "${HOME}/.ssh"
 cleanup_broken_symlinks "${HOME}/.pyenv"
 cleanup_broken_symlinks "${HOME}/.docker"
 
+subheading "git config stub"
+# ~/.gitconfig is a real, machine-local file (user.email etc.) that includes
+# the shared config via ~/.gitconfig-shared. This keeps `git config --global`
+# writes on the machine instead of polluting the repo.
+# Migrate from the old setup where ~/.gitconfig was a symlink into this repo.
+if [ -L "${HOME}/.gitconfig" ]; then
+	rm "${HOME}/.gitconfig"
+fi
+if [ ! -f "${HOME}/.gitconfig" ]; then
+	cat >"${HOME}/.gitconfig" <<-'EOF'
+		# Machine-local git config — safe target for `git config --global`.
+		# Shared settings come from the include below (symlinked from dot-files).
+		[include]
+			path = ~/.gitconfig-shared
+	EOF
+	echo "Created ~/.gitconfig stub."
+fi
+if [ -z "$(git config --global user.email || true)" ]; then
+	subsubheading "NOTE: no git email set for this machine." "Run: git config --global user.email <you@example.com>"
+fi
+
 subheading "Installing Shell integrations"
 
 mise trust "${HOME}/.config/mise/config.toml"

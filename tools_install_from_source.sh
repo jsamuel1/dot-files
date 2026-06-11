@@ -11,6 +11,4 @@ if is_like_debian || is_amazonlinux2023 || is_amazonlinux2; then
   source ./install_neovim_from_source.sh
 fi
 
-source ./install_neofetch_from_source.sh
-
 scriptfooter "${BASH_SOURCE:-$_}"

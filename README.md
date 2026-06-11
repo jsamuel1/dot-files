@@ -5,8 +5,7 @@ symlink dot-files to your home directory.
 This script has worked at various points in time on my machine, running one of:
 
 - Mac OS
-- Linux (Amazon Linux 2/2023, Debian, Ubuntu)
-- Windows (WSL and Powershell setup)
+- Linux (Amazon Linux 2/2023, Debian, Ubuntu — including WSL)
 
 The scripts will install operating system packages, along with:
 
@@ -48,18 +47,5 @@ To update and run from local:
 
 ### Setup iTerm default profile
 
-- Load iTerm2
-- Navigate to Settings -> Profiles -> Import JSON
-- Import iterm-default.json from this repo.
-
-## Windows
-
-### Windows Subsystem for Linux
-
-- Outside WSL
-- install scoop, then:
-
-```PowerShell
-scoop bucket add anurse "https://github.com/anurse/scoop-bucket"
-scoop install win32yank # clipboard support for neovim
-```
+iTerm2 preferences are loaded automatically from the `iTerm2/` folder in this
+repo (configured by `macos.sh` via `PrefsCustomFolder`).

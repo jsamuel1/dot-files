@@ -3,7 +3,3 @@
 # Re-source .zshenv to restore our PATH entries.
 
 source "$HOME/.zshenv"
-
-# >>> Codex installer >>>
-export PATH="/Users/sauhsoj/.local/bin:$PATH"
-# <<< Codex installer <<<

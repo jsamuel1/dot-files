@@ -46,7 +46,8 @@ append_path "$HOME/.dotnet/tools"
 append_path "${KREW_ROOT:-$HOME/.krew}/bin"
 append_path "$HOME/.bun/bin"
 append_path "$HOME/.deno/bin"
-prepend_path "$HOME/Library/pnpm"
+prepend_path "$HOME/Library/pnpm"        # pnpm home on macOS
+prepend_path "$HOME/.local/share/pnpm"   # pnpm home on Linux
 prepend_path "$HOME/.aim/mcp-servers"
 append_path "/usr/local/texlive/2025/bin/universal-darwin"
 

@@ -1,5 +1,8 @@
+# Shared git config — symlinked to ~/.gitconfig-shared on every machine.
+# Machine-local settings (user.email, credential overrides) live in
+# ~/.gitconfig, a real file that includes this one.
+# `git config --global` writes to ~/.gitconfig, never to this file.
 [user]
-        email = sauhsoj@amazon.com
         name = Joshua Samuel
 [color]
         ui = true
@@ -13,11 +16,10 @@
         old = red
         new = green
 [core]
-	editor = true
-        visual = nvim
         autocrlf = input
         filemode = false
-	pager = delta
+	# falls back to less on machines where delta isn't installed (yet)
+	pager = command -v delta >/dev/null 2>&1 && delta || less
 [diff]
 	tool = nvimdiff
   guitool = bc4
@@ -44,8 +46,6 @@
 [mergetool "smerge"]
         cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
         trustExitCode = true
-[color]
-        ui = true
 [protocol]
         version = 2
 [github]
@@ -58,7 +58,7 @@
         dc = diff --cached
         last = diff HEAD^
         # pull request
-        pr = ! sh -c '(git push origin (git symbolic-ref --short -q HEAD) && hub pull-request)'r = ! sh -c '(git push origin (git symbolic-ref --short -q HEAD) && hub pull-request)'
+        pr = !git push -u origin HEAD && gh pr create --fill
         unstage = reset HEAD # remove files from index
         uncommit = reset --soft HEAD^ # go back before last commit, with files in uncommitted state
 [apply]
@@ -103,7 +103,7 @@
 [url "ssh://git.amazon.com"]
 	insteadOf = https://git.amazon.com
 [interactive]
-	diffFilter = delta --color-only --line-numbers
+	diffFilter = command -v delta >/dev/null 2>&1 && delta --color-only --line-numbers || cat
 [delta]
 	navigate = true
 	dark = true

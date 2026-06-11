@@ -6,8 +6,13 @@ alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
-alias npx='bunx' # use bun instead of npm for package execution
-alias npm='bun'  # use bun instead of npm
+
+# Use bun for npm/npx in interactive shells only.
+# Scripts and build tools still resolve the real npm/npx via mise shims.
+if (( $+commands[bun] )); then
+        alias npx='bunx'
+        alias npm='bun'
+fi
 
 # Use (( $+commands[x] )) instead of command -v to avoid forking
 if (( $+commands[bat] )); then
@@ -43,8 +48,8 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
         # Finally, clear download history from quarantine. https://mths.be/bum
         alias emptytrash="( sudo rm -rfv /Volumes/*/.Trashes ) ; ( sudo rm -rfv ~/.Trash ) ; ( sudo rm -rfv /private/var/log/asl/*.asl ) ; ( sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent' )"
 
-        # Get macOS Software Updates, and update installed Ruby gems, Homebrew, bun, and their installed packages
-        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y brew upgrade; brew cleanup; bun upgrade; gem update; uv tool upgrade --all; uv cache prune || true; mise prune || true; update-zsh-plugins.sh'
+        # Get macOS Software Updates, and update installed Ruby gems, Homebrew, mise tools, and their installed packages
+        alias update='sudo softwareupdate -i -a; sudo gem update --system; sudo gem cleanup; brew update; HOMEBREW_ACCEPT_EULA=Y brew upgrade; brew cleanup; mise up -y; gem update; uv tool upgrade --all; uv cache prune || true; mise prune || true; update-zsh-plugins.sh'
 
         # List and update bunx cached packages
         alias bunx-list='ls ~/.bun/install/cache/ 2>/dev/null | head -20'
@@ -56,7 +61,20 @@ if [[ "$OSTYPE" =~ darwin* ]]; then
 fi
 
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
-        alias fd='fdfind'
+        # Debian/Ubuntu package fd as fdfind; only alias when the real fd is absent
+        # (cargo/mise installs provide a real `fd` binary)
+        if ! (( $+commands[fd] )) && (( $+commands[fdfind] )); then
+                alias fd='fdfind'
+        fi
+
+        # Linux equivalent of the macOS `update` alias
+        if (( $+commands[apt-get] )); then
+                alias update='sudo apt-get update && sudo apt-get -y upgrade; mise up -y; uv tool upgrade --all || true; mise prune || true; update-zsh-plugins.sh'
+        elif (( $+commands[dnf] )); then
+                alias update='sudo dnf -y upgrade; mise up -y; uv tool upgrade --all || true; mise prune || true; update-zsh-plugins.sh'
+        elif (( $+commands[yum] )); then
+                alias update='sudo yum -y update; mise up -y; uv tool upgrade --all || true; mise prune || true; update-zsh-plugins.sh'
+        fi
 fi
 
 function sudo() {

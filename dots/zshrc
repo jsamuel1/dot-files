@@ -187,8 +187,8 @@ if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then
 fi
 
 if [ "$INTERACTIVE" -gt 0 ]; then
-  zsh_optimize_neofetch
-  _zt "neofetch"
+  zsh_optimize_fastfetch
+  _zt "fastfetch"
 
   if typeset -f show_smart_tip > /dev/null; then
     show_smart_tip
@@ -198,9 +198,14 @@ fi
 
 # --- Environment variables ---
 export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
-export AWS_EC2_METADATA_DISABLED=true
+# Only disable IMDS lookups on laptops — EC2/Linux boxes need it for instance credentials
+[[ "$OSTYPE" == darwin* ]] && export AWS_EC2_METADATA_DISABLED=true
 export BUN_INSTALL="$HOME/.bun"
-export PNPM_HOME="$HOME/Library/pnpm"
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
 export npm_config_loglevel=error
 export AMAZONQ_RULES_PATH="$HOME/.aws/amazonq/rules"
 export MCP_WORKSPACE=~/src/kirocli/workspace/src

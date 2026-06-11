@@ -76,12 +76,12 @@ zsh_optimize_fzf() {
   fi
 }
 
-# Optimize neofetch to run less frequently
-zsh_optimize_neofetch() {
-  # Only run neofetch once per day or when FORCE_NEOFETCH=1
-  if [[ "$FORCE_NEOFETCH" == "1" ]] || [[ ! -f ~/.neofetch_today || $(date +%Y%m%d) != $(cat ~/.neofetch_today 2>/dev/null) ]]; then
-    command -v neofetch >/dev/null 2>&1 && neofetch
-    date +%Y%m%d > ~/.neofetch_today
+# Optimize fastfetch to run less frequently
+zsh_optimize_fastfetch() {
+  # Only run fastfetch once per day or when FORCE_FASTFETCH=1
+  if [[ "$FORCE_FASTFETCH" == "1" ]] || [[ ! -f ~/.fastfetch_today || $(date +%Y%m%d) != $(cat ~/.fastfetch_today 2>/dev/null) ]]; then
+    command -v fastfetch >/dev/null 2>&1 && fastfetch
+    date +%Y%m%d > ~/.fastfetch_today
   fi
 }
 
@@ -97,7 +97,7 @@ zsh_optimize_iterm2() {
 zsh_apply_all_optimizations() {
   zsh_optimize_completions
   zsh_optimize_fzf
-  zsh_optimize_neofetch
+  zsh_optimize_fastfetch
   zsh_optimize_iterm2
   zsh_compile_all
 }

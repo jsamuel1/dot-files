@@ -89,7 +89,8 @@ if [ -x /usr/bin/dircolors ]; then
 	alias egrep='egrep --color=auto'
 fi
 
-alias docker='finch'
+# finch replaces docker on machines that have it (macOS); Linux keeps real docker
+command -v finch >/dev/null 2>&1 && alias docker='finch'
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -136,8 +137,8 @@ export HOMEBREW_NO_ENV_HINTS=1
 [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [[ -f "$HOME/.cargo/env" ]] && builtin source "$HOME/.cargo/env"
 
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path bash)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && command -v code >/dev/null 2>&1 && . "$(code --locate-shell-integration-path bash)"
+[[ "$TERM_PROGRAM" == "kiro" ]] && command -v kiro >/dev/null 2>&1 && . "$(kiro --locate-shell-integration-path bash)"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
@@ -145,5 +146,5 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash"
-source ~/.local/lib/devduck_env
+[[ -f ~/.local/lib/devduck_env ]] && source ~/.local/lib/devduck_env
 

@@ -31,13 +31,10 @@ def install():
     config_files = [f for f in Path('.').glob(
         'config/**/*') if os.path.isfile(f)]
     local_files = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]
-    sheldon_files = [f for f in Path('.').glob(
-        'sheldon/**/*') if os.path.isfile(f)]
     zsh_files = [f for f in Path('.').glob('zsh/**/*') if os.path.isfile(f)]
     link_files(files, args, "dots")
     link_files(config_files, args, ".")
     link_files(local_files, args, ".")
-    link_files(sheldon_files, args, ".")
     link_files(zsh_files, args, ".")
 
     print(

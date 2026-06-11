@@ -14,6 +14,13 @@ TERM=${TERM:-dumb} # ensure tput does sensible values if non-interactive
 bold="$(tput bold)"
 normal="$(tput sgr0)"
 
+# Debian/Ubuntu package fd as fdfind — provide fd for the symlink helpers below
+if ! command -v fd >/dev/null && command -v fdfind >/dev/null; then
+	function fd {
+		fdfind "$@"
+	}
+fi
+
 command -v mise >/dev/null && eval "$(mise activate bash)"
 command -v mise >/dev/null && eval "$(mise hook-env)"
 
