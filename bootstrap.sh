@@ -36,12 +36,6 @@ echo "user: ${USER}"
 
 if [ "${UPDATE}" -ne 0 ]; then
 	echo "updating"
-	if [ "$(git branch)" == "master" ]; then
-		git branch -m master main
-		git fetch origin
-		git branch -u main main
-		git remote set-head origin -a
-	fi
 	git pull origin "${BRANCH}"
 	exec bash -c "UPDATE=0 ./bootstrap.sh" "${@}"
 fi
@@ -134,10 +128,10 @@ fi
 if ! is_mac && ! is_wsl; then
 	## get list of extensions with code --list-extensions
 	if command -v code >/dev/null; then
-		code --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '!/^[:space:]*(#|$)/' - | xargs -r -L1 code --force --install-extension
+		code --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '!/^[[:space:]]*(#|$)/' - | xargs -r -L1 code --force --install-extension
 	fi
 	if command -v code-insiders >/dev/null; then
-		code-insiders --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '!/^[:space]*(#|$)/' - | xargs -r -L1 code-insiders --force --install-extension
+		code-insiders --list-extensions | grep -v -f - "dependencies/vscodeextensions.txt" | awk '!/^[[:space:]]*(#|$)/' - | xargs -r -L1 code-insiders --force --install-extension
 	fi
 fi
 

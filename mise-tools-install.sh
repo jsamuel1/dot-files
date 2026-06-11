@@ -45,7 +45,7 @@ subheading "ensure neovim ruby gem installed"
 
 # Note - requires zlib and sqlite Brew cellars on Macos
 # workaround compile bug with ruby if those cellars are not yet present
-[ -d /usr/local/opt/sqllite ] || sudo mkdir -p /usr/local/opt/sqllite
+[ -d /usr/local/opt/sqlite ] || sudo mkdir -p /usr/local/opt/sqlite
 [ -d /usr/local/opt/zlib/lib ] || sudo mkdir -p /usr/local/opt/zlib/lib
 
 # install latest stable version and use globbaly

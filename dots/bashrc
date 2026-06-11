@@ -130,7 +130,6 @@ fi
 
 export PATH=$HOME/.toolbox/bin:$PATH
 
-export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 export HOMEBREW_NO_ENV_HINTS=1
 
 [[ -f "$HOME/.brazil_completion/bash_completion" ]] && builtin source "$HOME/.brazil_completion/bash_completion"

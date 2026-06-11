@@ -197,7 +197,6 @@ if [ "$INTERACTIVE" -gt 0 ]; then
 fi
 
 # --- Environment variables ---
-export JAVA_TOOLS_OPTIONS="-Dlog4j2.formatMsgNoLookups=true"
 # Only disable IMDS lookups on laptops — EC2/Linux boxes need it for instance credentials
 [[ "$OSTYPE" == darwin* ]] && export AWS_EC2_METADATA_DISABLED=true
 export BUN_INSTALL="$HOME/.bun"
