@@ -37,11 +37,7 @@ fi
 
 ./macdefaults.sh
 
-# set /usr/local/bin/zsh as the default shell on macos using dscl, if it exists
-if [ -f "/usr/local/bin/zsh" ] && [[ ! "$(dscl . -read "/Users/${USER}" UserShell)" =~ "UserShell:".*"/usr/local/bin/zsh"$ ]]; then
-	sudo dscl . -create "/Users/${USER}" UserShell /usr/local/bin/zsh
-	subheading "Default shell set to /usr/local/bin/zsh" "Restart your terminal to apply changes"
-fi
+# Default shell is set to zsh by bootstrap.sh (dscl, works on Intel and Apple Silicon)
 
 if [ ! -d "/Applications/Google Chrome.app" ]; then
 	subheading "Installing Google Chrome"

@@ -7,8 +7,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--ansi"
 export GOPROXY=direct
 export GREP_COLORS="mt=01;31"
-export PYENV_ROOT="${HOME}/.pyenv"
-export PATH="${PATH}:${PYENV_ROOT}/bin"
 export DEFAULT_USER="${USER}"
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 if [ -x /usr/libexec/java_home ]; then
@@ -39,8 +37,11 @@ if [ -x /opt/homebrew/bin/brew ]; then
   export HOMEBREW_NO_ENV_HINTS=1
 fi
 
-# Google Application Default Credentials
-export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"
+# Google Application Default Credentials — only when the file exists,
+# otherwise Google SDKs hard-fail instead of falling back to other auth
+if [ -f "$HOME/.config/gcloud/application_default_credentials.json" ]; then
+  export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"
+fi
 
 # Slack
 export SLACK_DM_CHANNEL="D092HG7S63W"

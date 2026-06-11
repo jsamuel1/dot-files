@@ -22,12 +22,7 @@ def install():
     if args.sync:
         git_sync()
     files = [f for f in Path('./dots').glob('*')  # Only one level for ~/.blah
-             if str(f) not in [
-        '.gitignore',
-        'Makefile',
-        'README.md',
-    ]
-        and os.path.isfile(f)]
+             if os.path.isfile(f)]
     config_files = [f for f in Path('.').glob(
         'config/**/*') if os.path.isfile(f)]
     local_files = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]

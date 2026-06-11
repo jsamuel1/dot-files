@@ -7,24 +7,9 @@
 source ./helpers.sh
 scriptheader "${BASH_SOURCE:-$_}"
 
-if is_amazonlinux2; then
-	sudo yum groups install -y Development\ tools
-	sudo yum install openssl11-devel wget -y
-
-	(
-		if ! command -v cmake; then
-			cd "$(mktemp -d)" || exit
-			wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1.tar.gz
-			tar -xvzf cmake-3.22.1.tar.gz
-			cd cmake-3.22.1 || exit
-			./bootstrap
-			make
-			sudo make install || exit
-		fi
-	)
-elif is_amazonlinux2023; then
-	sudo yum groups install -y Development\ tools
-	sudo yum install openssl-devel wget cmake python python-devel python-pip -y
+if is_amazonlinux2023; then
+	sudo dnf groups install -y Development\ tools
+	sudo dnf install -y openssl-devel wget cmake python python-devel python-pip
 elif is_like_debian; then
 	sudo apt-get -y install ninja-build gettext cmake unzip curl lua5.4 luarocks aspell
 else

@@ -206,10 +206,8 @@ else
   export PNPM_HOME="$HOME/.local/share/pnpm"
 fi
 export npm_config_loglevel=error
-export AMAZONQ_RULES_PATH="$HOME/.aws/amazonq/rules"
 export MCP_WORKSPACE=~/src/kirocli/workspace/src
 export PHOENIX_HOME="$HOME/src/strands-agents/Phoenix"
-export APPWEAVER_MODEL_ID='us.anthropic.claude-3-7-sonnet-20250219-v1:0'
 export AWS_REGION='us-west-2'
 export APPWEAVER_ARCH_PATHS="$HOME"
 export HOMEBREW_NO_ENV_HINTS=1

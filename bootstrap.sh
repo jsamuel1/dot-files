@@ -50,7 +50,6 @@ sudo_alive
 # Ask for the administrator password upfront
 APT=0
 DNF=0
-YUM=0
 SKIPAWSCLI=0
 
 if is_wsl; then
@@ -63,34 +62,24 @@ if is_mac; then
 elif is_amazonlinux2023; then
 	subsubheading "Amazon Linux 2023 detected"
 	DNF=1
-	YUM=0
 	APT=0
 	SKIPAWSCLI=1
-elif is_amazonlinux2; then
-	subsubheading "Amazon Linux 2 detected"
-	DNF=0
-	YUM=1
-	APT=0
 elif [ -v SOMMELIER_VERSION ]; then
 	subsubheading "Linux on chromebook detected"
 	# run to fix some ubuntu issues
 	./fix-cros-ui-config-pkg.sh
 	APT=1
 	DNF=0
-	YUM=0
 elif command -v dnf >/dev/null; then
 	APT=0
 	DNF=1
-	YUM=0
 elif command -v apt >/dev/null; then
 	APT=1
 	DNF=0
-	YUM=0
 fi
 
 # Install base apt packages
 [[ $APT -ne 0 ]] && source ./apt-install.sh
-[[ $YUM -ne 0 ]] && source ./yum-install.sh
 [[ $DNF -ne 0 ]] && source ./dnf-install.sh
 
 source ./mise-tools-install.sh
@@ -145,7 +134,6 @@ cleanup_broken_symlinks "${HOME}/.config"
 cleanup_broken_symlinks "${HOME}/.local"
 cleanup_broken_symlinks "${HOME}/.zsh"
 cleanup_broken_symlinks "${HOME}/.ssh"
-cleanup_broken_symlinks "${HOME}/.pyenv"
 cleanup_broken_symlinks "${HOME}/.docker"
 
 subheading "git config stub"

@@ -5,13 +5,27 @@ symlink dot-files to your home directory.
 This script has worked at various points in time on my machine, running one of:
 
 - Mac OS
-- Linux (Amazon Linux 2/2023, Debian, Ubuntu — including WSL)
+- Linux (Amazon Linux 2023, Debian, Ubuntu — including WSL)
 
 The scripts will install operating system packages, along with:
 
 - [neovim](https://github.com/neovim/neovim)
-- [oh-my-zsh](https://ohmyz.sh/)
-- [mise](https://github.com/jdx/mise) and default languages via mise.
+- zsh with [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and vendored plugins
+- [mise](https://github.com/jdx/mise) and default languages/tools via mise
+  (node, python, ruby, go, terraform, bun, fastfetch, ...)
+
+## Git configuration
+
+`~/.gitconfig` is a machine-local file (created by `bootstrap.sh`) holding
+per-machine settings like `user.email` — `git config --global` writes there.
+Shared settings live in `~/.gitconfig-shared`, symlinked from
+`dots/gitconfig-shared` in this repo.
+
+On a new machine, set your email once:
+
+```sh
+git config --global user.email you@example.com
+```
 
 ## Installation
 
@@ -42,8 +56,8 @@ To update and run from local:
 - Installs [Homebrew](https://brew.sh/), along with AppStore packages via brew  
   _BrewFile_ defines the packages to install.
 - Installs default settings for macos, defined in _macdefaults.sh_
-- Sets up **magnet** tiled window manager.
-- Will change the Mac default shell to the Homebrew zsh version at /usr/local/bin/zsh
+- Installs **rectangle** for window tiling.
+- Changes the default login shell to zsh
 
 ### Setup iTerm default profile
 

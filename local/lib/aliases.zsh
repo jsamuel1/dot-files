@@ -72,8 +72,6 @@ if ! [[ "$OSTYPE" =~ darwin* ]]; then
                 alias update='sudo apt-get update && sudo apt-get -y upgrade; mise up -y; uv tool upgrade --all || true; mise prune || true; update-zsh-plugins.sh'
         elif (( $+commands[dnf] )); then
                 alias update='sudo dnf -y upgrade; mise up -y; uv tool upgrade --all || true; mise prune || true; update-zsh-plugins.sh'
-        elif (( $+commands[yum] )); then
-                alias update='sudo yum -y update; mise up -y; uv tool upgrade --all || true; mise prune || true; update-zsh-plugins.sh'
         fi
 fi
 

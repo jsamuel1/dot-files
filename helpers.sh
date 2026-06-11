@@ -106,17 +106,6 @@ function clone_or_pull {
 		return 1 # 1=false= Not up to date
 	fi
 }
-function is_amazonlinux2 {
-	# shellcheck source=/dev/null
-	[ -f /etc/os-release ] && source /etc/os-release
-
-	if [ "$ID" = "amzn" ] && [ "$VERSION_ID" = "2" ]; then
-		return 0 # 0= true
-	fi
-
-	return 1 # 1=false
-}
-
 function is_amazonlinux2023 {
 	# shellcheck source=/dev/null
 	[ -f /etc/os-release ] && source /etc/os-release
