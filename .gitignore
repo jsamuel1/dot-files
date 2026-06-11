@@ -13,3 +13,5 @@ packages-microsoft*
 .sisyphus/
 **/.sisyphus/
 __pycache__/
+dots/gitconfig
+.autoloop/
