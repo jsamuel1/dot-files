@@ -27,6 +27,9 @@ On a new machine, set your email once:
 git config --global user.email you@example.com
 ```
 
+If a `~/.gitconfig-src` file exists, it is applied as overrides for repos
+under `~/src/` only (and silently skipped when absent).
+
 ## Installation
 
 Run from internet:

@@ -148,6 +148,11 @@ if [ ! -f "${HOME}/.gitconfig" ]; then
 	cat >"${HOME}/.gitconfig" <<-'EOF'
 		# Machine-local git config — safe target for `git config --global`.
 		# Shared settings come from the include below (symlinked from dot-files).
+		# [user] must stay ABOVE the include: the shared config ends with an
+		# includeIf for ~/.gitconfig-src (per-machine overrides for repos under
+		# ~/src/), and later values win — the include must come last.
+		[user]
+			# git config --global user.email you@example.com
 		[include]
 			path = ~/.gitconfig-shared
 	EOF
