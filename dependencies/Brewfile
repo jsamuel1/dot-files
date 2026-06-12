@@ -55,6 +55,7 @@ brew "mas"
 brew "maven"
 brew "mise"
 brew "mkcert"
+brew "moor"
 brew "moreutils"
 brew "utf8proc", args: ["HEAD"]
 brew "neovim", args: ["HEAD"]

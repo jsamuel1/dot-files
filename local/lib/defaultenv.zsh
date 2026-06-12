@@ -16,10 +16,10 @@ fi
 if [[ "$TERM_PROGRAM" == "vscode" ]] || [[ "$TERM_PROGRAM" == "kiro" ]]; then
   unset PAGER
   unset AWS_PAGER
-elif command -v moar >/dev/null 2>&1; then
-  export PAGER="moar"
-  alias more="moar"
-  export AWS_PAGER="moar"
+elif command -v moor >/dev/null 2>&1; then
+  export PAGER="moor"
+  alias more="moor"
+  export AWS_PAGER="moor"
 elif command -v bat >/dev/null 2>&1; then
   alias more="bat"
   export PAGER="bat"
