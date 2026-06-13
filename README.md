@@ -59,7 +59,6 @@ To update and run from local:
 - Installs [Homebrew](https://brew.sh/), along with AppStore packages via brew  
   _BrewFile_ defines the packages to install.
 - Installs default settings for macos, defined in _macdefaults.sh_
-- Installs **rectangle** for window tiling.
 - Changes the default login shell to zsh
 
 ### Setup iTerm default profile
