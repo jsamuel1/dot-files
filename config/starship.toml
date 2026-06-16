@@ -8,10 +8,9 @@
 # seamlessly. Requires a Nerd/Powerline font (you already install several).
 #
 # Color map (matches dots/p10k.zsh, ANSI named colors):
-#   dir        black on blue
-#   git        black on green (branch + dirty-indicator glyphs live in one block;
-#              the indicators themselves signal state, since starship can't switch a
-#              block's bg per git state the way p10k did)
+#   dir        black on blue   (p10k DIR fg=0 bg=4)
+#   git        black on green — branch only, no dirty/status markers (uses starship's
+#              internal git, no spawned git processes, so it stays fast).
 #   context    white on blue (remote), white on yellow (root)
 #   status err white on red
 #   cmd time   white on grey (bright-black)
@@ -34,8 +33,7 @@ format = """
 $username\
 $hostname\
 $directory\
-$git_branch\
-$git_status\
+${custom.git}\
 $character"""
 
 right_format = """
@@ -47,11 +45,14 @@ $aws"""
 
 # No fill content needed for a single-line prompt.
 
-# --- Prompt character (agnoster's ❯ / ❮), sits just after the closing arrow ---
+# --- Prompt indicator: a shaded block (not a bare char), agnoster-style. ---
+# It opens its own block from the terminal bg, so it works whether or not a git
+# segment preceded it. Green block normally, red on error; closes with an arrow
+# back into the bg. This replaces the bare ❯.
 [character]
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
-vimcmd_symbol = "[❮](bold green)"
+success_symbol = "[ ❯ ](fg:black bg:green bold)[](fg:green)"
+error_symbol = "[](fg:green bg:red)[ ❯ ](fg:white bg:red bold)[](fg:red)"
+vimcmd_symbol = "[ ❮ ](fg:black bg:green bold)[](fg:green)"
 
 # --- Context: user@host — only over SSH or for root (p10k ALWAYS_SHOW_CONTEXT=false) ---
 # When shown it's the first segment and uses a blue bg matching dir, so the context->dir
@@ -68,57 +69,61 @@ style = "fg:white bg:blue bold"
 format = "[@$hostname ]($style)"
 
 # --- Directory (p10k: black on blue, truncate to unique, length 4) ---
-# Ends with a blue closing arrow. In a repo this arrow merges with git_branch's
-# blue->green leading arrow into one clean seam; in a non-repo it's the final
-# arrow into the terminal bg before the prompt char.
+# No trailing arrow: the always-present git slot below owns the blue->green crossover,
+# so the directory block just renders its content and the git slot continues the chain.
 [directory]
 style = "fg:black bg:blue bold"
 truncation_length = 4
 truncate_to_repo = true
 truncation_symbol = "…/"
-format = "[ $path ]($style)[](fg:blue)"
+format = "[ $path ]($style)"
 
-# --- Git: blue->green arrow, then a single green block holding branch + status. ---
+# --- Git (always-present slot — keeps the powerline chain fixed) ---
+# A custom module that ALWAYS renders, so the directory->git->prompt chain never has a
+# missing middle segment: the seam arrows always have a known neighbour on both sides and
+# the crossover stays a single clean glyph. In a repo it shows " <icon> <branch> "; outside
+# a repo it shows a single space (an empty green slot) so the geometry is identical.
+# Cost: one cheap `git branch --show-current` per prompt (no status walk).
+# Disable the built-in git modules so they don't also render.
 [git_branch]
-symbol = " "
-style = "fg:black bg:green bold"
-format = "[](fg:blue bg:green)[ $symbol$branch]($style)"
-
-# Closes the green git block with a green->bg arrow. Dirty-state glyphs (defined below)
-# render inside the same green block; empty when the repo is clean.
+disabled = true
 [git_status]
-style = "fg:black bg:green bold"
-format = "[ $all_status$ahead_behind]($style)[](fg:green)"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇅⇡${ahead_count}⇣${behind_count}"
-conflicted = "="
-untracked = "?"
-modified = "!"
-staged = "+"
-renamed = "»"
-deleted = "✘"
-stashed = " "
+disabled = true
+
+[custom.git]
+description = "Always-present green git slot: branch in a repo, blank otherwise"
+when = "true"
+shell = ["bash", "--noprofile", "--norc"]
+format = "$output"
+command = '''
+b=$(git branch --show-current 2>/dev/null)
+if [ -z "$b" ]; then b=$(git rev-parse --short HEAD 2>/dev/null); fi
+#  = blue->green crossover,  = branch glyph,  = green->bg close.
+# Block is black-on-green (ANSI 42 bg, 30 fg, 1 bold). Outside a repo the content is one
+# space so the green slot still renders and the chain geometry is unchanged.
+if [ -n "$b" ]; then body="  $b "; else body=" "; fi
+printf '\033[34;42m\033[1;30;42m%s' "$body"
+'''
 
 # --- Right prompt: status (exit code), only on error like p10k STATUS_OK=false ---
 [status]
 disabled = false
 style = "fg:white bg:red bold"
 symbol = "✘ "
-format = "[](fg:red)[ $symbol$status ]($style)"
+format = "[](fg:red)[ $symbol$status ]($style)"
 map_symbol = true
 
 # --- Command execution time (p10k threshold 3s) ---
 [cmd_duration]
 min_time = 3000
 style = "fg:white bg:bright-black bold"
-format = "[](fg:bright-black)[  $duration ]($style)"
+format = "[](fg:bright-black)[  $duration ]($style)"
 
 # --- Background jobs ---
 [jobs]
 symbol = "✦"
 style = "fg:white bg:blue bold"
-format = "[](fg:blue)[ $symbol$number ]($style)"
+format = "[](fg:blue)[ $symbol$number ]($style)"
 
 # --- Kubernetes ---
 # p10k only showed this for kube commands. Starship can't gate on the typed command,
@@ -126,7 +131,7 @@ format = "[](fg:blue)[ $symbol$number ]($style)"
 [kubernetes]
 disabled = false
 style = "fg:black bg:cyan bold"
-format = '[](fg:cyan)[ ⎈ $context(\($namespace\)) ]($style)'
+format = '[](fg:cyan)[ ⎈ $context(\($namespace\)) ]($style)'
 detect_files = ['k8s.yaml', 'kustomization.yaml', 'Chart.yaml', 'skaffold.yaml']
 detect_extensions = []
 detect_folders = ['k8s', 'kubernetes', 'helm', 'charts']
@@ -138,5 +143,5 @@ detect_folders = ['k8s', 'kubernetes', 'helm', 'charts']
 [aws]
 style = "fg:black bg:yellow bold"
 symbol = " "
-format = '([](fg:yellow)[ $symbol$profile ]($style))'
+format = '([](fg:yellow)[ $symbol$profile ]($style))'
 force_display = false
