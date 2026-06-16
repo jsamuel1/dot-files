@@ -8,11 +8,6 @@ if [[ ! -t 0 && ! -t 1 ]]; then
   return 0
 fi
 
-# --- Powerlevel10k instant prompt (must be near top) ---
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # Deno completions
 if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then
   export FPATH="$HOME/.zsh/completions:$FPATH"
@@ -143,16 +138,18 @@ fi
 
 _zt "plugins"
 
-# --- Theme: Powerlevel10k ---
-source "$HOME/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme"
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-_zt "p10k"
+# --- Prompt: Starship ---
+# Single static Rust binary; init is a small eval with no plugin/gitstatus daemon.
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
+_zt "starship"
 
 # --- Terminal input mode hygiene ---
 # Runs at the start of every line edit, so the prompt always begins from a
 # known-good input state even if a TUI app (nvim, fzf, less, ssh...) exited
 # without restoring terminal modes. Registered via add-zle-hook-widget so it
-# composes with p10k's own zle-line-init instead of clobbering it.
+# composes with any other zle-line-init hooks instead of clobbering them.
 # NOTE: deliberately does NOT touch bracketed paste (?2004) — zsh manages that.
 autoload -Uz add-zle-hook-widget
 _zle_term_input_init() {

@@ -1,6 +1,7 @@
 #!/bin/sh
-# update-zsh-plugins.sh — Clone/update p10k, fzf, and zsh-completions.
+# update-zsh-plugins.sh — Clone/update fzf and zsh-completions.
 # Called from bootstrap.sh and the update alias.
+# The prompt is provided by starship (installed via Brewfile / mise), not a cloned plugin.
 # Plugins (sudo, magic-enter, zsh-interactive-cd) are vendored in dot-files/zsh/plugins/.
 
 set -e
@@ -19,8 +20,14 @@ clone_or_pull() {
   fi
 }
 
-clone_or_pull "romkatv/powerlevel10k" "$PLUGIN_DIR/powerlevel10k"
 clone_or_pull "zsh-users/zsh-completions" "$HOME/.local/lib/zsh-completions"
+
+# Remove the old Powerlevel10k clone if migrating from the previous setup —
+# starship now provides the prompt, so this directory is dead weight.
+if [ -d "$PLUGIN_DIR/powerlevel10k" ]; then
+  echo "Removing obsolete powerlevel10k plugin..."
+  rm -rf "$PLUGIN_DIR/powerlevel10k"
+fi
 
 clone_or_pull "junegunn/fzf" "$HOME/.fzf"
 "$HOME/.fzf/install" --bin --completion --no-key-bindings --no-update-rc --no-bash --no-fish 2>/dev/null

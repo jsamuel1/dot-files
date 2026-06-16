@@ -10,7 +10,7 @@ This script has worked at various points in time on my machine, running one of:
 The scripts will install operating system packages, along with:
 
 - [neovim](https://github.com/neovim/neovim)
-- zsh with [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and vendored plugins
+- zsh with [starship](https://starship.rs/) prompt and vendored plugins
 - [mise](https://github.com/jdx/mise) and default languages/tools via mise
   (node, python, ruby, go, terraform, bun, fastfetch, ...)
 

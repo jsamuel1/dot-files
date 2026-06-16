@@ -2,6 +2,7 @@
 node = "lts"
 bun = "latest"
 fastfetch = "latest"
+starship = "latest"
 python = "latest"
 ruby = "latest"
 pdm = "latest"

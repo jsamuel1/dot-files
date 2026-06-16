@@ -1,0 +1,142 @@
+# Starship prompt — agnoster powerline theme.
+# Symlinked to ~/.config/starship.toml by settings.py.
+# Replaces the previous Powerlevel10k config (dots/p10k.zsh).
+#
+# Powerline look: each segment is a solid colored background block joined by the
+# agnoster arrow glyphs (\uE0B0 left, \uE0B2 right). Each segment paints its arrow
+# in "fg = previous segment's bg, bg = this segment's bg" so the blocks chain
+# seamlessly. Requires a Nerd/Powerline font (you already install several).
+#
+# Color map (matches dots/p10k.zsh, ANSI named colors):
+#   dir        black on blue
+#   git        black on green (branch + dirty-indicator glyphs live in one block;
+#              the indicators themselves signal state, since starship can't switch a
+#              block's bg per git state the way p10k did)
+#   context    white on blue (remote), white on yellow (root)
+#   status err white on red
+#   cmd time   white on grey (bright-black)
+#
+# Speed notes:
+#   - starship is a single static Rust binary with no background daemon.
+#   - `command_timeout` / `scan_timeout` cap per-module work so the prompt never stalls.
+#   - kubernetes is gated behind `detect_*` and aws behind profile presence.
+
+# Single line, prompt char on the same line (matches p10k PROMPT_ON_NEWLINE=false).
+add_newline = false
+
+# Cap per-module work so the prompt always stays snappy (milliseconds).
+command_timeout = 500
+scan_timeout = 30
+
+# Left:  context -> dir -> git    (then closing arrow + prompt char)
+# Right: status -> cmd duration -> jobs -> kube -> aws
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$character"""
+
+right_format = """
+$status\
+$cmd_duration\
+$jobs\
+$kubernetes\
+$aws"""
+
+# No fill content needed for a single-line prompt.
+
+# --- Prompt character (agnoster's ❯ / ❮), sits just after the closing arrow ---
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+# --- Context: user@host — only over SSH or for root (p10k ALWAYS_SHOW_CONTEXT=false) ---
+# When shown it's the first segment and uses a blue bg matching dir, so the context->dir
+# seam is invisible (blue->blue) with no separator glyph needed. Root uses a yellow bg.
+[username]
+style_user = "fg:white bg:blue bold"
+style_root = "fg:white bg:yellow bold"
+format = "[ $user ]($style)"
+show_always = false
+
+[hostname]
+ssh_only = true
+style = "fg:white bg:blue bold"
+format = "[@$hostname ]($style)"
+
+# --- Directory (p10k: black on blue, truncate to unique, length 4) ---
+# Ends with a blue closing arrow. In a repo this arrow merges with git_branch's
+# blue->green leading arrow into one clean seam; in a non-repo it's the final
+# arrow into the terminal bg before the prompt char.
+[directory]
+style = "fg:black bg:blue bold"
+truncation_length = 4
+truncate_to_repo = true
+truncation_symbol = "…/"
+format = "[ $path ]($style)[](fg:blue)"
+
+# --- Git: blue->green arrow, then a single green block holding branch + status. ---
+[git_branch]
+symbol = " "
+style = "fg:black bg:green bold"
+format = "[](fg:blue bg:green)[ $symbol$branch]($style)"
+
+# Closes the green git block with a green->bg arrow. Dirty-state glyphs (defined below)
+# render inside the same green block; empty when the repo is clean.
+[git_status]
+style = "fg:black bg:green bold"
+format = "[ $all_status$ahead_behind]($style)[](fg:green)"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇅⇡${ahead_count}⇣${behind_count}"
+conflicted = "="
+untracked = "?"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+stashed = " "
+
+# --- Right prompt: status (exit code), only on error like p10k STATUS_OK=false ---
+[status]
+disabled = false
+style = "fg:white bg:red bold"
+symbol = "✘ "
+format = "[](fg:red)[ $symbol$status ]($style)"
+map_symbol = true
+
+# --- Command execution time (p10k threshold 3s) ---
+[cmd_duration]
+min_time = 3000
+style = "fg:white bg:bright-black bold"
+format = "[](fg:bright-black)[  $duration ]($style)"
+
+# --- Background jobs ---
+[jobs]
+symbol = "✦"
+style = "fg:white bg:blue bold"
+format = "[](fg:blue)[ $symbol$number ]($style)"
+
+# --- Kubernetes ---
+# p10k only showed this for kube commands. Starship can't gate on the typed command,
+# so scope it to directories that actually contain k8s manifests/charts.
+[kubernetes]
+disabled = false
+style = "fg:black bg:cyan bold"
+format = '[](fg:cyan)[ ⎈ $context(\($namespace\)) ]($style)'
+detect_files = ['k8s.yaml', 'kustomization.yaml', 'Chart.yaml', 'skaffold.yaml']
+detect_extensions = []
+detect_folders = ['k8s', 'kubernetes', 'helm', 'charts']
+
+# --- AWS ---
+# p10k only showed AWS for aws/terraform/cdk/... commands. Starship can't gate on the
+# typed command, and your zshrc always exports AWS_REGION — so only the active *profile*
+# is shown (empty profile -> the whole block collapses). Region is omitted by design.
+[aws]
+style = "fg:black bg:yellow bold"
+symbol = " "
+format = '([](fg:yellow)[ $symbol$profile ]($style))'
+force_display = false
