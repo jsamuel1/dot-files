@@ -94,15 +94,15 @@ disabled = true
 description = "Always-present green git slot: branch in a repo, blank otherwise"
 when = "true"
 shell = ["bash", "--noprofile", "--norc"]
-format = "$output"
+# Let starship own all styling so attributes always reset between modules.
+# The command emits ONLY text; the format string paints the powerline block:
+#   crossover arrow (blue->green) + black-on-green branch block + closing arrow.
+style = "fg:black bg:green bold"
+format = "[](fg:blue bg:green)[ $output ]($style)[](fg:green)"
 command = '''
 b=$(git branch --show-current 2>/dev/null)
 if [ -z "$b" ]; then b=$(git rev-parse --short HEAD 2>/dev/null); fi
-#  = blue->green crossover,  = branch glyph,  = green->bg close.
-# Block is black-on-green (ANSI 42 bg, 30 fg, 1 bold). Outside a repo the content is one
-# space so the green slot still renders and the chain geometry is unchanged.
-if [ -n "$b" ]; then body="  $b "; else body=" "; fi
-printf '\033[34;42m\033[1;30;42m%s' "$body"
+if [ -n "$b" ]; then printf '\uE0A0 %s' "$b"; fi
 '''
 
 # --- Right prompt: status (exit code), only on error like p10k STATUS_OK=false ---
