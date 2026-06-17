@@ -1,3 +1,4 @@
 selene
+eza
 fd-find
 git-delta

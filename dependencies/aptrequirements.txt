@@ -7,6 +7,7 @@ bundler
 caca-utils
 curl
 default-jdk
+eza
 fd-find
 fonts-firacode
 fonts-powerline

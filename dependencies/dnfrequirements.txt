@@ -8,6 +8,7 @@ clang
 cmake
 curl-minimal
 docker
+eza
 gcc
 gcc-c++
 gettext
