@@ -17,29 +17,31 @@ cursor-style-blink = false
 background-opacity = 1
 background-blur = false
 
-# --- Colors (iTerm Default profile) ---
+# --- Colors (Tomorrow Night-style preset, ported from the former
+#     ~/Library/Application Support/com.mitchellh.ghostty/config so it is
+#     version-controlled and identical on every machine). ---
 background = 000000
-foreground = bbbbbb
+foreground = #eaeaea
 bold-color = ffffff
-cursor-color = bbbbbb
+cursor-color = #eeeeee
 cursor-text = ffffff
-selection-background = b5d5ff
-selection-foreground = 000000
+selection-background = #424242
+selection-foreground = #eeeeee
 
-# ANSI palette (iTerm Ansi 0-15)
+# ANSI palette (0-15)
 palette = 0=#000000
-palette = 1=#bb0000
-palette = 2=#00bb00
-palette = 3=#bbbb00
-palette = 4=#2d46bc
-palette = 5=#bb00bb
-palette = 6=#00bbbb
-palette = 7=#bbbbbb
-palette = 8=#555555
-palette = 9=#ff5555
-palette = 10=#55ff55
-palette = 11=#ffff55
-palette = 12=#5555ff
-palette = 13=#ff55ff
-palette = 14=#55ffff
+palette = 1=#d55555
+palette = 2=#b9ca4a
+palette = 3=#e7c547
+palette = 4=#7aa6da
+palette = 5=#c397d8
+palette = 6=#70c0b1
+palette = 7=#ffffff
+palette = 8=#000000
+palette = 9=#d55555
+palette = 10=#b9ca4a
+palette = 11=#e7c547
+palette = 12=#7aa6da
+palette = 13=#c397d8
+palette = 14=#70c0b1
 palette = 15=#ffffff
