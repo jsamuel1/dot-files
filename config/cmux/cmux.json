@@ -30,6 +30,9 @@
   },
 
   "automation": {
+    // Allow external automation clients (e.g. the cmux-mcp server) to drive
+    // cmux over its control socket. Default is "cmuxOnly" (cmux app only).
+    "socketControlMode": "automation",
     // Claude Code is wrapped automatically when you run `claude` in a cmux pane
     "claudeCodeIntegration": true,
     // Kiro hooks (Feed approvals + notifications + session restore)
