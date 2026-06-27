@@ -24,9 +24,11 @@
     "ux-design@aws-claude-code-plugins": true
   },
   "env": {
-    "AWS_REGION": "us-east-1",
+    "AWS_REGION": "us-west-2",
+    "CLAUDE_AUTO_BACKGROUND_TASKS": "1",
     "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
-    "CLAUDE_CODE_USE_BEDROCK": "1"
+    "CLAUDE_CODE_USE_BEDROCK": "1",
+    "CLAUDE_CODE_USE_MANTLE": "1"
   },
   "extraKnownMarketplaces": {
     "aim": {
