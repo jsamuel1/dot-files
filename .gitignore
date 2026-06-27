@@ -15,3 +15,9 @@ packages-microsoft*
 __pycache__/
 dots/gitconfig
 .autoloop/
+
+# Claude Code: link curated config under claude/ only.
+# ~/.claude.json is machine-local state (OAuth identity, machine/user IDs,
+# private project paths) and must never be committed to this public repo.
+.claude.json
+claude.json

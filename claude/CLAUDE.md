@@ -1,0 +1,1 @@
+- The git repo is in a subfolder @src/OtterApp/

@@ -27,10 +27,14 @@ def install():
         'config/**/*') if os.path.isfile(f)]
     local_files = [f for f in Path('.').glob('local/**/*') if os.path.isfile(f)]
     zsh_files = [f for f in Path('.').glob('zsh/**/*') if os.path.isfile(f)]
+    claude_files = [f for f in Path('.').glob('claude/**/*')
+                    if os.path.isfile(f)]
     link_files(files, args, "dots")
     link_files(config_files, args, ".")
     link_files(local_files, args, ".")
     link_files(zsh_files, args, ".")
+    # claude/foo -> ~/.claude/foo (mirrors config/ -> ~/.config/)
+    link_files(claude_files, args, ".")
 
     print(
         f'finished.  Processed: {args.files_processed} Changed: {args.files_changed}')

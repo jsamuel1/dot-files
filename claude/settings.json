@@ -1,0 +1,131 @@
+{
+  "effortLevel": "high",
+  "enabledPlugins": {
+    "AmazonBuilderCoreAIAgents-core@aim": true,
+    "AmazonBuilderCoreAIAgents-pipeline-assistant@aim": true,
+    "architecture@aws-claude-code-plugins": true,
+    "AutonomousAICapabilities-core@aim": true,
+    "aws-agents@agent-toolkit-for-aws": true,
+    "aws-quick-work-factory@aws-quick-work-factory": true,
+    "code-analysis@aws-claude-code-plugins": true,
+    "context7@claude-plugins-official": true,
+    "deployment@aws-claude-code-plugins": true,
+    "documentation@aws-claude-code-plugins": true,
+    "double-shot-latte@superpowers-marketplace": false,
+    "huggingface-skills@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "performance@aws-claude-code-plugins": true,
+    "plugin-dev@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "SauhsojAIAgentCapabilties-all@aim": true,
+    "superpowers@claude-plugins-official": true,
+    "TalkStreamAgents-all@aim": true,
+    "ux-design@aws-claude-code-plugins": true
+  },
+  "env": {
+    "AWS_REGION": "us-east-1",
+    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
+    "CLAUDE_CODE_USE_BEDROCK": "1"
+  },
+  "extraKnownMarketplaces": {
+    "aim": {
+      "source": {
+        "path": "/Users/sauhsoj/.aim/cc-plugins",
+        "source": "directory"
+      }
+    },
+    "aws-quick-work-factory": {
+      "source": {
+        "path": "/Users/sauhsoj/src/AWSQuickWorkFactory",
+        "source": "directory"
+      }
+    }
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Waiting # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Auto # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' ToolFail # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Working # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Ended # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Idle # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Idle # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "'$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh' Working # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "us.anthropic.claude-opus-4-8[1m]",
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "enableWorkflows": true
+}
