@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 import argparse
+import shutil
 import subprocess
 import os
 import tempfile
 from pathlib import Path
+
+
+def has_amazon_tools():
+    """Check if this machine has Amazon internal tooling installed."""
+    if shutil.which('acme'):
+        return True
+    if shutil.which('brazil-build'):
+        return True
+    return False
 
 
 def install():
@@ -29,12 +39,37 @@ def install():
     zsh_files = [f for f in Path('.').glob('zsh/**/*') if os.path.isfile(f)]
     claude_files = [f for f in Path('.').glob('claude/**/*')
                     if os.path.isfile(f)]
+
+    # claude/settings.json is conditionally selected based on environment
+    # Exclude both variants from normal linking
+    claude_files = [f for f in claude_files
+                    if f.name not in ('settings-amazon.json',
+                                      'settings-minimal.json')]
+
     link_files(files, args, "dots")
     link_files(config_files, args, ".")
     link_files(local_files, args, ".")
     link_files(zsh_files, args, ".")
     # claude/foo -> ~/.claude/foo (mirrors config/ -> ~/.config/)
     link_files(claude_files, args, ".")
+
+    # Conditionally link the right claude settings.json
+    if has_amazon_tools():
+        settings_source = Path('./claude/settings-amazon.json')
+        print('claude/settings: using amazon variant (amazon tools detected)')
+    else:
+        settings_source = Path('./claude/settings-minimal.json')
+        print('claude/settings: using minimal variant')
+    dot_file = os.path.join(Path.home(), '.claude', 'settings.json')
+    target = os.path.join(Path.cwd(), settings_source)
+    status = get_symlink_status(settings_source, dot_file)
+    args.files_processed += 1
+    if status != 'same':
+        args.files_changed += 1
+        if args.verbose or status != 'same':
+            print(f'{target}->{dot_file} :{status}')
+        if not args.dryrun:
+            symlink(target, dot_file, args)
 
     print(
         f'finished.  Processed: {args.files_processed} Changed: {args.files_changed}')
