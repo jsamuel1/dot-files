@@ -1,5 +1,9 @@
 {
-  "effortLevel": "high",
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "defaultMode": "Auto"
+  },
+  "enableWorkflows": true,
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "double-shot-latte@superpowers-marketplace": false,
@@ -97,7 +101,7 @@
       }
     ]
   },
+  "effortLevel": "high",
   "skipWorkflowUsageWarning": true,
-  "theme": "dark",
-  "enableWorkflows": true
+  "theme": "dark"
 }
