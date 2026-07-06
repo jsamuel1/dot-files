@@ -1,5 +1,19 @@
 {
-  "effortLevel": "high",
+  "env": {
+    "AWS_REGION": "us-west-2",
+    "CLAUDE_AUTO_BACKGROUND_TASKS": "1",
+    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
+    "CLAUDE_CODE_USE_BEDROCK": "1",
+    "CLAUDE_CODE_USE_MANTLE": "1"
+  },
+  "permissions": {
+    "defaultMode": "dontAsk"
+  },
+  "model": "us.anthropic.claude-opus-4-8[1m]",
+  "worktree": {
+    "baseRef": "fresh"
+  },
+  "enableWorkflows": true,
   "enabledPlugins": {
     "AmazonBuilderCoreAIAgents-core@aim": true,
     "AmazonBuilderCoreAIAgents-pipeline-assistant@aim": true,
@@ -21,113 +35,25 @@
     "SauhsojAIAgentCapabilties-all@aim": true,
     "superpowers@claude-plugins-official": true,
     "TalkStreamAgents-all@aim": true,
-    "ux-design@aws-claude-code-plugins": true
-  },
-  "env": {
-    "AWS_REGION": "us-west-2",
-    "CLAUDE_AUTO_BACKGROUND_TASKS": "1",
-    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
-    "CLAUDE_CODE_USE_BEDROCK": "1",
-    "CLAUDE_CODE_USE_MANTLE": "1"
+    "ux-design@aws-claude-code-plugins": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "aim": {
       "source": {
-        "path": "/Users/sauhsoj/.aim/cc-plugins",
-        "source": "directory"
+        "source": "directory",
+        "path": "/Users/sauhsoj/.aim/cc-plugins"
       }
     },
     "aws-quick-work-factory": {
       "source": {
-        "path": "/Users/sauhsoj/src/AWSQuickWorkFactory",
-        "source": "directory"
+        "source": "directory",
+        "path": "/Users/sauhsoj/src/AWSQuickWorkFactory"
       }
     }
   },
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Waiting # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Auto # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" ToolFail # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Working # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Ended # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Idle # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Idle # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "\"$HOME/Library/Application Support/Bartender/NotchBar/AgentStatus/hooks/claude-event-hook.sh\" Working # notchbar-agents-claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
-  "model": "us.anthropic.claude-opus-4-8[1m]",
+  "effortLevel": "high",
+  "askUserQuestionTimeout": "5m",
   "skipWorkflowUsageWarning": true,
-  "theme": "dark",
-  "enableWorkflows": true
+  "theme": "dark"
 }
