@@ -7,13 +7,6 @@ alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
 
-# Use bun for npm/npx in interactive shells only.
-# Scripts and build tools still resolve the real npm/npx via mise shims.
-if (( $+commands[bun] )); then
-        alias npx='bunx'
-        alias npm='bun'
-fi
-
 # Use (( $+commands[x] )) instead of command -v to avoid forking
 if (( $+commands[bat] )); then
         alias cat='bat --style=plain -P --strip-ansi=always'

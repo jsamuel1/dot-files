@@ -30,6 +30,11 @@ subheading "ensure latest npm and modules"
 symlink_file "dependencies/default-npm-packages" "$HOME/.default-npm-packages"
 
 "${MISEUSE[@]}" node@lts
+
+# Prefer pnpm as the node package manager. corepack ships with node and
+# provisions the pnpm shim without a separate global install.
+"${MISEX[@]}" corepack enable pnpm
+
 awkxargs "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g
 
 # symlink default go packages to ~/.default-go-package.
