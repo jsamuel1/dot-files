@@ -7,14 +7,14 @@
 # paths to the front of PATH. Re-sourcing .zshenv from .zprofile only restores
 # our intended order if these helpers actually move existing entries.
 append_path() {
-  [[ -d "$1" ]] || return
+  [[ -d "$1" ]] || return 0
   PATH=":$PATH:"
   PATH="${PATH//:$1:/:}"
   PATH="${PATH#:}"; PATH="${PATH%:}"
   PATH="$PATH:$1"
 }
 prepend_path() {
-  [[ -d "$1" ]] || return
+  [[ -d "$1" ]] || return 0
   PATH=":$PATH:"
   PATH="${PATH//:$1:/:}"
   PATH="${PATH#:}"; PATH="${PATH%:}"
