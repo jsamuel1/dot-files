@@ -103,6 +103,43 @@ if [ -z "$SKIP_DOCKER" ]; then
 	sudo usermod -aG docker "$(whoami)"
 fi
 
-awkxargs "dependencies/aptrequirements.txt" sudo "${APTGET[@]}" install
+function apt_install_available {
+	# A single package with no installation candidate (e.g. dropped from the
+	# current release) aborts the whole apt-get transaction, so filter to
+	# installable packages and warn about the rest. apt-cache policy is the
+	# cheap check; anything without a candidate gets a slower dry-run probe so
+	# virtual packages (fortune, libncurses5-dev) aren't skipped by mistake.
+	local pkg candidate available=() skipped=()
+
+	# Fast path: if the whole set dry-runs clean, one transaction and no
+	# per-package checks.
+	if apt-get install --dry-run --assume-yes "$@" >/dev/null 2>&1; then
+		sudo "${APTGET[@]}" install "$@"
+		return
+	fi
+
+	for pkg in "$@"; do
+		candidate="$(apt-cache policy "$pkg" 2>/dev/null | awk '/Candidate:/ {print $2}')"
+		if { [ -n "$candidate" ] && [ "$candidate" != "(none)" ]; } ||
+			apt-get install --dry-run --assume-yes "$pkg" >/dev/null 2>&1; then
+			available+=("$pkg")
+		else
+			skipped+=("$pkg")
+		fi
+	done
+
+	if [ "${#skipped[@]}" -gt 0 ]; then
+		echo "WARNING: no installation candidate, skipping: ${skipped[*]}"
+	fi
+
+	if [ "${#available[@]}" -gt 0 ]; then
+		sudo "${APTGET[@]}" install "${available[@]}"
+	fi
+}
+
+# same comment/blank-line filter as awkxargs, but into an array so
+# apt_install_available can skip unavailable packages
+mapfile -t APT_PACKAGES < <(awk '! /^ *(#|$)/' "dependencies/aptrequirements.txt")
+apt_install_available "${APT_PACKAGES[@]}"
 
 scriptfooter "${BASH_SOURCE:-$_}"

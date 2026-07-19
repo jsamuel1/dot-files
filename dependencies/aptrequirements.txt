@@ -25,7 +25,6 @@ libbz2-dev
 libdbus-1-dev
 libdbusmenu-glib4
 libdbusmenu-gtk3-4
-libdbusmenu-gtk4
 libffi-dev
 libglib2.0-dev
 liblzma-dev
