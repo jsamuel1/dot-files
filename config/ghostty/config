@@ -8,6 +8,11 @@ font-size = 14
 # Add stylistic sets if you want specific glyph variants, e.g. font-feature = ss01
 font-feature = calt
 font-feature = liga
+# Boldens glyph stems so text stays legible on low-DPI (non-Retina) external
+# monitors, where grayscale antialiasing otherwise renders it thin/blurry.
+# strength is 0-255; nudge up/down and it hot-reloads on save.
+font-thicken = true
+font-thicken-strength = 148
 
 # --- Cursor (iTerm: vertical bar, non-blinking) ---
 cursor-style = bar
