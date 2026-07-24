@@ -92,3 +92,56 @@ if (( $+commands[figlet] )) && (( $+commands[lolcat] )); then
       echo
   }
 fi
+
+# kermes-ssh: reusable self-healing tunnel to a kermes dashboard on any host.
+#   KERMES_SSH_HOST  ssh host/alias running the dashboard (required)
+#   KERMES_PORT      dashboard port to forward (default 8723)
+# Forwards the port, ensures the dashboard runs detached in tmux:kermes on the
+# remote, and opens the kanban — in cmux's embedded browser when run inside a
+# cmux terminal, otherwise the system default browser. The axe/SSH stream can
+# drop ("Bad packet length"); the dashboard survives in tmux, so we reconnect
+# the forward. Ctrl-C stops (leaves the remote dashboard running).
+kermes-ssh() {
+  local host="${KERMES_SSH_HOST:?set KERMES_SSH_HOST to the ssh host running kermes}"
+  local port="${KERMES_PORT:-8723}"
+  local url="http://localhost:$port"
+  local remote_cmd="tmux has-session -t kermes 2>/dev/null || tmux new-session -d -s kermes 'kermes gateway'; echo '[kermes] gateway in tmux:kermes | forwarding localhost:$port | Ctrl-C closes tunnel (gateway keeps running)'; sleep infinity"
+  ( for i in {1..60}; do
+      nc -z localhost "$port" 2>/dev/null && {
+        if [ -n "${CMUX_WORKSPACE_ID:-}" ] && command -v cmux >/dev/null 2>&1; then
+          cmux browser new "$url" --workspace "$CMUX_WORKSPACE_ID" --focus true 2>/dev/null || open "$url"
+        else
+          open "$url"
+        fi
+        break
+      }
+      sleep 0.5
+    done ) &
+  local _kb=$!
+  trap 'kill $_kb 2>/dev/null; trap - INT; print "\n[kermes] stopped."; return' INT
+  local reauthed=0
+  while true; do
+    local _start=$SECONDS
+    ssh -o PermitLocalCommand=no -o ExitOnForwardFailure=yes -o RequestTTY=no \
+      -L "${port}:localhost:${port}" "$host" "$remote_cmd"
+    if (( SECONDS - _start < 6 )); then
+      # Never established — most often an expired Midway session. Refresh it once
+      # per failure streak (mwinit is interactive: PIN/touch), then retry.
+      if (( reauthed == 0 )) && command -v mwinit >/dev/null 2>&1; then
+        reauthed=1
+        print "[kermes] connection failed immediately — Midway may be expired; running mwinit…"
+        mwinit -f || print "[kermes] mwinit did not complete; will keep retrying."
+        continue
+      fi
+      print "[kermes] still can't connect (Midway / axe tunnel / VPN?). Retrying in 5s (Ctrl-C to stop)…"
+      sleep 5
+    else
+      reauthed=0
+      print "[kermes] tunnel dropped — reconnecting in 3s (Ctrl-C to stop)…"
+      sleep 3
+    fi
+  done
+}
+
+# Personal convenience: kermes on sauhsoj-cdm2 (override the host via env if needed).
+kermes-cdm2() { KERMES_SSH_HOST="${KERMES_SSH_HOST:-sauhsoj-cdm2}" kermes-ssh "$@" }

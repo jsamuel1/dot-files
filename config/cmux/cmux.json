@@ -67,5 +67,40 @@
     "defaultSearchEngine": "google",
     "openTerminalLinksInCmuxBrowser": true,
     "showSearchSuggestions": true
+  },
+
+  // Custom actions (also available in the command palette, Cmd+Shift+P).
+  "actions": {
+    // Launches the kermes-cdm2 self-healing tunnel + kanban dashboard.
+    // Runs via an interactive login zsh so the `kermes-cdm2` shell function
+    // (defined in ~/src/dot-files/local/lib/aliases.zsh) resolves.
+    "kermes-kanban": {
+      "type": "command",
+      "command": "zsh -ilc 'kermes-cdm2'",
+      "title": "Kermes",
+      "subtitle": "kermes-cdm2 tunnel + kanban dashboard (localhost:8723)",
+      "target": "newTabInCurrentPane",
+      "palette": true,
+      "icon": { "type": "symbol", "name": "checklist" }
+    }
+  },
+
+  "ui": {
+    // Surface tab bar buttons (top-right of a pane's tab bar). Listing these
+    // replaces the defaults, so the built-ins are kept explicitly.
+    "surfaceTabBar": {
+      "buttons": [
+        "cmux.newTerminal",
+        "cmux.newBrowser",
+        {
+          "action": "kermes-kanban",
+          "title": "Kermes",
+          "tooltip": "kermes-cdm2 tunnel + kanban (localhost:8723)",
+          "icon": { "type": "symbol", "name": "checklist" }
+        },
+        "cmux.splitRight",
+        "cmux.splitDown"
+      ]
+    }
   }
 }
