@@ -89,6 +89,9 @@ source ./rust-install.sh
 
 source ./tools_install_from_source.sh
 
+# herdr (AI-agent terminal workspace manager) + workflow plugins
+source ./herdr-install.sh
+
 if [[ -x /usr/bin/nvim ]]; then
 	subheading "ensure nvim is our default vim editor"
 	sudo update-alternatives --set vim /usr/bin/nvim
