@@ -21,7 +21,13 @@ symlink_file "dependencies/default-python-packages" "$HOME/.default-python-packa
 "${MISEUSE[@]}" python
 
 "${MISEX[@]}" python3 -m pip install --upgrade pip | grep -v 'already satisfied'
+# pip -r is all-or-nothing: one unresolvable package fails the whole set,
+# so fall back to per-package installs (skips just the bad one)
 "${MISEX[@]}" python3 -m pip install --upgrade -r "dependencies/default-python-packages" | grep -v 'already satisfied'
+if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+	echo "WARNING: bulk pip install failed; retrying per package"
+	awkxargs 1 "dependencies/default-python-packages" "${MISEX[@]}" python3 -m pip install --upgrade
+fi
 
 "${MISEUSE[@]}" poetry
 
@@ -35,7 +41,12 @@ symlink_file "dependencies/default-npm-packages" "$HOME/.default-npm-packages"
 # provisions the pnpm shim without a separate global install.
 "${MISEX[@]}" corepack enable pnpm
 
-awkxargs "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g
+# one bad package (unpublished/renamed) aborts the whole npm invocation,
+# so fall back to per-package installs (skips just the bad one)
+awkxargs "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g || {
+	echo "WARNING: bulk npm install failed; retrying per package"
+	awkxargs 1 "dependencies/default-npm-packages" "${MISEX[@]}" npm install -g
+}
 
 # symlink default go packages to ~/.default-go-package.
 # Mise will use this to install them on new version of go

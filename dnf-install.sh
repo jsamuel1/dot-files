@@ -30,6 +30,8 @@ if ! is_wsl; then
 fi
 
 
-awkxargs "dependencies/dnfrequirements.txt" sudo dnf -y install
+# --skip-broken (strict=0) so one unavailable package warns instead of
+# aborting the whole transaction
+awkxargs "dependencies/dnfrequirements.txt" sudo dnf -y --skip-broken install
 
 scriptfooter "${BASH_SOURCE:-$_}"
