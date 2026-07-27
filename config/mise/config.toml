@@ -14,6 +14,7 @@ usage = "latest"
 uv = "latest"
 terraform-ls = "latest"
 direnv = "latest"
+poetry = "latest"
 
 [env]
 npm_config_update_notifier = "false"
