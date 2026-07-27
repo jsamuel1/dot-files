@@ -21,3 +21,4 @@ dots/gitconfig
 # private project paths) and must never be committed to this public repo.
 .claude.json
 claude.json
+*.log

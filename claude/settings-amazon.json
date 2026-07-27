@@ -1,4 +1,5 @@
 {
+  "awsCredentialExport": "\"/home/sauhsoj/.toolbox/bin/claude\" default-credential-export",
   "env": {
     "AWS_REGION": "us-west-2",
     "CLAUDE_AUTO_BACKGROUND_TASKS": "1",
@@ -6,14 +7,52 @@
     "CLAUDE_CODE_USE_BEDROCK": "1",
     "CLAUDE_CODE_USE_MANTLE": "1"
   },
+  "includeCoAuthoredBy": false,
   "permissions": {
-    "defaultMode": "dontAsk"
+    "defaultMode": "auto"
   },
-  "model": "us.anthropic.claude-opus-4-8[1m]",
+  "model": "global.anthropic.claude-fable-5[1m]",
+  "fallbackModel": [
+    "global.anthropic.claude-opus-4-6-v1[1m]"
+  ],
+  "availableModels": [
+    "claude-opus-4-6[1m]",
+    "claude-opus-4-6",
+    "claude-opus-4-7[1m]",
+    "claude-opus-4-7",
+    "claude-opus-4-8[1m]",
+    "claude-opus-4-8",
+    "claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]",
+    "claude-sonnet-5",
+    "claude-fable-5",
+    "claude-fable-5[1m]",
+    "claude-haiku-4-5"
+  ],
+  "enforceAvailableModels": true,
+  "modelOverrides": {
+    "claude-opus-4-6[1m]": "global.anthropic.claude-opus-4-6-v1[1m]",
+    "claude-opus-4-6": "global.anthropic.claude-opus-4-6-v1",
+    "claude-opus-4-7[1m]": "global.anthropic.claude-opus-4-7[1m]",
+    "claude-opus-4-7": "global.anthropic.claude-opus-4-7",
+    "claude-opus-4-8[1m]": "global.anthropic.claude-opus-4-8[1m]",
+    "claude-opus-4-8": "global.anthropic.claude-opus-4-8",
+    "claude-sonnet-4-6": "global.anthropic.claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]": "global.anthropic.claude-sonnet-4-6[1m]",
+    "claude-sonnet-5": "global.anthropic.claude-sonnet-5",
+    "claude-fable-5": "global.anthropic.claude-fable-5[1m]",
+    "claude-fable-5[1m]": "global.anthropic.claude-fable-5[1m]",
+    "claude-haiku-4-5": "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+  },
   "worktree": {
     "baseRef": "fresh"
   },
   "enableWorkflows": true,
+  "statusLine": {
+    "type": "command",
+    "command": "\"/home/sauhsoj/.toolbox/bin/claude\" amzn-statusline",
+    "refreshInterval": 300
+  },
   "enabledPlugins": {
     "AmazonBuilderCoreAIAgents-core@aim": true,
     "AmazonBuilderCoreAIAgents-pipeline-assistant@aim": true,
@@ -36,7 +75,12 @@
     "superpowers@claude-plugins-official": true,
     "TalkStreamAgents-all@aim": true,
     "ux-design@aws-claude-code-plugins": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "AIPowerUserCapabilities-code-review@aim": true,
+    "AIPowerUserCapabilities-core-dev@aim": true,
+    "AIPowerUserCapabilities-research@aim": true,
+    "AIPowerUserCapabilities-writing@aim": true,
+    "AIPowerUserCapabilities-comms@aim": true
   },
   "extraKnownMarketplaces": {
     "aim": {
@@ -54,6 +98,11 @@
   },
   "effortLevel": "high",
   "askUserQuestionTimeout": "5m",
+  "companyAnnouncements": [
+    "Claude Code usage is cleared for Business Data per the AI For Me Guidance.\nITAR, PII, Customer Data, and more are strictly prohibited for use within this tool.\nRead more: https://w.amazon.com/bin/view/Security/AI-Security/AIforMe-Guidance#HDATAANDEXAMPLESQUICKREFERENCETABLE"
+  ],
   "skipWorkflowUsageWarning": true,
-  "theme": "dark"
+  "theme": "dark",
+  "editorMode": "normal",
+  "terminalProgressBarEnabled": false
 }
