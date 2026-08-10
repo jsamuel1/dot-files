@@ -1,49 +1,23 @@
 {
   "awsCredentialExport": "\"/home/sauhsoj/.toolbox/bin/claude\" default-credential-export",
   "env": {
-    "AWS_REGION": "us-west-2",
+    "AWS_REGION": "us-east-1",
     "CLAUDE_AUTO_BACKGROUND_TASKS": "1",
     "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
     "CLAUDE_CODE_USE_BEDROCK": "1",
-    "CLAUDE_CODE_USE_MANTLE": "1"
+    "CLAUDE_CODE_USE_MANTLE": "1",
+    "AWS_PROFILE": "sauhsoj+supernova-BedrockOnly",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "us.anthropic.claude-sonnet-4-5-20250929-v1:0[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "us.anthropic.claude-opus-5[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "us.anthropic.claude-fable-5[1m]"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "global.anthropic.claude-fable-5[1m]",
-  "fallbackModel": [
-    "global.anthropic.claude-opus-4-6-v1[1m]"
-  ],
-  "availableModels": [
-    "claude-opus-4-6[1m]",
-    "claude-opus-4-6",
-    "claude-opus-4-7[1m]",
-    "claude-opus-4-7",
-    "claude-opus-4-8[1m]",
-    "claude-opus-4-8",
-    "claude-sonnet-4-6",
-    "claude-sonnet-4-6[1m]",
-    "claude-sonnet-5",
-    "claude-fable-5",
-    "claude-fable-5[1m]",
-    "claude-haiku-4-5"
-  ],
+  "model": "us.anthropic.claude-opus-5[1m]",
   "enforceAvailableModels": true,
-  "modelOverrides": {
-    "claude-opus-4-6[1m]": "global.anthropic.claude-opus-4-6-v1[1m]",
-    "claude-opus-4-6": "global.anthropic.claude-opus-4-6-v1",
-    "claude-opus-4-7[1m]": "global.anthropic.claude-opus-4-7[1m]",
-    "claude-opus-4-7": "global.anthropic.claude-opus-4-7",
-    "claude-opus-4-8[1m]": "global.anthropic.claude-opus-4-8[1m]",
-    "claude-opus-4-8": "global.anthropic.claude-opus-4-8",
-    "claude-sonnet-4-6": "global.anthropic.claude-sonnet-4-6",
-    "claude-sonnet-4-6[1m]": "global.anthropic.claude-sonnet-4-6[1m]",
-    "claude-sonnet-5": "global.anthropic.claude-sonnet-5",
-    "claude-fable-5": "global.anthropic.claude-fable-5[1m]",
-    "claude-fable-5[1m]": "global.anthropic.claude-fable-5[1m]",
-    "claude-haiku-4-5": "global.anthropic.claude-haiku-4-5-20251001-v1:0"
-  },
   "worktree": {
     "baseRef": "fresh"
   },
