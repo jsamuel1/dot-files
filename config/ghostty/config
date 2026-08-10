@@ -25,11 +25,11 @@ background-blur = false
 # --- Colors (Tomorrow Night-style preset, ported from the former
 #     ~/Library/Application Support/com.mitchellh.ghostty/config so it is
 #     version-controlled and identical on every machine). ---
-background = 000000
+background = #000000
 foreground = #eaeaea
-bold-color = ffffff
+bold-color = #ffffff
 cursor-color = #eeeeee
-cursor-text = ffffff
+cursor-text = #ffffff
 selection-background = #424242
 selection-foreground = #eeeeee
 
@@ -42,7 +42,7 @@ palette = 4=#7aa6da
 palette = 5=#c397d8
 palette = 6=#70c0b1
 palette = 7=#ffffff
-palette = 8=#000000
+palette = 8=#010101
 palette = 9=#d55555
 palette = 10=#b9ca4a
 palette = 11=#e7c547
