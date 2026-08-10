@@ -144,4 +144,6 @@ kermes-ssh() {
 }
 
 # Personal convenience: kermes on sauhsoj-cdm2 (override the host via env if needed).
+kermes-cdm() { KERMES_SSH_HOST="${KERMES_SSH_HOST:-sauhsoj-cdm}" kermes-ssh "$@" }
 kermes-cdm2() { KERMES_SSH_HOST="${KERMES_SSH_HOST:-sauhsoj-cdm2}" kermes-ssh "$@" }
+
