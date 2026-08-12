@@ -147,3 +147,6 @@ export HOMEBREW_NO_ENV_HINTS=1
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash"
 [[ -f ~/.local/lib/devduck_env ]] && source ~/.local/lib/devduck_env
 
+
+# KiroCrew
+export PATH="$HOME/.local/bin:$PATH"

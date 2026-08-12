@@ -14,6 +14,15 @@ The scripts will install operating system packages, along with:
 - [mise](https://github.com/jdx/mise) and default languages/tools via mise
   (node, python, ruby, go, terraform, bun, fastfetch, ...)
 
+## Timezone
+
+`bootstrap.sh` sets the system timezone to `Australia/Melbourne` (cloud
+desktops and fresh images default to UTC). Override per machine:
+
+```sh
+TIMEZONE=Europe/Dublin ./bootstrap.sh
+```
+
 ## Git configuration
 
 `~/.gitconfig` is a machine-local file (created by `bootstrap.sh`) holding

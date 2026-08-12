@@ -144,6 +144,32 @@ function is_wsl {
 	return 1 # 1=false
 }
 
+function set_timezone {
+	# set_timezone <Area/City> -- idempotent, no-op when the zone already matches.
+	TZNAME="${1}"
+
+	if [ ! -f "/usr/share/zoneinfo/${TZNAME}" ]; then
+		echo "ERROR: unknown timezone ${TZNAME} (no /usr/share/zoneinfo/${TZNAME})"
+		return
+	fi
+
+	# /etc/localtime points into the zoneinfo db on both macOS and Linux.
+	if [ "$(realpath /etc/localtime)" = "$(realpath "/usr/share/zoneinfo/${TZNAME}")" ]; then
+		return
+	fi
+
+	subsubheading "Setting timezone to ${TZNAME}"
+	if is_mac; then
+		sudo systemsetup -settimezone "${TZNAME}"
+	elif [ -d /run/systemd/system ] && command -v timedatectl >/dev/null; then
+		sudo timedatectl set-timezone "${TZNAME}"
+	else
+		# No systemd (WSL, containers): write what timedatectl would have written.
+		sudo ln -sfn "/usr/share/zoneinfo/${TZNAME}" /etc/localtime
+		echo "${TZNAME}" | sudo tee /etc/timezone >/dev/null
+	fi
+}
+
 function awkxargs {
 	# product something like:
 	# awk '! /^ *(#|$)/' "gemrequirements.txt" | xargs "${MISEX[@]}" gem install

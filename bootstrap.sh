@@ -56,6 +56,9 @@ if is_wsl; then
 	subsubheading "Windows Subsystem for Linux (WSL) detected"
 fi
 
+# Cloud desktops and fresh images default to UTC. Override with TIMEZONE=... to skip/change.
+set_timezone "${TIMEZONE:-Australia/Melbourne}"
+
 if is_mac; then
 	subsubheading "MacOS detected"
 	./macos.sh

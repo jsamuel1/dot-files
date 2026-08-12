@@ -14,7 +14,7 @@ usage = "latest"
 uv = "latest"
 terraform-ls = "latest"
 direnv = "latest"
-poetry = "latest"
+aws-cli = { version = "latest", symlink_bins = "true" }
 
 [env]
 npm_config_update_notifier = "false"

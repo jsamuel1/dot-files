@@ -16,8 +16,86 @@
   "permissions": {
     "defaultMode": "auto"
   },
+<<<<<<< HEAD
   "model": "us.anthropic.claude-opus-5[1m]",
+||||||| parent of 893a3c8 (minor changes)
+  "model": "global.anthropic.claude-fable-5[1m]",
+  "fallbackModel": [
+    "global.anthropic.claude-opus-4-6-v1[1m]"
+  ],
+  "availableModels": [
+    "claude-opus-4-6[1m]",
+    "claude-opus-4-6",
+    "claude-opus-4-7[1m]",
+    "claude-opus-4-7",
+    "claude-opus-4-8[1m]",
+    "claude-opus-4-8",
+    "claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]",
+    "claude-sonnet-5",
+    "claude-fable-5",
+    "claude-fable-5[1m]",
+    "claude-haiku-4-5"
+  ],
+=======
+  "model": "global.anthropic.claude-opus-5[1m]",
+  "fallbackModel": [
+    "global.anthropic.claude-opus-4-8[1m]",
+    "global.anthropic.claude-opus-4-7[1m]",
+    "global.anthropic.claude-opus-4-6-v1[1m]"
+  ],
+  "availableModels": [
+    "claude-opus-4-6[1m]",
+    "claude-opus-4-6",
+    "claude-opus-4-7[1m]",
+    "claude-opus-4-7",
+    "claude-opus-4-8[1m]",
+    "claude-opus-4-8",
+    "claude-opus-5[1m]",
+    "claude-opus-5",
+    "claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]",
+    "claude-sonnet-5",
+    "claude-fable-5",
+    "claude-fable-5[1m]",
+    "claude-haiku-4-5"
+  ],
+>>>>>>> 893a3c8 (minor changes)
   "enforceAvailableModels": true,
+<<<<<<< HEAD
+||||||| parent of 893a3c8 (minor changes)
+  "modelOverrides": {
+    "claude-opus-4-6[1m]": "global.anthropic.claude-opus-4-6-v1[1m]",
+    "claude-opus-4-6": "global.anthropic.claude-opus-4-6-v1",
+    "claude-opus-4-7[1m]": "global.anthropic.claude-opus-4-7[1m]",
+    "claude-opus-4-7": "global.anthropic.claude-opus-4-7",
+    "claude-opus-4-8[1m]": "global.anthropic.claude-opus-4-8[1m]",
+    "claude-opus-4-8": "global.anthropic.claude-opus-4-8",
+    "claude-sonnet-4-6": "global.anthropic.claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]": "global.anthropic.claude-sonnet-4-6[1m]",
+    "claude-sonnet-5": "global.anthropic.claude-sonnet-5",
+    "claude-fable-5": "global.anthropic.claude-fable-5[1m]",
+    "claude-fable-5[1m]": "global.anthropic.claude-fable-5[1m]",
+    "claude-haiku-4-5": "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+  },
+=======
+  "modelOverrides": {
+    "claude-opus-4-6[1m]": "global.anthropic.claude-opus-4-6-v1[1m]",
+    "claude-opus-4-6": "global.anthropic.claude-opus-4-6-v1",
+    "claude-opus-4-7[1m]": "global.anthropic.claude-opus-4-7[1m]",
+    "claude-opus-4-7": "global.anthropic.claude-opus-4-7",
+    "claude-opus-4-8[1m]": "global.anthropic.claude-opus-4-8[1m]",
+    "claude-opus-4-8": "global.anthropic.claude-opus-4-8",
+    "claude-opus-5[1m]": "global.anthropic.claude-opus-5[1m]",
+    "claude-opus-5": "global.anthropic.claude-opus-5",
+    "claude-sonnet-4-6": "global.anthropic.claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]": "global.anthropic.claude-sonnet-4-6[1m]",
+    "claude-sonnet-5": "global.anthropic.claude-sonnet-5",
+    "claude-fable-5": "global.anthropic.claude-fable-5[1m]",
+    "claude-fable-5[1m]": "global.anthropic.claude-fable-5[1m]",
+    "claude-haiku-4-5": "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+  },
+>>>>>>> 893a3c8 (minor changes)
   "worktree": {
     "baseRef": "fresh"
   },
