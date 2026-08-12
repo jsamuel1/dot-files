@@ -100,7 +100,45 @@ fi
 # remote, and opens the kanban — in cmux's embedded browser when run inside a
 # cmux terminal, otherwise the system default browser. The axe/SSH stream can
 # drop ("Bad packet length"); the dashboard survives in tmux, so we reconnect
-# the forward. Ctrl-C stops (leaves the remote dashboard running).
+# the forward. On failure we check the Midway SSH cert's actual expiry
+# (ssh-keygen -Lf) and only run mwinit when it is really expired/missing;
+# otherwise we just reconnect after a short sleep. Ctrl-C stops (leaves the
+# remote dashboard running).
+
+# mwcheck: report Midway SSH credential status. Prints the cert expiry and
+# returns 0 (true) when the cert is still valid, 1 (false) when it is
+# missing/expired — so it works in scripts: `mwcheck && ssh ...`
+mwcheck() {
+  local cert valid_to epoch now
+  for cert in ~/.ssh/id_ecdsa-cert.pub ~/.ssh/id_rsa-cert.pub; do
+    [ -f "$cert" ] || continue
+    # ssh-keygen -Lf prints: "Valid: from 2026-08-12T09:00:00 to 2026-08-13T09:00:00"
+    valid_to=$(ssh-keygen -Lf "$cert" 2>/dev/null | awk '/Valid:/ {print $NF}')
+    if [ -z "$valid_to" ]; then
+      print "[midway] $cert: could not read validity (unparsable cert?)"
+      continue
+    fi
+    if epoch=$(date -j -f "%Y-%m-%dT%H:%M:%S" "$valid_to" +%s 2>/dev/null) \
+       || epoch=$(date -d "$valid_to" +%s 2>/dev/null); then
+      now=$(date +%s)
+      if (( epoch > now )); then
+        print "[midway] valid — expires $valid_to ($(( (epoch - now) / 60 )) min left) [$cert]"
+        return 0
+      else
+        print "[midway] EXPIRED at $valid_to [$cert]"
+        return 1
+      fi
+    fi
+  done
+  print "[midway] no Midway SSH certificate found (run mwinit)"
+  return 1
+}
+
+# Return 0 if the Midway SSH certificate is missing or expired, 1 if still valid.
+_kermes_midway_cert_expired() {
+  ! mwcheck >/dev/null 2>&1
+}
+
 kermes-ssh() {
   local host="${KERMES_SSH_HOST:?set KERMES_SSH_HOST to the ssh host running kermes}"
   local port="${KERMES_PORT:-8723}"
@@ -119,24 +157,20 @@ kermes-ssh() {
     done ) &
   local _kb=$!
   trap 'kill $_kb 2>/dev/null; trap - INT; print "\n[kermes] stopped."; return' INT
-  local reauthed=0
   while true; do
     local _start=$SECONDS
     ssh -o PermitLocalCommand=no -o ExitOnForwardFailure=yes -o RequestTTY=no \
       -L "${port}:localhost:${port}" "$host" "$remote_cmd"
     if (( SECONDS - _start < 6 )); then
-      # Never established — most often an expired Midway session. Refresh it once
-      # per failure streak (mwinit is interactive: PIN/touch), then retry.
-      if (( reauthed == 0 )) && command -v mwinit >/dev/null 2>&1; then
-        reauthed=1
-        print "[kermes] connection failed immediately — Midway may be expired; running mwinit…"
+      # Never established. Don't assume Midway — check the cert's actual expiry.
+      if command -v mwinit >/dev/null 2>&1 && _kermes_midway_cert_expired; then
+        print "[kermes] Midway SSH cert is expired or missing — running mwinit…"
         mwinit -f || print "[kermes] mwinit did not complete; will keep retrying."
         continue
       fi
-      print "[kermes] still can't connect (Midway / axe tunnel / VPN?). Retrying in 5s (Ctrl-C to stop)…"
+      print "[kermes] can't connect but Midway cert looks valid (axe tunnel / VPN / host down?). Retrying in 5s (Ctrl-C to stop)…"
       sleep 5
     else
-      reauthed=0
       print "[kermes] tunnel dropped — reconnecting in 3s (Ctrl-C to stop)…"
       sleep 3
     fi
