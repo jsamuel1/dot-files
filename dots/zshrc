@@ -240,9 +240,6 @@ _zt "bun completions"
 source_ifexists ~/.local/lib/devduck_env
 _zt "devduck_env"
 
-# Cap vitest fork-pool workers at 2 (keeps headroom for the rest of the system)
-export VITEST_MAX_FORKS=2
-
 if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
