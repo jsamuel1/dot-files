@@ -132,7 +132,8 @@
     "AIPowerUserCapabilities-core-dev@aim": true,
     "AIPowerUserCapabilities-research@aim": true,
     "AIPowerUserCapabilities-writing@aim": true,
-    "AIPowerUserCapabilities-comms@aim": true
+    "AIPowerUserCapabilities-comms@aim": true,
+    "TaskMemoryAICapabilities-all@aim": true
   },
   "extraKnownMarketplaces": {
     "aim": {
@@ -156,5 +157,6 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "editorMode": "normal",
-  "terminalProgressBarEnabled": false
+  "terminalProgressBarEnabled": false,
+  "tui": "fullscreen"
 }
