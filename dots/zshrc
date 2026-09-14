@@ -86,14 +86,34 @@ setopt share_history          # share history across sessions
 HIST_STAMPS="yyyy-mm-dd"
 
 # --- Key bindings (replaces omz lib/key-bindings.zsh) ---
+# The term-input-hygiene hook below turns on application keypad mode (smkx),
+# so keys arrive as the $terminfo sequences (e.g. ^[OA), not the raw ^[[A
+# forms. Bind both, like omz does, or the raw bindings never fire.
 bindkey -e                           # emacs mode
-bindkey '^[[A'  up-line-or-search    # up arrow
-bindkey '^[[B'  down-line-or-search  # down arrow
-bindkey '^[[H'  beginning-of-line    # Home
-bindkey '^[[F'  end-of-line          # End
-bindkey '^[[3~' delete-char          # Delete
-bindkey '^[[1;5C' forward-word       # Ctrl+Right
-bindkey '^[[1;5D' backward-word      # Ctrl+Left
+_bk() { # _bk <widget> <seq>... : bind widget to each non-empty sequence
+  local w=$1; shift
+  local s; for s in "$@"; do [[ -n $s ]] && bindkey "$s" "$w"; done
+}
+# Start typing + Up/Down: prefix-search history on the whole line typed so far
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+_bk up-line-or-beginning-search   '^[[A' "${terminfo[kcuu1]}"
+_bk down-line-or-beginning-search '^[[B' "${terminfo[kcud1]}"
+_bk up-line-or-history            "${terminfo[kpp]}"    # PageUp
+_bk down-line-or-history          "${terminfo[knp]}"    # PageDown
+_bk beginning-of-line             '^[[H' "${terminfo[khome]}"
+_bk end-of-line                   '^[[F' "${terminfo[kend]}"
+_bk delete-char                   '^[[3~' "${terminfo[kdch1]}"
+_bk kill-word                     '^[[3;5~'             # Ctrl+Delete
+_bk reverse-menu-complete         "${terminfo[kcbt]}"   # Shift+Tab
+_bk forward-word                  '^[[1;5C'             # Ctrl+Right
+_bk backward-word                 '^[[1;5D'             # Ctrl+Left
+unfunction _bk
+# Ctrl-x Ctrl-e: edit the current command line in $VISUAL/$EDITOR
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
 
 # --- Directory options (replaces omz lib/directories.zsh) ---
 setopt auto_pushd
