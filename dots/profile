@@ -9,3 +9,6 @@
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/profile.post.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/profile.post.bash"
 
+
+# Added by smithy-mcp
+export PATH="$HOME/.config/smithy-mcp/mcp-servers:$PATH"

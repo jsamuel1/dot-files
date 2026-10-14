@@ -59,7 +59,7 @@ After navigating to the package directory:
 2. If custom instructions exist, follow those specific build steps
 3. If no custom instructions are found, use one of the standard Brazil build processes:
 
-   **Option 1: BrazilBuildAnalyzerTool (if builder-mcp is available)**
+   **Option 1: `brazil-build-analyzer-skill`**
    
    **Option 2: Standard build with log redirection to manage verbose output:**
    brazil-build commands can take a long time to run and the output can be very large, so you MUST save brazil-build output to a temp file. You SHOULD then parse the temp file with tools like grep or tail.
