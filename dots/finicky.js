@@ -1,5 +1,5 @@
 export default {
-  defaultBrowser: "Arc",
+  defaultBrowser: "Google Chrome",
 
   options: {
     checkForUpdates: true,
@@ -72,15 +72,6 @@ export default {
       // Firefox extensions
       match: (url) => url.pathname.endsWith(".xpi"),
       browser: "Firefox",
-    },
-    {
-      match: (url) => url.protocol === "quip:",
-      browser: "/Applications/Quip.app",
-    },
-    {
-      // Spotify links
-      match: "open.spotify.com/*",
-      browser: "Spotify",
     },
     {
       // Zoom meetings
