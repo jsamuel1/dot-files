@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Kiro CLI pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.pre.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.pre.bash"
-
 # shellcheck disable=SC1090,SC1091# Mise shims
 if [[ -d "$HOME/.local/share/mise/shims" ]]; then
 	export PATH="$HOME/.local/share/mise/shims:$PATH"
@@ -143,10 +140,11 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 
 
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/bashrc.post.bash"
 [[ -f ~/.local/lib/devduck_env ]] && source ~/.local/lib/devduck_env
 
 
 # KiroCrew
 export PATH="$HOME/.local/bin:$PATH"
+
+# Added by AIM CLI
+export PATH="$HOME/.aim/mcp-servers:$PATH"
