@@ -164,10 +164,7 @@ if command -v /usr/local/amazon/bin/acme_amazon_enterprise_access >/dev/null; th
 		python3 -c "$(curl -fsS https://m.media-amazon.com/images/G/01/homebrew/bootstrap.py)"
 		brew install amzn/amzn/env-improvement
 		brew install amzn/amzn/isengard-cli
-		brew install --cask amzn/amzn/amazon-acronyms
 		brew install amzn/amzn/brazil-recursive-cmd-parallel
-		brew install amzn/amzn/amazon-ca-certs-openssl
-		brew install amzn/amzn/amassh
 	fi
 fi
 
