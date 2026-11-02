@@ -55,7 +55,8 @@
     "AIPowerUserCapabilities-research@aim": true,
     "AIPowerUserCapabilities-writing@aim": true,
     "AIPowerUserCapabilities-comms@aim": true,
-    "TaskMemoryAICapabilities-all@aim": true
+    "TaskMemoryAICapabilities-all@aim": true,
+    "AmazonBuilderCoreAIAgents-runtime-configuration-assistant@aim": true
   },
   "extraKnownMarketplaces": {
     "aim": {
