@@ -12,7 +12,6 @@ tree-sitter = "latest"
 pre-commit = "latest"
 usage = "latest"
 uv = "latest"
-terraform-ls = "latest"
 direnv = "latest"
 aws-cli = { version = "latest", symlink_bins = "true" }
 

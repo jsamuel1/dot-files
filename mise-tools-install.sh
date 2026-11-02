@@ -71,7 +71,6 @@ symlink_file "dependencies/default-gems" "$HOME/.default-gems"
 awkxargs "dependencies/default-gems" "${MISEX[@]}" gem install
 
 "${MISEUSE[@]}" terraform@latest
-"${MISEUSE[@]}" terraform-ls@latest
 "${MISEUSE[@]}" tree-sitter@latest
 "${MISEUSE[@]}" pre-commit@latest
 
