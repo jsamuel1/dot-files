@@ -69,6 +69,10 @@ To update and run from local:
   _BrewFile_ defines the packages to install.
 - Installs default settings for macos, defined in _macdefaults.sh_
 - Changes the default login shell to zsh
+- Chrome extensions: registers Copy Page URL from the Web Store (Chrome asks
+  once to enable it), and downloads the unpublished TabSage release to
+  `~/.local/share/chrome-extensions/tabsage`. Load TabSage once via
+  chrome://extensions → Developer mode → Load unpacked; re-runs update it.
 
 ### Setup iTerm default profile
 
