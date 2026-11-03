@@ -33,7 +33,8 @@ format = """
 $username\
 $hostname\
 $directory\
-${custom.git}\
+$git_branch\
+$git_commit\
 $character"""
 
 right_format = """
@@ -69,41 +70,32 @@ style = "fg:white bg:blue bold"
 format = "[@$hostname ]($style)"
 
 # --- Directory (p10k: black on blue, truncate to unique, length 4) ---
-# No trailing arrow: the always-present git slot below owns the blue->green crossover,
-# so the directory block just renders its content and the git slot continues the chain.
+# Ends with the blue->green crossover arrow; the next block (git or prompt char) is
+# always green, so the seam is correct with or without a git segment.
 [directory]
 style = "fg:black bg:blue bold"
 truncation_length = 4
 truncate_to_repo = true
 truncation_symbol = "…/"
-format = "[ $path ]($style)"
+format = "[ $path ]($style)[](fg:blue bg:green)"
 
-# --- Git (always-present slot — keeps the powerline chain fixed) ---
-# A custom module that ALWAYS renders, so the directory->git->prompt chain never has a
-# missing middle segment: the seam arrows always have a known neighbour on both sides and
-# the crossover stays a single clean glyph. In a repo it shows " <icon> <branch> "; outside
-# a repo it shows a single space (an empty green slot) so the geometry is identical.
-# Cost: one cheap `git branch --show-current` per prompt (no status walk).
-# Disable the built-in git modules so they don't also render.
+# --- Git (built-in modules: read .git in-process, no spawned git/bash) ---
+# The directory block always ends with the blue->green crossover arrow, and the
+# prompt char is itself a green block, so the chain stays seamless whether or not
+# a git segment renders: outside a repo the crossover runs straight into the green
+# prompt char. No trailing arrow on git: it is green into the green prompt char,
+# so they merge into one block. Branch when attached, short commit hash when detached.
 [git_branch]
-disabled = true
-[git_status]
-disabled = true
-
-[custom.git]
-description = "Always-present green git slot: branch in a repo, blank otherwise"
-when = "true"
-shell = ["bash", "--noprofile", "--norc"]
-# Let starship own all styling so attributes always reset between modules.
-# The command emits ONLY text; the format string paints the powerline block:
-#   crossover arrow (blue->green) + black-on-green branch block + closing arrow.
+only_attached = true
+symbol = "\uE0A0 "
 style = "fg:black bg:green bold"
-format = "[](fg:blue bg:green)[ $output ]($style)[](fg:green)"
-command = '''
-b=$(git branch --show-current 2>/dev/null)
-if [ -z "$b" ]; then b=$(git rev-parse --short HEAD 2>/dev/null); fi
-if [ -n "$b" ]; then printf '\uE0A0 %s' "$b"; fi
-'''
+format = "[ $symbol$branch ]($style)"
+
+[git_commit]
+only_detached = true
+tag_disabled = true
+style = "fg:black bg:green bold"
+format = "[ \uE0A0 $hash ]($style)"
 
 # --- Right prompt: status (exit code), only on error like p10k STATUS_OK=false ---
 [status]
