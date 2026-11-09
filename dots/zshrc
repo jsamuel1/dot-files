@@ -260,6 +260,9 @@ _zt "bun completions"
 source_ifexists ~/.local/lib/devduck_env
 _zt "devduck_env"
 
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+
+# Profiling/trace summary — keep at the very end so it covers everything above
 if [ "$_ZSH_PROFILE" ]; then
   zprof
 fi
@@ -269,6 +272,3 @@ if [ "$_ZSH_TRACE" ]; then
   printf "\n  TOTAL: %.0fms\n" $(( (EPOCHREALTIME - _zsh_trace_start) * 1000 ))
   unfunction _zt
 fi
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
-

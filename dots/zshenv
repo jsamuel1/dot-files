@@ -30,8 +30,10 @@ prepend_path "$HOME/bin"
 prepend_path /usr/local/opt/coreutils/libexec/gnubin
 
 # --- Package managers ---
+prepend_path /opt/homebrew/sbin
 prepend_path /opt/homebrew/bin
 append_path /home/linuxbrew/.linuxbrew/bin
+append_path /home/linuxbrew/.linuxbrew/sbin
 prepend_path "$HOME/.cargo/bin"
 
 # --- Dev tools ---
@@ -47,6 +49,8 @@ append_path "$HOME/.bun/bin"
 append_path "$HOME/.deno/bin"
 prepend_path "$HOME/Library/pnpm"        # pnpm home on macOS
 prepend_path "$HOME/.local/share/pnpm"   # pnpm home on Linux
+prepend_path "$HOME/Library/pnpm/bin"        # pnpm 10+ global bins (macOS)
+prepend_path "$HOME/.local/share/pnpm/bin"   # pnpm 10+ global bins (Linux)
 prepend_path "$HOME/.aim/mcp-servers"
 append_path "/usr/local/texlive/2025/bin/universal-darwin"
 
