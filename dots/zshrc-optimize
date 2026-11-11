@@ -79,9 +79,12 @@ zsh_optimize_fzf() {
 # Optimize fastfetch to run less frequently
 zsh_optimize_fastfetch() {
   # Only run fastfetch once per day or when FORCE_FASTFETCH=1
-  if [[ "$FORCE_FASTFETCH" == "1" ]] || [[ ! -f ~/.fastfetch_today || $(date +%Y%m%d) != $(cat ~/.fastfetch_today 2>/dev/null) ]]; then
-    command -v fastfetch >/dev/null 2>&1 && fastfetch
-    date +%Y%m%d > ~/.fastfetch_today
+  # zsh prompt expansion and $(<file) give the date and file contents
+  # without running date or cat on every shell start.
+  local today=${(%):-%D{%Y%m%d}}
+  if [[ "$FORCE_FASTFETCH" == "1" ]] || [[ ! -f ~/.fastfetch_today || $today != "$(<~/.fastfetch_today)" ]]; then
+    (( $+commands[fastfetch] )) && fastfetch
+    print -r -- $today >| ~/.fastfetch_today
   fi
 }
 

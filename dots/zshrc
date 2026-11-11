@@ -53,7 +53,9 @@ prepend_manpath /usr/local/opt/coreutils/libexec/gnuman
 
 for script in "$HOME"/.local/lib/*.zsh; do
   . "$script"
-  _zt "  $(basename $script)"
+  # ${script:t} is zsh's basename; $(basename ...) forked once per file
+  # on every shell start, even with tracing off.
+  _zt "  ${script:t}"
 done
 _zt "local lib scripts (total)"
 

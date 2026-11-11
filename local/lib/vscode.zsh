@@ -7,7 +7,7 @@ VSCODE_INTEGRATION_CACHE="${HOME}/.local/lib/vscode_shell_integration_path"
 # Function to get and cache the shell integration path
 function _vscode_get_integration_path() {
   # Check if VS Code is available
-  if ! command -v code >/dev/null 2>&1; then
+  if (( ! $+commands[code] )); then
     echo "VS Code not found in PATH" >&2
     return 1
   fi

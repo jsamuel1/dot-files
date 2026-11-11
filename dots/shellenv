@@ -11,8 +11,11 @@
 # Define the path helpers unless the calling shell already has them
 # (zshenv defines its own). Both remove an existing entry before re-adding
 # it, so re-sourcing moves entries instead of duplicating them, and both
-# skip directories that don't exist.
-if ! command -v prepend_path >/dev/null 2>&1; then
+# skip directories that don't exist. A plain (unexported) marker variable is
+# checked instead of `command -v`, which is slower; it isn't exported because
+# child shells don't inherit the functions.
+if [ -z "${_dotfiles_path_helpers:-}" ]; then
+  _dotfiles_path_helpers=1
   _shellenv_strip_path() {
     _shellenv_new=
     _shellenv_rest="$PATH:"

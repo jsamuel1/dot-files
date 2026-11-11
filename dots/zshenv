@@ -21,6 +21,10 @@ prepend_path() {
   PATH="$1:$PATH"
 }
 
+# Tell ~/.shellenv the helpers exist. Not exported: child shells don't get
+# the functions.
+_dotfiles_path_helpers=1
+
 # Deduplicate path arrays
 typeset -gU cdpath fpath mailpath path PATH
 
@@ -32,8 +36,12 @@ prepend_path /usr/local/opt/coreutils/libexec/gnubin
 # --- Package managers ---
 prepend_path /opt/homebrew/sbin
 prepend_path /opt/homebrew/bin
-append_path /home/linuxbrew/.linuxbrew/bin
-append_path /home/linuxbrew/.linuxbrew/sbin
+# Linux only: on macOS /home is an automount point, and checking a path under
+# it costs ~18 ms per check on every shell start.
+if [[ "$OSTYPE" == linux* ]]; then
+  append_path /home/linuxbrew/.linuxbrew/bin
+  append_path /home/linuxbrew/.linuxbrew/sbin
+fi
 prepend_path "$HOME/.cargo/bin"
 
 # --- Dev tools ---

@@ -1,21 +1,26 @@
 #!/bin/zsh
 #
-# to be sourced from zshrc or bashrc
-alias grep="$(command -v ggrep >/dev/null 2>&1 && echo ggrep || echo grep)"' --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
+# Sourced from zshrc. zsh only: uses (( $+commands[x] )), which checks the
+# command hash table without forking, instead of command -v.
+if (( $+commands[ggrep] )); then _grep_cmd=ggrep; else _grep_cmd=grep; fi
+alias grep="$_grep_cmd"' --exclude="*.pyc" --exclude="*.swp" --exclude="*.tfstate.backup" --color=auto --exclude-dir=.terraform --exclude-dir=.git'
+unset _grep_cmd
 alias pip='python -m pip' # always use current pipenv's python for pip
 alias please='sudo'
 alias vi='nvim'  # some things just like vi
 alias vim='nvim' # nvim nvim nvim.  for when the system override is wrong :)
 
-# Use (( $+commands[x] )) instead of command -v to avoid forking
 if (( $+commands[bat] )); then
         alias cat='bat --style=plain -P --strip-ansi=always'
 elif (( $+commands[pygmentize] )); then
         alias cat="pygmentize -g -O style=monokai"
 fi
 
-# Detect which `ls` flavor is in use
-if ls --color -d / >/dev/null 2>&1; then # GNU `ls`
+# Detect which `ls` flavor is in use without running it. GNU-style --color
+# works on Linux (GNU or BusyBox), with coreutils' gnubin ls, and on macOS 13+
+# (Darwin 22+), whose ls added --color.
+if [[ "$OSTYPE" == linux* || "${commands[ls]}" == */gnubin/ls ]] ||
+   { [[ "$OSTYPE" == darwin* ]] && (( ${${OSTYPE#darwin}%%.*} >= 22 )); }; then # GNU-style `ls`
         colorflag="--color"
         export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
 else # macOS `ls`
@@ -146,7 +151,7 @@ kermes-ssh() {
   local remote_cmd="tmux has-session -t kermes 2>/dev/null || tmux new-session -d -s kermes 'kermes gateway'; echo '[kermes] gateway in tmux:kermes | forwarding localhost:$port | Ctrl-C closes tunnel (gateway keeps running)'; sleep infinity"
   ( for i in {1..60}; do
       nc -z localhost "$port" 2>/dev/null && {
-        if [ -n "${CMUX_WORKSPACE_ID:-}" ] && command -v cmux >/dev/null 2>&1; then
+        if [ -n "${CMUX_WORKSPACE_ID:-}" ] && (( $+commands[cmux] )); then
           cmux browser new "$url" --workspace "$CMUX_WORKSPACE_ID" --focus true 2>/dev/null || open "$url"
         else
           open "$url"
@@ -163,7 +168,7 @@ kermes-ssh() {
       -L "${port}:localhost:${port}" "$host" "$remote_cmd"
     if (( SECONDS - _start < 6 )); then
       # Never established. Don't assume Midway — check the cert's actual expiry.
-      if command -v mwinit >/dev/null 2>&1 && _kermes_midway_cert_expired; then
+      if (( $+commands[mwinit] )) && _kermes_midway_cert_expired; then
         print "[kermes] Midway SSH cert is expired or missing — running mwinit…"
         mwinit -f || print "[kermes] mwinit did not complete; will keep retrying."
         continue

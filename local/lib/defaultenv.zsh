@@ -1,5 +1,6 @@
-#!/bin/sh
-# to be sourced from bash or zsh
+#!/bin/zsh
+# Sourced from zshrc. zsh only: uses $+commands and zsh tests to avoid
+# running subprocesses on every shell start.
 #export AWS_DEFAULT_REGION="ap-southeast-2"
 #export AWS_REGIONS="ap-southeast-2 us-west-2"
 export FZF_DEFAULT_COMMAND="fd --type file --hidden --follow --exclude .git --color=always"
@@ -9,18 +10,26 @@ export GOPROXY=direct
 export GREP_COLORS="mt=01;31"
 export DEFAULT_USER="${USER}"
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
-if [ -x /usr/libexec/java_home ]; then
-  export JAVA_HOME=$(/usr/libexec/java_home)
+# macOS: java_home takes ~30 ms, so cache its answer and only rerun it when
+# the installed JDKs change (the JVM folder is newer than the cache).
+if [[ -x /usr/libexec/java_home ]]; then
+  _jh_cache="$HOME/.cache/java_home"
+  if [[ ! -s "$_jh_cache" || /Library/Java/JavaVirtualMachines -nt "$_jh_cache" ]]; then
+    [[ -d "${_jh_cache:h}" ]] || mkdir -p "${_jh_cache:h}"
+    /usr/libexec/java_home >| "$_jh_cache" 2>/dev/null
+  fi
+  export JAVA_HOME="$(<"$_jh_cache")"
+  unset _jh_cache
 fi
 
 if [[ "$TERM_PROGRAM" == "vscode" ]] || [[ "$TERM_PROGRAM" == "kiro" ]]; then
   unset PAGER
   unset AWS_PAGER
-elif command -v moor >/dev/null 2>&1; then
+elif (( $+commands[moor] )); then
   export PAGER="moor"
   alias more="moor"
   export AWS_PAGER="moor"
-elif command -v bat >/dev/null 2>&1; then
+elif (( $+commands[bat] )); then
   alias more="bat"
   export PAGER="bat"
   export AWS_PAGER="bat"
