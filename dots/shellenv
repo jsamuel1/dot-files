@@ -4,8 +4,8 @@
 # ~/.profile (sh, dash, and BusyBox ash on Alpine). Keep this file strictly
 # POSIX: no [[ ]], arrays, `local`, `source`, or ${var//pat/rep}.
 #
-# Loads workplace / box specific env from ~/.local/lib/*.env.sh. Those files
-# are provided by other repos (e.g. dot-files-amazon), must also be POSIX sh,
+# Loads per-tool env from ~/.local/lib/*.env.sh. Those files
+# come from this or other repos (e.g. a workplace repo), must also be POSIX sh,
 # and should only set PATH and environment variables.
 
 # Define the path helpers unless the calling shell already has them

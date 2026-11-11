@@ -275,7 +275,7 @@ if [ "$_ZSH_TRACE" ]; then
 fi
 
 # Scripts that must run last (e.g. ones that exec a foreground program).
-# Provided by other repos such as dot-files-amazon via ~/.local/lib/*.zsh-last.
+# Provided by this or other repos via ~/.local/lib/*.zsh-last.
 for script in "$HOME"/.local/lib/*.zsh-last(N); do
   . "$script"
 done

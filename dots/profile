@@ -8,8 +8,8 @@ case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOM
 
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-# Shared PATH/env, including workplace files in ~/.local/lib/*.env.sh
-# (Builder Toolbox, AIM MCP servers, ...). Loaded last so they win.
+# Shared PATH/env, including per-tool files in ~/.local/lib/*.env.sh.
+# Loaded last so they win.
 [ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"
 
 # Interactive sh/ash shells that aren't login shells read $ENV, not this file.

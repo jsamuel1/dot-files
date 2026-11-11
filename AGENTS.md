@@ -15,8 +15,11 @@ shell file.
   - `<tool>.zsh`: aliases, functions, completions, interactive zsh only.
   - `<tool>.zsh-last`: zsh hooks that must run at the very end of `.zshrc`.
 - Put files that every machine needs in `dot-files/local/lib/`. Put
-  workplace files (Amazon tools such as Builder Toolbox, AIM, kiro-cmux,
-  brazil, isengard, smithy-mcp) in `~/src/dot-files-amazon/local/lib/`.
+  workplace files (employer or client tools) in the workplace repo checked
+  out next to this one, `~/src/dot-files-<workplace>/local/lib/`; its own
+  AGENTS.md lists which tools belong there.
+- Never name workplace tools, hosts, or repos in this repo's files, docs,
+  or comments. Use generic wording such as "workplace repo" instead.
 - `dots/shellenv`, `dots/profile`, and every `*.env.sh` must be POSIX `sh`,
   because they run under BusyBox `ash` on Alpine Linux. No `[[ ]]`, arrays,
   `local`, `source`, `builtin`, or `${var//x/y}`.
@@ -30,7 +33,7 @@ shell file.
 
 ## Refactoring lines that installers added
 
-Installers append blocks such as `# Added by AIM CLI` to the startup files.
+Installers append blocks such as `# Added by <tool>` to the startup files.
 When you find them (in `git status`, in a diff, or when asked to clean up),
 move them out with this procedure.
 
@@ -39,8 +42,8 @@ move them out with this procedure.
    machine-local and not in the repo. Each block is usually a marker comment
    plus one to a few lines. Group the lines by tool.
 2. **Check what already exists.** Before writing anything:
-   - Look for the tool's files in `dot-files/local/lib/` and
-     `~/src/dot-files-amazon/local/lib/`. Add to an existing file instead of
+   - Look for the tool's files in `dot-files/local/lib/` and each
+     `~/src/dot-files-*/local/lib/`. Add to an existing file instead of
      creating a second one.
    - Check whether the core files already cover the line. For example,
      `dots/zshenv` already adds `~/bin`, `~/.local/bin`, and `~/.cargo/bin`
@@ -63,8 +66,9 @@ move them out with this procedure.
    Keep `~/.bash_profile` ending with
    `[ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"`.
 5. **Link new files** into `~/.local/lib`, e.g.
-   `ln -s ~/src/dot-files-amazon/local/lib/<tool>.env.sh ~/.local/lib/`.
-   `settings.py` and `dot-files-amazon/symlink.sh` do the same on bootstrap.
+   `ln -s ~/src/dot-files-<workplace>/local/lib/<tool>.env.sh ~/.local/lib/`.
+   `settings.py` and the workplace repo's link script do the same on
+   bootstrap.
 6. **Verify:**
    - `sh -n` and `shellcheck -s sh` on every `*.env.sh` you changed;
      `zsh -n` on `*.zsh` and `*.zsh-last` files and on `dots/zshrc` /

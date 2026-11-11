@@ -22,9 +22,9 @@ All `dots/<name>` files are linked to `~/.<name>`, and `local/**` is linked to
 | `.bashrc` | `dots/bashrc` | bash | interactive, and `ssh host cmd` | Loads `~/.shellenv` first, then exits if non-interactive; otherwise prompt, aliases, completion. |
 | `.bash_profile` | machine-local, not in repo | bash | login | Installers append to it. It should end with `[ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"`. |
 | `.profile` | `dots/profile` | sh/dash/ash; bash when there is no `.bash_profile` | login | POSIX only. Loads `~/.shellenv` and exports `ENV=~/.shellenv` so interactive non-login `sh` shells get it too. |
-| `.local/lib/*.zsh` | `local/lib/` here and in other repos | zsh | interactive | Aliases, functions, interactive env (`aliases.zsh`, `defaultenv.zsh`, `kmux.zsh`, ...). |
-| `.local/lib/*.zsh-last` | other repos | zsh | interactive, at the end | For scripts that start a foreground program (e.g. `kmux.zsh-last`). |
-| `.local/lib/*.env.sh` | `local/lib/` here and in other repos | zsh, bash, sh/dash/ash | all except `bash -c` and `sh -c` | Workplace or box specific `PATH` and env vars (e.g. `toolbox.env.sh`, `aim.env.sh`). POSIX `sh` only. |
+| `.local/lib/*.zsh` | `local/lib/` here and in other repos | zsh | interactive | Aliases, functions, interactive env (`aliases.zsh`, `defaultenv.zsh`, ...). |
+| `.local/lib/*.zsh-last` | `local/lib/` here and in other repos | zsh | interactive, at the end | For scripts that start a foreground program. |
+| `.local/lib/*.env.sh` | `local/lib/` here and in other repos | zsh, bash, sh/dash/ash | all except `bash -c` and `sh -c` | Per-tool `PATH` and env vars, general or workplace / box specific. POSIX `sh` only. |
 
 ## Which files load for each shell type
 
@@ -63,9 +63,10 @@ time. The extension decides when the file loads:
 | `<tool>.zsh` | `.zshrc`, near the top | aliases, functions, completions, interactive-only env | zsh |
 | `<tool>.zsh-last` | `.zshrc`, at the very end | hooks that must run last, e.g. ones that start a foreground program | zsh |
 
-A tool can have any combination of these. For example, kiro-cmux has
-`kmux.zsh` (wrappers and aliases) and `kmux.zsh-last` (the remote-panes hook),
-and the Builder Toolbox has only `toolbox.env.sh`.
+A tool can have any combination of these. For example, a terminal
+multiplexer integration might have `<tool>.zsh` for wrappers and aliases and
+`<tool>.zsh-last` for a hook that opens a remote session, while a CLI that
+only needs to be on `PATH` has just `<tool>.env.sh`.
 
 `*.env.sh` files load after the core `PATH`, so `prepend_path` in them puts
 their directories first. Both helpers skip directories that don't exist, so
@@ -78,8 +79,9 @@ There are no separate per-OS files. Most tool files don't need an OS check:
 
 - `prepend_path`/`append_path` skip folders that don't exist, so a macOS
   path such as `$HOME/Library/pnpm` does nothing on Linux, and the reverse.
-- Aliases and hooks are guarded on the command or file existing (see
-  `kmux.zsh`), so they're skipped wherever the tool isn't installed.
+- Aliases and hooks are guarded on the command or file existing, e.g.
+  `if (( $+commands[tool] )); then ... fi`, so they're skipped wherever the
+  tool isn't installed.
 
 Add an OS check inside the tool's file only for settings that aren't paths
 and differ by OS, such as `PNPM_HOME` or the macOS-only
@@ -105,15 +107,12 @@ Where a tool's files live depends on which machines need them:
 | Scope | Repo location | How it reaches `~/.local/lib` |
 |---|---|---|
 | Every machine (pnpm, cargo, bun, ...) | `dot-files/local/lib/` | `settings.py` links `local/**` automatically |
-| Workplace (Builder Toolbox, AIM, kiro-cmux, ...) | `dot-files-amazon/local/lib/` | `dot-files-amazon/symlink.sh` |
+| Workplace (employer or client tools) | a separate workplace repo, e.g. `~/src/dot-files-<workplace>/local/lib/` | that repo's own link script |
 | One box only | a real file in `~/.local/lib/`, not in any repo | already there |
 
-Current files:
-
-| File | Repo |
-|---|---|
-| `toolbox.env.sh`, `aim.env.sh`, `smithy-mcp.env.sh`, `kmux.zsh`, `kmux.zsh-last`, `kiroenv.zsh`, `agienv.zsh`, `awsaliases.zsh`, `isengardcli.zsh`, `env_mappings.zsh` | `dot-files-amazon` |
-| `aliases.zsh`, `completions.zsh`, `defaultenv.zsh`, `vscode.zsh` | `dot-files` |
+This repo holds only general files (`aliases.zsh`, `completions.zsh`,
+`defaultenv.zsh`, `vscode.zsh`). It never names workplace tools; each
+workplace repo documents its own files.
 
 ## Adding settings for a tool
 
@@ -133,7 +132,7 @@ You don't need to edit any core file.
    ```
 
 2. Link them into `~/.local/lib`: run `./settings.py --no-dryrun` in
-   `dot-files`, or `./symlink.sh` in `dot-files-amazon`. For a single file:
+   `dot-files`, or the workplace repo's link script. For a single file:
 
    ```sh
    ln -s "$PWD/local/lib/acme.env.sh" ~/.local/lib/acme.env.sh
@@ -152,8 +151,7 @@ Rules for `*.env.sh` files:
 
 ## When installers edit your startup files
 
-Installers (AIM, Kiro CLI, kiro-cmux, smithy-mcp, LM Studio, rustup, ...)
-append blocks to `~/.zshrc`, `~/.bashrc`, `~/.profile`, or `~/.bash_profile`,
+Installers (rustup, LM Studio, editor and agent CLIs, ...) append blocks to `~/.zshrc`, `~/.bashrc`, `~/.profile`, or `~/.bash_profile`,
 usually marked `# Added by <tool>`. The first three are symlinks into this
 repo, so the blocks show up in `git status`. `~/.bash_profile` is
 machine-local, so check it by hand.
