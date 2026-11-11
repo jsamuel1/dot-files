@@ -6,7 +6,7 @@ zsh_optimize_completions() {
   local zsh_version=$ZSH_VERSION
   
   # Create a version-specific cache directory for completions
-  mkdir -p ~/.zsh/cache/$zsh_version
+  [[ -d ~/.zsh/cache/$zsh_version ]] || mkdir -p ~/.zsh/cache/$zsh_version
   
   # Configure completion caching with version-specific path
   zstyle ':completion:*' use-cache on
@@ -20,8 +20,11 @@ zsh_optimize_completions() {
     compinit -C -i -d ~/.zcompdump-$zsh_version
   fi
   
-  # Compile the completion dump to increase speed
-  { zcompile ~/.zcompdump-$zsh_version &>/dev/null } &!
+  # Compile the completion dump when it has changed (skips a background
+  # process on most shell starts)
+  if [[ ~/.zcompdump-$zsh_version -nt ~/.zcompdump-$zsh_version.zwc ]]; then
+    { zcompile ~/.zcompdump-$zsh_version &>/dev/null } &!
+  fi
 }
 
 # Lazy-load FZF

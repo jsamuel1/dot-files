@@ -166,3 +166,29 @@ Move each block into that tool's files instead of keeping it in the core file.
 [AGENTS.md](../AGENTS.md) has the step-by-step procedure for agents.
 Some installers re-add their block when they upgrade or reinstall. When that
 happens, repeat the move.
+
+## Startup speed
+
+A new terminal tab should show its prompt in under 250 ms, and `zsh -c` should
+start in about 15 ms. Keep it that way:
+
+- Don't run subprocesses at startup. Every `$(...)`, `command -v`, `cat`,
+  `date` or `eval "$(tool init)"` costs 5 to 50 ms. Use zsh built-ins such as
+  `$+commands[x]`, `$(<file)`, `${var:h}`, `${var:t}`, `zstat`, and glob
+  qualifiers like `file(Nmw-1)`.
+- When a tool's init output only changes when the tool does, cache it and
+  rebuild when the binary or its config is newer than the cache. `.zshrc` does
+  this for starship (`~/.cache/zsh/starship-init.zsh`), and `defaultenv.zsh`
+  for `java_home` (`~/.cache/java_home`). Delete a cache file to force a
+  rebuild.
+- `mise activate` runs just after the first prompt is drawn, not before it.
+  Tools work through the mise shims on `PATH` until then, and the
+  per-directory env is in place before the first command runs. Set
+  `MISE_ACTIVATE_EAGER=1` to activate before the prompt.
+- Don't check paths under `/home` on macOS. It's an automount point, and each
+  check costs about 18 ms.
+
+To find slow sections, open a new shell with `_ZSH_TRACE=1` for per-section
+times, or `_ZSH_PROFILE=1` for `zprof` output. To time single lines, run
+`PS4='+%D{%s.%6.} %N:%i> ' zsh -x -c exit 2>trace.log` and look for large gaps
+between timestamps.

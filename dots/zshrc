@@ -159,9 +159,26 @@ fi
 _zt "plugins"
 
 # --- Prompt: Starship ---
-# Single static Rust binary; init is a small eval with no plugin/gitstatus daemon.
+# `starship init zsh` and the PROMPT2 it computes each cost a starship run
+# (~35 ms together). Cache the full init script with PROMPT2 already filled
+# in, and rebuild it only when the starship binary or its config changes.
 if (( $+commands[starship] )); then
-  eval "$(starship init zsh)"
+  _starship_cache="$HOME/.cache/zsh/starship-init.zsh"
+  if [[ ! -s "$_starship_cache" || "${commands[starship]}" -nt "$_starship_cache" ||
+        "${STARSHIP_CONFIG:-$HOME/.config/starship.toml}" -nt "$_starship_cache" ]]; then
+    [[ -d "${_starship_cache:h}" ]] || mkdir -p "${_starship_cache:h}"
+    () {
+      local init p2
+      init="$(starship init zsh --print-full-init)" || return
+      p2="$(STARSHIP_SHELL=zsh starship prompt --continuation)"
+      # Replace the PROMPT2="$(starship prompt --continuation)" line with its value.
+      local -a lines=( "${(@f)init}" )
+      lines[${lines[(i)PROMPT2=*]}]="PROMPT2=${(qq)p2}"
+      print -rl -- "${lines[@]}" >| "$_starship_cache"
+    }
+  fi
+  source "$_starship_cache"
+  unset _starship_cache
 fi
 _zt "starship"
 
@@ -190,7 +207,23 @@ add-zle-hook-widget line-finish _zle_term_input_finish
 _zt "term input hygiene"
 
 # --- Mise auto-switching ---
-eval "$(mise activate zsh)"
+# `mise activate` plus its first hook-env run take ~80 ms. Tools already work
+# through the shims that .zshenv puts on PATH, so activate just after the first
+# prompt is drawn (first zle line-init) instead of before it. Typing during
+# that moment is buffered, and the per-directory env is in place before the
+# first command runs. Set MISE_ACTIVATE_EAGER=1 to activate before the prompt.
+if (( $+commands[mise] )); then
+  if [[ -n "${MISE_ACTIVATE_EAGER:-}" ]]; then
+    eval "$(mise activate zsh)"
+  else
+    _mise_deferred_activate() {
+      add-zle-hook-widget -d line-init _mise_deferred_activate
+      unfunction _mise_deferred_activate
+      eval "$(mise activate zsh)"
+    }
+    add-zle-hook-widget line-init _mise_deferred_activate
+  fi
+fi
 _zt "mise activate"
 
 # iTerm2 integration
@@ -233,7 +266,9 @@ export HOMEBREW_NO_ENV_HINTS=1
   export DYLD_FALLBACK_LIBRARY_PATH="/opt/homebrew/lib${DYLD_FALLBACK_LIBRARY_PATH:+:$DYLD_FALLBACK_LIBRARY_PATH}"
 
 # Compile zsh files periodically (weekly)
-if [[ ! -f ~/.zsh_compiled_date || $(( $(date +%s) - $(stat -c %Y ~/.zsh_compiled_date 2>/dev/null || stat -f %m ~/.zsh_compiled_date) )) -gt 604800 ]]; then
+# (mw-1) matches only if the file was modified within the last week, so no
+# date/stat subprocesses are needed.
+if [[ -z ~/.zsh_compiled_date(Nmw-1) ]]; then
   { zsh_compile_all; touch ~/.zsh_compiled_date } &!
 fi
 
@@ -280,5 +315,3 @@ for script in "$HOME"/.local/lib/*.zsh-last(N); do
   . "$script"
 done
 
-# Added by AIM CLI
-export PATH="$HOME/.aim/mcp-servers:$PATH"
