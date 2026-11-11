@@ -178,9 +178,13 @@ start in about 15 ms. Keep it that way:
   qualifiers like `file(Nmw-1)`.
 - When a tool's init output only changes when the tool does, cache it and
   rebuild when the binary or its config is newer than the cache. `.zshrc` does
-  this for starship (`~/.cache/zsh/starship-init.zsh`), and `defaultenv.zsh`
+  this for starship (`~/.cache/zsh/starship-init-v<N>.zsh`), and `defaultenv.zsh`
   for `java_home` (`~/.cache/java_home`). Delete a cache file to force a
   rebuild.
+- Starship's prompt commands run with `GIT_CONFIG_NOSYSTEM=1`. Its git
+  library otherwise runs `git config --system` on every prompt, inside a repo,
+  to find the system gitconfig (~10 ms). That file holds credential and hook
+  settings the prompt doesn't use.
 - `mise activate` runs just after the first prompt is drawn, not before it.
   Tools work through the mise shims on `PATH` until then, and the
   per-directory env is in place before the first command runs. Set

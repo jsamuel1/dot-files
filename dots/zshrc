@@ -163,7 +163,9 @@ _zt "plugins"
 # (~35 ms together). Cache the full init script with PROMPT2 already filled
 # in, and rebuild it only when the starship binary or its config changes.
 if (( $+commands[starship] )); then
-  _starship_cache="$HOME/.cache/zsh/starship-init.zsh"
+  # Bump the version in the file name when the processing below changes, so
+  # existing caches on other machines are rebuilt.
+  _starship_cache="$HOME/.cache/zsh/starship-init-v2.zsh"
   if [[ ! -s "$_starship_cache" || "${commands[starship]}" -nt "$_starship_cache" ||
         "${STARSHIP_CONFIG:-$HOME/.config/starship.toml}" -nt "$_starship_cache" ]]; then
     [[ -d "${_starship_cache:h}" ]] || mkdir -p "${_starship_cache:h}"
@@ -174,6 +176,12 @@ if (( $+commands[starship] )); then
       # Replace the PROMPT2="$(starship prompt --continuation)" line with its value.
       local -a lines=( "${(@f)init}" )
       lines[${lines[(i)PROMPT2=*]}]="PROMPT2=${(qq)p2}"
+      # Starship's git library runs `git config --system` on every prompt to
+      # find the system gitconfig (~10-15 ms). That file only holds credential
+      # and hook settings, which the prompt doesn't use, so skip it for the
+      # prompt process only.
+      local q="'"
+      lines=( "${(@)lines//\$\(${q}/\$(GIT_CONFIG_NOSYSTEM=1 ${q}}" )
       print -rl -- "${lines[@]}" >| "$_starship_cache"
     }
   fi
