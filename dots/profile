@@ -1,12 +1,20 @@
+# ~/.profile - login shells for sh, dash, BusyBox ash (Alpine), and bash
+# when there is no ~/.bash_profile. Must be POSIX sh: no [[ ]], `source`,
+# or `builtin`.
+# shellcheck disable=SC1090,SC1091
 
 # Added by Kiro CLI
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOME/.local/bin" ;; esac
 
-[[ -f "$HOME/.cargo/env" ]] && builtin source "$HOME/.cargo/env"
-
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # Added by smithy-mcp
 export PATH="$HOME/.config/smithy-mcp/mcp-servers:$PATH"
 
-# Added by AIM CLI
-export PATH="$HOME/.aim/mcp-servers:$PATH"
+# Shared PATH/env, including workplace files in ~/.local/lib/*.env.sh
+# (Builder Toolbox, AIM MCP servers, ...). Loaded last so they win.
+[ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"
+
+# Interactive sh/ash shells that aren't login shells read $ENV, not this file.
+# Point it at ~/.shellenv so they get the same PATH.
+export ENV="$HOME/.shellenv"

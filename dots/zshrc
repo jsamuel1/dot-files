@@ -262,6 +262,7 @@ _zt "devduck_env"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
+
 # Profiling/trace summary — keep at the very end so it covers everything above
 if [ "$_ZSH_PROFILE" ]; then
   zprof
@@ -272,3 +273,12 @@ if [ "$_ZSH_TRACE" ]; then
   printf "\n  TOTAL: %.0fms\n" $(( (EPOCHREALTIME - _zsh_trace_start) * 1000 ))
   unfunction _zt
 fi
+
+# Scripts that must run last (e.g. ones that exec a foreground program).
+# Provided by other repos such as dot-files-amazon via ~/.local/lib/*.zsh-last.
+for script in "$HOME"/.local/lib/*.zsh-last(N); do
+  . "$script"
+done
+
+# Added by AIM CLI
+export PATH="$HOME/.aim/mcp-servers:$PATH"

@@ -1,0 +1,49 @@
+# shellenv - shared, POSIX sh environment for every shell.
+#
+# Sourced by ~/.zshenv (zsh), ~/.bashrc and ~/.bash_profile (bash), and
+# ~/.profile (sh, dash, and BusyBox ash on Alpine). Keep this file strictly
+# POSIX: no [[ ]], arrays, `local`, `source`, or ${var//pat/rep}.
+#
+# Loads workplace / box specific env from ~/.local/lib/*.env.sh. Those files
+# are provided by other repos (e.g. dot-files-amazon), must also be POSIX sh,
+# and should only set PATH and environment variables.
+
+# Define the path helpers unless the calling shell already has them
+# (zshenv defines its own). Both remove an existing entry before re-adding
+# it, so re-sourcing moves entries instead of duplicating them, and both
+# skip directories that don't exist.
+if ! command -v prepend_path >/dev/null 2>&1; then
+  _shellenv_strip_path() {
+    _shellenv_new=
+    _shellenv_rest="$PATH:"
+    while [ -n "$_shellenv_rest" ]; do
+      _shellenv_dir=${_shellenv_rest%%:*}
+      _shellenv_rest=${_shellenv_rest#*:}
+      if [ -n "$_shellenv_dir" ] && [ "$_shellenv_dir" != "$1" ]; then
+        _shellenv_new=${_shellenv_new:+$_shellenv_new:}$_shellenv_dir
+      fi
+    done
+    PATH=$_shellenv_new
+    unset _shellenv_new _shellenv_rest _shellenv_dir
+  }
+  prepend_path() {
+    [ -d "$1" ] || return 0
+    _shellenv_strip_path "$1"
+    PATH="$1${PATH:+:$PATH}"
+    export PATH
+  }
+  append_path() {
+    [ -d "$1" ] || return 0
+    _shellenv_strip_path "$1"
+    PATH="${PATH:+$PATH:}$1"
+    export PATH
+  }
+fi
+
+# Workplace / box specific env. An unmatched glob stays literal in sh,
+# so the -r test skips it.
+for _shellenv_script in "$HOME"/.local/lib/*.env.sh; do
+  # shellcheck disable=SC1090
+  [ -r "$_shellenv_script" ] && . "$_shellenv_script"
+done
+unset _shellenv_script
