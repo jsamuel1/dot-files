@@ -13,7 +13,9 @@ shell file.
   - `<tool>.env.sh`: `PATH` and env vars, POSIX `sh`, loaded by all shells
     except `bash -c` and `sh -c`.
   - `<tool>.zsh`: aliases, functions, completions, interactive zsh only.
-  - `<tool>.zsh-last`: zsh hooks that must run at the very end of `.zshrc`.
+  - `<tool>.zsh-last`: zsh completions that need `compinit`, and hooks that
+    must run at the very end of `.zshrc`. Loaded alphabetically.
+  - `<tool>.bash`: aliases and completions for interactive bash.
 - Put files that every machine needs in `dot-files/local/lib/`. Put
   workplace files (employer or client tools) in the workplace repo checked
   out next to this one, `~/src/dot-files-<workplace>/local/lib/`; its own
@@ -53,8 +55,10 @@ move them out with this procedure.
      scripts go to `<tool>.env.sh`. Rewrite `PATH` lines as
      `prepend_path "<dir>"` (or `append_path` if the installer appended), and
      use `$HOME` instead of a hardcoded `/Users/<name>` path.
-   - `alias`, functions, `source`/`.` of interactive helpers, completions, and
-     `eval "$(tool init zsh)"` go to `<tool>.zsh`. Guard them with a check
+   - `alias`, functions, `source`/`.` of interactive helpers, and
+     `eval "$(tool init zsh)"` go to `<tool>.zsh`. zsh completions that
+     call `compdef` or need `compinit` go to `<tool>.zsh-last`. Bash
+     aliases and completions go to `<tool>.bash`. Guard them with a check
      that the tool exists, e.g. `if (( $+commands[tool] )); then ... fi` or
      `[ -e "$HOME/.tool/lib/x.sh" ] && source ...`.
    - Anything whose comment says it must load last, or that starts a

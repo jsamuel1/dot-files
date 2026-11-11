@@ -19,11 +19,12 @@ All `dots/<name>` files are linked to `~/.<name>`, and `local/**` is linked to
 | `.zshrc` | `dots/zshrc` | zsh | interactive | Prompt, history, key bindings, completions, aliases. Exits early when stdin and stdout aren't terminals (env-probe shells from IDEs and agents). Loads `~/.local/lib/*.zsh` near the top and `~/.local/lib/*.zsh-last` at the very end. |
 | `.zshrc-helpers`, `.zshrc-optimize` | `dots/` | zsh | interactive | Helper functions and startup caching, sourced by `.zshrc`. |
 | `.shellenv` | `dots/shellenv` | zsh, bash, sh/dash/ash | all except `bash -c` and `sh -c` | Shared POSIX `sh` environment. Defines `prepend_path`/`append_path` if the shell doesn't already have them, then loads `~/.local/lib/*.env.sh`. |
-| `.bashrc` | `dots/bashrc` | bash | interactive, and `ssh host cmd` | Loads `~/.shellenv` first, then exits if non-interactive; otherwise prompt, aliases, completion. |
+| `.bashrc` | `dots/bashrc` | bash | interactive, and `ssh host cmd` | Loads `~/.shellenv` first, then exits if non-interactive; otherwise prompt, aliases, completion. Loads `~/.local/lib/*.bash` near the end. |
 | `.bash_profile` | machine-local, not in repo | bash | login | Installers append to it. It should end with `[ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"`. |
 | `.profile` | `dots/profile` | sh/dash/ash; bash when there is no `.bash_profile` | login | POSIX only. Loads `~/.shellenv` and exports `ENV=~/.shellenv` so interactive non-login `sh` shells get it too. |
 | `.local/lib/*.zsh` | `local/lib/` here and in other repos | zsh | interactive | Aliases, functions, interactive env (`aliases.zsh`, `defaultenv.zsh`, ...). |
-| `.local/lib/*.zsh-last` | `local/lib/` here and in other repos | zsh | interactive, at the end | For scripts that start a foreground program. |
+| `.local/lib/*.zsh-last` | `local/lib/` here and in other repos | zsh | interactive, at the end | For scripts that need `compinit` to have run, or that start a foreground program. |
+| `.local/lib/*.bash` | `local/lib/` here and in other repos | bash | interactive | Aliases and completions for bash. |
 | `.local/lib/*.env.sh` | `local/lib/` here and in other repos | zsh, bash, sh/dash/ash | all except `bash -c` and `sh -c` | Per-tool `PATH` and env vars, general or workplace / box specific. POSIX `sh` only. |
 
 ## Which files load for each shell type
@@ -61,7 +62,12 @@ time. The extension decides when the file loads:
 |---|---|---|---|
 | `<tool>.env.sh` | `~/.shellenv`, so all shells except `bash -c` and `sh -c` | `PATH` and environment variables that scripts and agents also need | POSIX `sh` |
 | `<tool>.zsh` | `.zshrc`, near the top | aliases, functions, completions, interactive-only env | zsh |
-| `<tool>.zsh-last` | `.zshrc`, at the very end | hooks that must run last, e.g. ones that start a foreground program | zsh |
+| `<tool>.zsh-last` | `.zshrc`, at the very end, in alphabetical order | completions that need `compinit`, and hooks that must run last, e.g. ones that start a foreground program | zsh |
+| `<tool>.bash` | `.bashrc`, near the end | aliases and completions for interactive bash | bash |
+
+`*.zsh-last` files load alphabetically, so a hook that starts a foreground
+program must sort after the others; nothing after it runs until that program
+exits.
 
 A tool can have any combination of these. For example, a terminal
 multiplexer integration might have `<tool>.zsh` for wrappers and aliases and

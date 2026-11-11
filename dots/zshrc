@@ -68,8 +68,6 @@ _zt "fpath"
 zsh_optimize_completions
 _zt "compinit"
 
-source_ifexists "$HOME/.brazil_completion/zsh_completion"
-
 zsh_optimize_fzf
 _zt "fzf"
 
@@ -223,7 +221,6 @@ else
   export PNPM_HOME="$HOME/.local/share/pnpm"
 fi
 export npm_config_loglevel=error
-export MCP_WORKSPACE=~/src/kirocli/workspace/src
 export PHOENIX_HOME="$HOME/src/strands-agents/Phoenix"
 export AWS_REGION='us-west-2'
 export APPWEAVER_ARCH_PATHS="$HOME"
@@ -274,8 +271,9 @@ if [ "$_ZSH_TRACE" ]; then
   unfunction _zt
 fi
 
-# Scripts that must run last (e.g. ones that exec a foreground program).
-# Provided by this or other repos via ~/.local/lib/*.zsh-last.
+# Per-tool scripts that need compinit to have run, or that must run last
+# (e.g. ones that exec a foreground program). Provided by this or other repos
+# via ~/.local/lib/*.zsh-last; they load in alphabetical order.
 for script in "$HOME"/.local/lib/*.zsh-last(N); do
   . "$script"
 done

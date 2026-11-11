@@ -132,7 +132,6 @@ fi
 
 export HOMEBREW_NO_ENV_HINTS=1
 
-[[ -f "$HOME/.brazil_completion/bash_completion" ]] && builtin source "$HOME/.brazil_completion/bash_completion"
 [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [[ -f "$HOME/.cargo/env" ]] && builtin source "$HOME/.cargo/env"
 
@@ -140,6 +139,13 @@ export HOMEBREW_NO_ENV_HINTS=1
 [[ "$TERM_PROGRAM" == "kiro" ]] && command -v kiro >/dev/null 2>&1 && . "$(kiro --locate-shell-integration-path bash)"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+
+# Per-tool interactive bash settings (aliases, completions) from this or
+# other repos.
+for _bashrc_script in "$HOME"/.local/lib/*.bash; do
+	[[ -r "$_bashrc_script" ]] && source "$_bashrc_script"
+done
+unset _bashrc_script
 
 
 
