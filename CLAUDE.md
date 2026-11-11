@@ -63,7 +63,7 @@ Plain-text package lists, one per ecosystem (`Brewfile`, `aptrequirements.txt`, 
 
 ### Shell configuration (`dots/zsh*`, `zsh/`)
 
-Zsh is the primary shell. `dots/zshrc` is the main rc; it sources `~/.zshrc-helpers` and `~/.zshrc-optimize` (also from `dots/`). Key behaviors to preserve when editing:
+Zsh is the primary shell. `dots/zshrc` is the main rc; it sources `~/.zshrc-helpers` and `~/.zshrc-optimize` (also from `dots/`). Shell startup for zsh, bash, and POSIX `sh` (including Alpine's BusyBox `ash`) is documented in `docs/shell-startup.md`. Tool-specific settings go in per-tool `local/lib/<tool>.env.sh` / `<tool>.zsh` / `<tool>.zsh-last` files, never in the core rc files; see `AGENTS.md` for the rules and for the procedure to move lines that installers append. Key behaviors to preserve when editing:
 - **Env-probe fast path**: `zshrc` returns early when neither stdin nor stdout is a tty (GUI apps like VS Code / Kiro / QuickWork probe the login shell with a short timeout — a slow rc breaks them). `test-shell-startup.sh` exists to verify this stays fast.
 - `_ZSH_PROFILE=1` enables `zprof`; `_ZSH_TRACE=1` prints per-section startup timings.
 - The prompt is [starship](https://starship.rs/) (`config/starship.toml`), installed via Brewfile/mise — **not** a cloned plugin. Powerlevel10k was removed; `update-zsh-plugins.sh` actively deletes any leftover p10k clone.

@@ -14,6 +14,13 @@ The scripts will install operating system packages, along with:
 - [mise](https://github.com/jdx/mise) and default languages/tools via mise
   (node, python, ruby, go, terraform, bun, fastfetch, ...)
 
+## Shell startup
+
+See [docs/shell-startup.md](docs/shell-startup.md) for which files each shell
+loads (zsh, bash, and POSIX `sh` including Alpine's BusyBox `ash`), and how to
+add workplace or box specific settings in `~/.local/lib` without editing the
+core files.
+
 ## Timezone
 
 `bootstrap.sh` sets the system timezone to `Australia/Melbourne` (cloud
