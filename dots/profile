@@ -8,9 +8,6 @@ case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOM
 
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-# Added by smithy-mcp
-export PATH="$HOME/.config/smithy-mcp/mcp-servers:$PATH"
-
 # Shared PATH/env, including workplace files in ~/.local/lib/*.env.sh
 # (Builder Toolbox, AIM MCP servers, ...). Loaded last so they win.
 [ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"

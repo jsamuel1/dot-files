@@ -112,7 +112,7 @@ Current files:
 
 | File | Repo |
 |---|---|
-| `toolbox.env.sh`, `aim.env.sh`, `kmux.zsh`, `kmux.zsh-last`, `kiroenv.zsh`, `agienv.zsh`, `awsaliases.zsh`, `isengardcli.zsh`, `env_mappings.zsh` | `dot-files-amazon` |
+| `toolbox.env.sh`, `aim.env.sh`, `smithy-mcp.env.sh`, `kmux.zsh`, `kmux.zsh-last`, `kiroenv.zsh`, `agienv.zsh`, `awsaliases.zsh`, `isengardcli.zsh`, `env_mappings.zsh` | `dot-files-amazon` |
 | `aliases.zsh`, `completions.zsh`, `defaultenv.zsh`, `vscode.zsh` | `dot-files` |
 
 ## Adding settings for a tool
